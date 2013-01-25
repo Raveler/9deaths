@@ -1,4 +1,4 @@
-define(["Compose", "Vector2", "Layer", "Ground", "Player", "Loader"], function(Compose, Vector2, Layer, Ground, Player, Loader) {
+define(["Compose", "Vector2", "Layer", "Ground", "Player", "Loader", "Wall"], function(Compose, Vector2, Layer, Ground, Player, Loader, Wall) {
 	
 	var Renderer = Compose(function(game, json) {
 
@@ -11,10 +11,18 @@ define(["Compose", "Vector2", "Layer", "Ground", "Player", "Loader"], function(C
 		// go over all grounds
 		this.grounds = [];
 		for (var i = 0; i < json.grounds.length; ++i) {
-			var ground = new ground(json.grounds[i]);
+			var ground = new Ground(json.grounds[i]);
 			this.grounds.push(ground);
 			this.loader.add(ground);
 		}
+
+		// go over all walls
+		this.walls = [];
+		/*for (var i = 0; i < json.walls.length; ++i) {
+			var wall = new Wall(json.walls[i]);
+			this.walls.push(wall);
+			this.loader.add(wall);
+		}*/
 
 		// add done callback
 		this.loaded = false;
@@ -33,6 +41,9 @@ define(["Compose", "Vector2", "Layer", "Ground", "Player", "Loader"], function(C
 			if (!this.loaded) return;
 			for (var i = 0; i < this.grounds.length; ++i) {
 				this.grounds[i].draw(ctx);
+			}
+			for (var i = 0; i < this.walls.length; ++i) {
+				this.walls[i].draw(ctx);
 			}
 
 			ctx.fillStyle = "#FF0000";

@@ -98,24 +98,36 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer"],
 		},
 
 		init: function() {
-			//var area = new GameArea(this, "game");
-			//area.isInArea(new Vector2(10.5, 1.5));
 			this.firstTime = false;
 
 			var gameData = this.json["game"];
 			this.player = new Player(new Vector2(gameData.startingLocation.x, gameData.startingLocation.y));
 			this.renderer = new Renderer(this, this.json["world"]);
+
+			// Dave init stuff
+			this.initDave();
+		},
+
+		initDave: function() {
+			var area = new GameArea(this, "game");
+			area.isInArea(new Vector2(10.5, 1.5));
 		},
 
 		tick: function() {
-			
 			var ctx = this.canvas.getContext("2d");
 			ctx.save();
 			ctx.translate(-this.player.getLoc().x + this.canvas.width/2, -this.player.getLoc().y + this.canvas.height/2);
 			this.player.draw(ctx);
-			//this.daveshizzle.draw(ctx); // dave shizzle here - teken in "echte" coördinaten, niet relatief tov de speler dus
-			this.renderer.draw(ctx); // my shit here
+			
+			// Dave tick stuff
+			this.tickDave();
+
+			this.renderer.draw(ctx);
 			ctx.restore();
+		},
+
+		tickDave: function() {
+			//this.daveshizzle.draw(ctx); // dave shizzle here - teken in "echte" coördinaten, niet relatief tov de speler dus
 		},
 
         loadImages: function(fileNames) {

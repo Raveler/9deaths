@@ -20,8 +20,7 @@ define(["Compose"], function(Compose) {
 		isDone: function() {
 			return this.done;
 		}
-	})
-	
+	});
 	
 	return Loadable;
 });

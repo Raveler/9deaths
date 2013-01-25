@@ -1,4 +1,15 @@
 {
 	"grounds": [
+		{
+			"fileName": "data/ground.png",
+			"loc": [0, 0]
+		}
+	],
+
+	"walls": [
+		{
+			"fileName": "data/HorizontaleMuur.png",
+			"loc": [0, 0]
+		}
 	]
 }
