@@ -23,7 +23,7 @@ define(["Compose", "Logger"],
 
 		// Load json data
 		var jsonFileNames = [];
-		//jsonFileNames.push("bla");
+		jsonFileNames.push("game");
 		this.loadJson(jsonFileNames);
 
 		// keys
@@ -80,7 +80,6 @@ define(["Compose", "Logger"],
 		},
 
 		update: function() {
-
 			if (this.gameOver) {
 				this.drawGameOver();
 				return;
@@ -98,7 +97,8 @@ define(["Compose", "Logger"],
 		},
 
 		init: function() {
-			// init game here
+			//var area = new Area(this, new Vector2(0, 0));
+			this.firstTime = false;
 		},
 
 		tick: function() {
@@ -123,7 +123,7 @@ define(["Compose", "Logger"],
 			this.json = new Array();
 			this.jsonPending = fileNames.length;
 			for(var i = 0, length = fileNames.length; fileName = fileNames[i], i < length; i++) {
-				//Logger.log(fileName);
+				Logger.log("json!data/" + fileName + '.json');
 				require(["json!data/" + fileName + '.json'], this.jsonLoaded.bind(this, fileName));
 			}
 		},
@@ -131,7 +131,7 @@ define(["Compose", "Logger"],
 		jsonLoaded: function(fileName, json) {
 			this.jsonPending--;
 			this.json[fileName] = json;
-			//Logger.log('json loaded: ' + fileName + ' - ' + json);
+			Logger.log('json loaded: ' + fileName + ' - ' + json);
 		},
 
 		getCanvas: function() {
