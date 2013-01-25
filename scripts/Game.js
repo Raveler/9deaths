@@ -111,7 +111,8 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer"],
 			
 			var ctx = this.canvas.getContext("2d");
 			ctx.save();
-			ctx.translate(-this.player.getLoc().x, -this.player.getLoc().y);
+			ctx.translate(-this.player.getLoc().x + this.canvas.width/2, -this.player.getLoc().y + this.canvas.height/2);
+			this.player.draw(ctx);
 			//this.daveshizzle.draw(ctx); // dave shizzle here - teken in "echte" coördinaten, niet relatief tov de speler dus
 			this.renderer.draw(ctx); // my shit here
 			ctx.restore();
