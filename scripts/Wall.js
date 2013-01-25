@@ -1,11 +1,10 @@
-define(["Compose", "Vector2", "Loadable", "Logger"], function(Compose, Vector2, Loadable, Logger) {
+define(["Compose", "Vector2", "Loadable"], function(Compose, Vector2, Loadable) {
 
 	// ground always renders below the player, and always renders when within view - this means, when doors are open etc
-	var Ground = Compose(Loadable, function(json) {
+	var Wall = Compose(Loadable, function(json) {
 
 		// location
 		this.loc = new Vector2(json.loc.x, json.loc.y);
-		this.scale = json.scale;
 
 		// image
 		this.fileName = json.fileName;
@@ -17,13 +16,11 @@ define(["Compose", "Vector2", "Loadable", "Logger"], function(Compose, Vector2, 
 		}.bind(this));
 	},
 	{
+
 		draw: function(ctx) {
-			Logger.log(this.loc);
-			Logger.log(this.img);
-			ctx.scale(this.scale, this.scale);
 			ctx.drawImage(this.img, this.loc.x, this.loc.y);
 		}
 	});
 
-	return Ground;
+	return Wall;
 });
