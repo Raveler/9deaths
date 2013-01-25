@@ -1,5 +1,5 @@
-define(["Compose", "Logger"],
-	function(Compose, Logger) {
+define(["Compose", "Logger", "GameArea", "Vector2"],
+	function(Compose, Logger, GameArea, Vector2) {
 	
 	var Game = Compose(function constructor() {
 
@@ -97,7 +97,8 @@ define(["Compose", "Logger"],
 		},
 
 		init: function() {
-			//var area = new Area(this, new Vector2(0, 0));
+			//var area = new GameArea(this, "game");
+			//area.isInArea(new Vector2(10.5, 1.5));
 			this.firstTime = false;
 		},
 
