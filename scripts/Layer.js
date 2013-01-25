@@ -1,4 +1,4 @@
-define(["Vector2"], function(Vector2) {
+define(["Compose", "Vector2"], function(Compose, Vector2) {
 
 	// defines a layer
 	var Layer = Compose(function(json) {
@@ -16,7 +16,9 @@ define(["Vector2"], function(Vector2) {
 	},
 	{
 		draw: function(surf) {
+			if (!this.done) return;
 
+			// render at the appropriate direction
 		}
 	});
 

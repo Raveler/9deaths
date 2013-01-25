@@ -1,5 +1,5 @@
-define(["Compose", "Logger", "GameArea", "Vector2"],
-	function(Compose, Logger, GameArea, Vector2) {
+define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer"],
+	function(Compose, Logger, GameArea, Vector2, Player, Renderer) {
 	
 	var Game = Compose(function constructor() {
 
@@ -24,6 +24,7 @@ define(["Compose", "Logger", "GameArea", "Vector2"],
 		// Load json data
 		var jsonFileNames = [];
 		jsonFileNames.push("game");
+		jsonFileNames.push("world");
 		this.loadJson(jsonFileNames);
 
 		// keys
@@ -100,10 +101,20 @@ define(["Compose", "Logger", "GameArea", "Vector2"],
 			//var area = new GameArea(this, "game");
 			//area.isInArea(new Vector2(10.5, 1.5));
 			this.firstTime = false;
+
+			var gameData = this.json["game"];
+			this.player = new Player(new Vector2(gameData.startingLocation.x, gameData.startingLocation.y));
+			this.renderer = new Renderer(this, this.json["world"]);
 		},
 
 		tick: function() {
-			// tick code hier
+			
+			var ctx = this.canvas.getContext("2d");
+			ctx.save();
+			ctx.translate(-this.player.getLoc().x, -this.player.getLoc().y);
+			//this.daveshizzle.draw(ctx); // dave shizzle here - teken in "echte" coördinaten, niet relatief tov de speler dus
+			this.renderer.draw(ctx); // my shit here
+			ctx.restore();
 		},
 
         loadImages: function(fileNames) {
@@ -124,7 +135,6 @@ define(["Compose", "Logger", "GameArea", "Vector2"],
 			this.json = new Array();
 			this.jsonPending = fileNames.length;
 			for(var i = 0, length = fileNames.length; fileName = fileNames[i], i < length; i++) {
-				Logger.log("json!data/" + fileName + '.json');
 				require(["json!data/" + fileName + '.json'], this.jsonLoaded.bind(this, fileName));
 			}
 		},
@@ -132,7 +142,6 @@ define(["Compose", "Logger", "GameArea", "Vector2"],
 		jsonLoaded: function(fileName, json) {
 			this.jsonPending--;
 			this.json[fileName] = json;
-			Logger.log('json loaded: ' + fileName + ' - ' + json);
 		},
 
 		getCanvas: function() {
