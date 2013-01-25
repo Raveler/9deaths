@@ -1,0 +1,32 @@
+
+body {
+	position: relative;
+}
+
+#log {
+	position: absolute;
+	top: 30px;
+	right: 10px;
+	width: 200px;
+	border: 2px solid black;
+	height: 100%;
+}
+
+#main {
+	position: absolute;
+	border: 2px solid green;
+	margin-left: auto;
+	margin-right: auto;
+	left: 0;
+	right: 0;
+	width: 1024px;
+	height: 768px;
+}
+
+#fps {
+	font-size: 14px;
+	font-weight: bold;
+	position: absolute;
+	top: 5px;
+	right: 5px;
+}
