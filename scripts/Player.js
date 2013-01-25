@@ -6,6 +6,11 @@ define(["Compose", "Vector2"], function(Compose, Vector2) {
 	{
 		getLoc: function() {
 			return this.loc;
+		},
+
+		draw: function(ctx) {
+			ctx.fillStyle = "#00FF00";
+			ctx.fillRect(this.loc.x - 20, this.loc.y - 20, 40, 40);
 		}
 	});
 
