@@ -16,7 +16,9 @@ define(["Vector2"], function(Vector2) {
 	},
 	{
 		draw: function(surf) {
+			if (!this.done) return;
 
+			// render at the appropriate direction
 		}
 	});
 

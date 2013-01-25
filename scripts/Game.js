@@ -102,7 +102,7 @@ define(["Compose", "Logger"],
 		},
 
 		tick: function() {
-			// tick code hier
+			
 		},
 
         loadImages: function(fileNames) {
