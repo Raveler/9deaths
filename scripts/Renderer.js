@@ -1,4 +1,4 @@
-define["Vector2", "Layer", "Ground", "Player", "Loader"], function(Vector2, Layer, Ground, Player, Loader) {
+define(["Compose", "Vector2", "Layer", "Ground", "Player", "Loader"], function(Compose, Vector2, Layer, Ground, Player, Loader) {
 	
 	var Renderer = Compose(function(game, json) {
 
@@ -16,28 +16,27 @@ define["Vector2", "Layer", "Ground", "Player", "Loader"], function(Vector2, Laye
 			this.loader.add(ground);
 		}
 
-		// player
-		this.player = new Player(new Vector2(json.playerLoc.x, json.playerLoc.y));
-
 		// add done callback
 		this.loaded = false;
-		this.loader.addCallback(function() {
-			this.loaded = true;
-		}.bind(this));
+		this.loader.addCallback(this);
 	},
 	{
+		onDone: function() {
+			this.loaded = true;
+		},
+
 		isLoaded: function() {
 			return this.loaded;
 		},
 
 		draw: function(ctx) {
 			if (!this.loaded) return;
-			ctx.save();
-			ctx.translate(-this.player.getLoc().x, -this.player.getLoc().y);
 			for (var i = 0; i < this.grounds.length; ++i) {
 				this.grounds[i].draw(ctx);
 			}
-			ctx.restore();
+
+			ctx.fillStyle = "#FF0000";
+			ctx.fillRect(300, 300, 200, 200);
 		}
 	});
 

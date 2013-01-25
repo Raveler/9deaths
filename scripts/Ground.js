@@ -1,4 +1,4 @@
-define(["Vector2", "Loadable"], function(Vector2, Loadable) {
+define(["Compose", "Vector2", "Loadable"], function(Compose, Vector2, Loadable) {
 
 	// ground always renders below the player, and always renders when within view - this means, when doors are open etc
 	var ground = Compose(Loadable, function(json) {
