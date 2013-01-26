@@ -198,6 +198,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			this.firstTime = false;
 			this.monsters = new Array();
 			this.trapdoors = new Array();
+			this.movables = [];
 
 			// go over all entities, and load those into the game
 			this.entities = [];
@@ -228,6 +229,10 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			entity.init();
 			if (entity.getId() == "player") {
 				this.player = entity;
+				this.movables.push(entity);
+			}
+			if (typeof entity.skipMe != "undefined") {
+				this.movables.push(entity);
 			}
 			this.entities.push(entity);
 			this.entitiesById[entity.getId()] = entity;
@@ -286,7 +291,16 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 				if (entity.getId() == "player") continue;
 				if (roomX < entity.getBaseX() && entity.getBaseX() <= roomEndX) entity.draw(ctx);
 			}
-			this.player.draw(ctx);
+			this.movables.sort(function(a, b) {
+				if (a.getLoc().y < b.getLoc().y) return -1;
+				else if (a.getLoc().y > b.getLoc().y) return 1;
+				else if (a.getBaseX() > b.getBaseX()) return -1;
+				else if (a.getBaseX() < b.getBaseX()) return 1;
+				return a.getId() < b.getId() ? -1 : 1;
+			}.bind(this));
+			for (var i = 0; i < this.movables.length; ++i) {
+				this.movables[i].draw(ctx);
+			}
 			for (var i = 0; i < this.entities.length; ++i) {
 				var entity = this.entities[i];
 				if (entity.getId() == "player") continue;

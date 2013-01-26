@@ -31,7 +31,6 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 		activate: function(on) {
 			if (this.flip) {
 				this.opened = !this.opened;
-				Logger.log("FLIP");
 			}
 			else if (on) this.opened = true;
 			else this.opened = false;
