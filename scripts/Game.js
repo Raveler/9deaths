@@ -1,5 +1,5 @@
-define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigger", "Entity", "Monster", "Trapdoor", "TrapdoorRoom"],
-	function(Compose, Logger, GameArea, Vector2, Player, Renderer, Trigger, Entity, Monster, Trapdoor, TrapdoorRoom) {
+define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigger", "Entity", "Monster", "Trapdoor", "TrapdoorRoom", "Pit"],
+	function(Compose, Logger, GameArea, Vector2, Player, Renderer, Trigger, Entity, Monster, Trapdoor, TrapdoorRoom, Pit) {
 	
 	var Game = Compose(function() {
 
@@ -42,6 +42,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		jsonFileNames.push("Trapdoor");
 		jsonFileNames.push("TrapdoorRoom");
 		jsonFileNames.push("Player");
+		jsonFileNames.push("Pit");
 		this.loadJson(jsonFileNames);
 
 		// load entitity classes
@@ -49,7 +50,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		entityClasses["Trapdoor"] = Trapdoor;
 		entityClasses["TrapdoorRoom"] = TrapdoorRoom;
 		entityClasses["Trigger"] = Trigger;
-		//entityClasses["Pit"] = Pit;
+		entityClasses["Pit"] = Pit;
 		entityClasses["Player"] = Player;
 		this.entityClasses = entityClasses;
 
@@ -308,15 +309,6 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 
 		tickDave: function(ctx) {
 			this.area.debugDraw(ctx);
-/*
-			this.triggers.checkIfActivated();
-			this.triggers.debugDraw(ctx);
-
-			this.entities.checkIfActivated(this.player.loc);
-			this.entities.debugDraw(ctx);
-
-			this.monster.move();
-			this.monster.debugDraw(ctx);*/
 		},
 
         loadImages: function(fileNames) {

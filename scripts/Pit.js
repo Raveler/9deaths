@@ -1,16 +1,9 @@
 define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose, Vector2, Logger, Entity, Animation) {
 
-	var Trapdoor = Compose(Entity, function(game, json) {
+	var Pit = Compose(Entity, function(game, json) {
 		this.game = game;
-		this.trapdoor = json;
-		this.triggerId = json.triggerId;
 		this.animation = new Animation(game, json);
-		this.opened = false;
-		if (typeof json.openAuto == "undefined") {
-			this.autoOpen = false;
-		} else {
-			this.autoOpen = json.openAuto;
-		}
+		this.bodyInPit = false;
 		this.path = new Array();
 	    for(var i = 0; i < json.path.length; i++) {
 	    	this.path[i] = new Array();
@@ -20,20 +13,10 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 	},
 	{
 		init: function() {
-			for(var i = 0; i < this.triggerId.length; i++) {
-				this.game.getEntity(this.triggerId[i]).addTriggerable(this);
-			}
 		},
 
 		activate: function(on) {
-			if (on) {
-				this.opened = true;
-				this.animation.setAnimation("open");
-			}
-			else {
-				this.opened = false;
-				this.animation.setAnimation("closed");
-			}
+			Logger.log("Pit cannot be activated you idiot!");
 		},
 
 		update: function(dt) {
@@ -59,11 +42,13 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 				}
 			}
 
-			if (inside && this.opened) {
-				this.game.player.fall();
-			} else if (inside && this.autoOpen) {
-				this.animation.setAnimation("open");
-				this.game.player.fall();
+			if (inside) {
+				// Check whether player is standing on a body
+				if (!this.bodyInPit) {
+					this.bodyInPit = true;
+					this.animation.setAnimation("pit2");
+					this.game.player.fall();
+				}
 			}
 		},
 
@@ -79,6 +64,15 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 				return;
 			}
 
+			/*for(var i = 0; i < this.bodies.length; i++) {
+				ctx.save();
+				ctx.fillStyle = "#FF0FFF";
+				ctx.translate(this.bodies[i].x, this.bodies[i].y);
+				ctx.fillRect (-110,-25,220,50);
+				ctx.restore();
+
+			}*/
+
 	    	for(var i = 0; i < this.path.length; i++) {
 				var a = new Vector2(this.path[i][0], this.path[i][1]);
 				if (i < (this.path.length - 1)) {
@@ -87,7 +81,7 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 					var b = new Vector2(this.path[0][0], this.path[0][1]);
 				}
 
-				ctx.strokeStyle="#FF0000"
+				ctx.strokeStyle="#FFFF00"
 				ctx.beginPath();
 				ctx.moveTo(a.x,a.y);
 				ctx.lineTo(b.x,b.y);
@@ -96,5 +90,5 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 		}
 	});
 
-	return Trapdoor;
+	return Pit;
 });
