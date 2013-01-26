@@ -15,12 +15,22 @@ define(["Compose", "Vector2", "Layer", "Room", "Player", "Loader", "Logger"], fu
 		this.rooms = [];
 		var x = 0;
 		for (var i = 0; i < json.rooms.length; ++i) {
+
+			// create the room
 			var room = new Room(this.game, json.rooms[i], this.wallHeight, x);
 			room.init();
 			x += room.getWidth();
 			room.setX(x);
 			this.rooms.push(room);
 			this.game.entities.push(room);
+
+			// create all the entities
+			var entities = json.rooms[i].entities;
+			for (var j = 0; j < entities.length; ++j) {
+				var entity = entities[j];
+				if (typeof entity.loc != "undefined") entity.loc[0] += x - room.getWidth();
+				this.game.createEntity(entity);
+			}
 		}
 	},
 	{
