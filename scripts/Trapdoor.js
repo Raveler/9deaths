@@ -15,7 +15,9 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 	},
 	{
 		init: function() {
-			this.game.getEntity(this.triggerId).addTriggerable(this);
+			for(var i = 0; i < this.triggerId.length; i++) {
+				this.game.getEntity(this.triggerId[i]).addTriggerable(this);
+			}
 		},
 
 		activate: function(on) {

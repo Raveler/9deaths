@@ -30,28 +30,28 @@
 			"className": "Trapdoor",
 			"json": "Trapdoor.json",
 			"loc": [400, 0],
-			"triggerId": "trigger1"
+			"triggerId": ["trigger1", "trigger2"]
 		},
 		{
 			"id": "trapdoor2",
 			"className": "Trapdoor",
 			"json": "Trapdoor.json",
 			"loc": [480, 80],
-			"triggerId": "trigger1"
+			"triggerId": ["trigger1", "trigger2"]
 		},
 		{
 			"id": "trapdoor3",
 			"className": "Trapdoor",
 			"json": "Trapdoor.json",
 			"loc": [560, 160],
-			"triggerId": "trigger1"
+			"triggerId": ["trigger1", "trigger2"]
 		},
 		{
 			"id": "trapdoor4",
 			"className": "Trapdoor",
 			"json": "Trapdoor.json",
 			"loc": [640, 240],
-			"triggerId": "trigger1"
+			"triggerId": ["trigger1", "trigger2"]
 		}
 	]
 }
