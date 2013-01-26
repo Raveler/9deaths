@@ -43,7 +43,7 @@
 			"id": "trapdoor3",
 			"className": "Trapdoor",
 			"json": "Trapdoor.json",
-			"openAuto": true,
+			"openAuto": false,
 			"loc": [560, 160],
 			"triggerId": ["trigger1", "trigger2"]
 		},
@@ -51,7 +51,6 @@
 			"id": "trapdoor4",
 			"className": "Trapdoor",
 			"json": "Trapdoor.json",
-			"openAuto": true,
 			"loc": [640, 240],
 			"triggerId": ["trigger1", "trigger2"]
 		},

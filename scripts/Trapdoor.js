@@ -6,15 +6,11 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 		this.triggerId = json.triggerId;
 		this.animation = new Animation(game, json);
 		this.opened = false;
-
 		if (typeof json.openAuto == "undefined") {
 			this.autoOpen = false;
 		} else {
 			this.autoOpen = json.openAuto;
 		}
-
-
-		Logger.log(this.autoOpen);
 		this.path = new Array();
 	    for(var i = 0; i < json.path.length; i++) {
 	    	this.path[i] = new Array();
