@@ -1,22 +1,18 @@
-define(["Compose", "Vector2", "Logger", "Entity"], function(Compose, Vector2, Logger, Entity) {
+define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose, Vector2, Logger, Entity, Animation) {
 
 	var Pit = Compose(Entity, function(game, json) {
 		this.game = game;
-		this.trapdoor = json;
-		/*this.triggerId = json.triggerId;
 		this.animation = new Animation(game, json);
-		this.opened = false;*/
+		this.bodyInPit = false;
 		this.path = new Array();
-	    for(var i = 0; i < this.json.path.length; i++) {
+	    for(var i = 0; i < json.path.length; i++) {
 	    	this.path[i] = new Array();
 	    	this.path[i][0] = json.path[i][0] + this.loc.x;
 	    	this.path[i][1] = json.path[i][1] + this.loc.y;
 		}
-		this.bodies = new Array;
 	},
 	{
 		init: function() {
-
 		},
 
 		activate: function(on) {
@@ -24,6 +20,8 @@ define(["Compose", "Vector2", "Logger", "Entity"], function(Compose, Vector2, Lo
 		},
 
 		update: function(dt) {
+			this.animation.update(dt);
+
 			// Check whether player is above the trapdoor
 			var a = this.game.player.loc;
 			var inside = true;
@@ -46,35 +44,34 @@ define(["Compose", "Vector2", "Logger", "Entity"], function(Compose, Vector2, Lo
 
 			if (inside) {
 				// Check whether player is standing on a body
-				var standingOnBody = false;
-				for(var i = 0; i < this.bodies.length; i++) {
-					if ((a.x > (this.bodies[i].x - 110)) && (a.x < (this.bodies[i].x + 110))
-						&& (a.y > (this.bodies[i].y - 25)) && (a.y < (this.bodies[i].y + 25))) {
-						Logger.log("standing on body!!");
-						standingOnBody = true;
-						break;
-					}
+				if (!this.bodyInPit) {
+					this.bodyInPit = true;
+					this.animation.setAnimation("pit2");
+					this.game.player.fall();
 				}
-
-				this.bodies[this.bodies.length] = this.game.player.loc;
-				this.game.player.fall();
 			}
 		},
 
 		draw: function(ctx) {
-			// TODO draw animations!
+			ctx.save();
+			ctx.fillStyle = "#00FFFF";
+			ctx.translate(this.getLoc().x, this.getLoc().y);
+			ctx.fillRect(-2, -2, 4, 4);
+			this.animation.draw(ctx);
+			ctx.restore();
+
 			if (this.game.debugDraw != true) {
 				return;
 			}
 
-			for(var i = 0; i < this.bodies.length; i++) {
+			/*for(var i = 0; i < this.bodies.length; i++) {
 				ctx.save();
 				ctx.fillStyle = "#FF0FFF";
 				ctx.translate(this.bodies[i].x, this.bodies[i].y);
 				ctx.fillRect (-110,-25,220,50);
 				ctx.restore();
 
-			}
+			}*/
 
 	    	for(var i = 0; i < this.path.length; i++) {
 				var a = new Vector2(this.path[i][0], this.path[i][1]);

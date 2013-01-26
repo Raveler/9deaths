@@ -43,6 +43,7 @@
 			"id": "trapdoor3",
 			"className": "Trapdoor",
 			"json": "Trapdoor.json",
+			"openAuto": true,
 			"loc": [560, 160],
 			"triggerId": ["trigger1", "trigger2"]
 		},
@@ -50,21 +51,33 @@
 			"id": "trapdoor4",
 			"className": "Trapdoor",
 			"json": "Trapdoor.json",
+			"openAuto": true,
 			"loc": [640, 240],
 			"triggerId": ["trigger1", "trigger2"]
 		},
 		{
-			"id": "pitOfdoom",
+			"id": "pitOfdoom1",
 			"className": "Pit",
 			"json": "Pit.json",
-			"loc": [2400, 0],
-			"path":
-			[
-				[0, 0],
-				[100, 300],
-				[200, 300],
-				[100, 0]
-			]
+			"loc": [2400, 0]
+		},
+		{
+			"id": "pitOfdoom2",
+			"className": "Pit",
+			"json": "Pit.json",
+			"loc": [2480, 80]
+		},
+		{
+			"id": "pitOfdoom3",
+			"className": "Pit",
+			"json": "Pit.json",
+			"loc": [2560, 160]
+		},
+		{
+			"id": "pitOfdoom4",
+			"className": "Pit",
+			"json": "Pit.json",
+			"loc": [2640, 240]
 		}
 	]
 }
