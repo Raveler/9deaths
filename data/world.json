@@ -64,6 +64,70 @@
 		},
 		{
 			"doorY": 114,
+			"fileName": "room 01.jpg",
+
+			"entities": [
+				{
+					"id": "pitOfdoom1",
+					"className": "Pit",
+					"json": "Pit",
+					"loc": [500, 0]
+				},
+				{
+					"id": "pitOfdoom2",
+					"className": "Pit",
+					"json": "Pit",
+					"loc": [565, 63]
+				},
+				{
+					"id": "pitOfdoom3",
+					"className": "Pit",
+					"json": "Pit",
+					"loc": [626, 126]
+				},
+				{
+					"id": "pitOfdoom4",
+					"className": "Pit",
+					"json": "Pit",
+					"loc": [689, 189]
+				},
+				{
+					"id": "pitOfdoom5",
+					"className": "Pit",
+					"json": "Pit",
+					"loc": [751, 252]
+				},
+
+
+				{
+					"id": "pitOfdoom1",
+					"className": "Pit",
+					"json": "Pit",
+					"loc": [645, 0]
+				},
+				{
+					"id": "pitOfdoom2",
+					"className": "Pit",
+					"json": "Pit",
+					"loc": [770, 126]
+				},
+
+				{
+					"id": "pitOfdoom4",
+					"className": "Pit",
+					"json": "Pit",
+					"loc": [834, 189]
+				},
+				{
+					"id": "pitOfdoom5",
+					"className": "Pit",
+					"json": "Pit",
+					"loc": [896, 252]
+				}
+			]
+		},
+		{
+			"doorY": 114,
 			"fileName": "BloodPool.jpg",
 
 			"entities": [
@@ -142,37 +206,6 @@
 						[0, 1], [1, 1], [2, 1], [3, 1], [4, 1]
 
 					]
-				}
-			]
-		},
-		{
-			"doorY": 114,
-			"fileName": "BloodPool.jpg",
-
-			"entities": [
-				{
-					"id": "pitOfdoom1",
-					"className": "Pit",
-					"json": "Pit",
-					"loc": [500, 0]
-				},
-				{
-					"id": "pitOfdoom2",
-					"className": "Pit",
-					"json": "Pit",
-					"loc": [600, 80]
-				},
-				{
-					"id": "pitOfdoom3",
-					"className": "Pit",
-					"json": "Pit",
-					"loc": [700, 160]
-				},
-				{
-					"id": "pitOfdoom4",
-					"className": "Pit",
-					"json": "Pit",
-					"loc": [800, 240]
 				}
 			]
 		},

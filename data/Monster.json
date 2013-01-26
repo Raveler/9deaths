@@ -3,8 +3,8 @@
 	"width": 650,
 	"height": 280,
 	"frameRate": 65,
-	"focusPoint": [325, 200],
-	"scale": 0.65,
+	"focusPoint": [325, 255],
+	"scale": 0.55,
 	"animations": [
 		{
 			"name": "walk",

@@ -87,9 +87,9 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 			}
 
 			ctx.save();
-			ctx.fillStyle = "#00FF00";
+			//ctx.fillStyle = "#00FF00";
 			ctx.translate(this.getLoc().x, this.getLoc().y);
-			ctx.fillRect(-2, -2, 4, 4);
+			//ctx.fillRect(-2, -2, 4, 4);
 			this.animation.draw(ctx, this.z);
 			ctx.restore();
 
