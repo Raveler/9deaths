@@ -131,11 +131,13 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 
 			// player dead
 				if (this.player.isDead() && this.resetTimer == 0) {
+					Logger.log("huh");
 					this.resetTimer = 2000;
 				}
 
 				// fade to black
 				if (this.resetTimer > 0) {
+					Logger.log(this.resetTimer);
 					var ctx = this.canvas.getContext("2d");
 					ctx.fillStyle = "#000000";
 					ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);

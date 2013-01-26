@@ -12,7 +12,7 @@
 			"active": false,
 			"activated": true,
 			"activateRange": 10000,
-			"loc": [290, 50],
+			"loc": [290, 0],
 			"toggled": true
 		},
 		{
@@ -22,7 +22,7 @@
 			"active": false,
 			"activated": true,
 			"activateRange": 10000,
-			"loc": [655, 50],
+			"loc": [655, 0],
 			"toggled": true
 		},
 		{
@@ -58,7 +58,7 @@
 			"id": "trapdoorroom1",
 			"className": "TrapdoorRoom",
 			"json": "TrapdoorRoom",
-			"loc": [1200, 0],
+			"loc": [1500, 0],
 			"triggers": [
 				[[0, 0], [0, 1], [0, 2]],
 				[[1, 0], [1,1], [1, 2]],
