@@ -27,6 +27,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		imagesFileNames.push("scaryLevel.jpg");
 		imagesFileNames.push("room 01.jpg");
 		imagesFileNames.push("BloodPool.jpg");
+		imagesFileNames.push("SpikeDeath.png");
 		this.loadImages(imagesFileNames);
 
 		// Load json data

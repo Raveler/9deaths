@@ -1,7 +1,7 @@
 {
 	"z": -1,
-	"width": 261,
-	"height": 220,
+	"width": 201,
+	"height": 63,
 	"frameRate": 40,
 	"focusPoint": [0, 0],
 	"scale": 1.0,
@@ -22,5 +22,5 @@
 			[250, 85],
 			[193, 25]
 		],
-	"fileName": "hatch_h220.png"
+	"fileName": "SpikeDeath.png"
 }

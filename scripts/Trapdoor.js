@@ -62,10 +62,10 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 			}
 
 			if (inside && this.opened) {
-				this.game.player.fall();
+				this.game.player.die();
 			} else if (inside && this.autoOpen) {
 				this.animation.setAnimation("open");
-				this.game.player.fall();
+				this.game.player.die();
 			}
 		},
 

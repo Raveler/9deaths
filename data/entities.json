@@ -64,19 +64,25 @@
 			"id": "pitOfdoom2",
 			"className": "Pit",
 			"json": "Pit.json",
-			"loc": [2480, 80]
+			"loc": [2466, 67]
 		},
 		{
 			"id": "pitOfdoom3",
 			"className": "Pit",
 			"json": "Pit.json",
-			"loc": [2560, 160]
+			"loc": [2560, 134]
 		},
 		{
 			"id": "pitOfdoom4",
 			"className": "Pit",
 			"json": "Pit.json",
-			"loc": [2640, 240]
+			"loc": [2640, 201]
+		},
+		{
+			"id": "pitOfdoom4",
+			"className": "Pit",
+			"json": "Pit.json",
+			"loc": [2640, 268]
 		}
 	]
 }
