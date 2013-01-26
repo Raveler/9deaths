@@ -1,10 +1,11 @@
 define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigger", "Entity", "Monster"],
 	function(Compose, Logger, GameArea, Vector2, Player, Renderer, Trigger, Entity, Monster) {
 	
-	var Game = Compose(function constructor() {
+	var Game = Compose(function() {
 
 		// first time
 		this.firstTime = true;
+		this.entitiesLoaded = false;
 
 		// width, height
 		this.width = 1024;
@@ -19,16 +20,18 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		// Load images
 		var imagesFileNames=[];
 		//imagesFileNames.push("xx");
-		imagesFileNames.push("character");
+		imagesFileNames.push("character.png");
+		imagesFileNames.push("placeHolder_BG.JPG");
+		imagesFileNames.push("lever.png");
+		imagesFileNames.push("hatch_h220.png");
 		this.loadImages(imagesFileNames);
 
 		// Load json data
 		var jsonFileNames = [];
-		jsonFileNames.push("game");
 		jsonFileNames.push("world");
-		jsonFileNames.push("triggers");
-		jsonFileNames.push("character");
-		jsonFileNames.push("entity");
+		jsonFileNames.push("entities");
+		jsonFileNames.push("world");
+		jsonFileNames.push("game");
 		this.loadJson(jsonFileNames);
 
 		// keys
@@ -107,7 +110,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			else if (this.firstTime) {
 				this.init();
 			}
-			else {
+			else if (this.entitiesLoaded) {
 				this.tick(dt);
 			}
 		},
@@ -115,32 +118,95 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		init: function() {
 			this.firstTime = false;
 
-			var gameData = this.json["game"];
-			this.player = new Player(this, this.json["character"]);
+			// go over all entities, and load those into the game
+			this.entities = [];
+			this.entitiesById = {};
+
+			// go over all entities in the file
+			var json = this.json["entities"];
+			var nLeft = 0;
+			for (var i = 0; i < json.entities.length; ++i) {
+				var entityData = json.entities[i];
+				var className = entityData.className;
+				++nLeft;
+				require([className, "json!data/" + entityData.json], function(entityData, Class, json) {
+
+					// copy the entity data onto the json
+					var id = entityData.id;
+					for (var key in entityData) {
+						if (key == "className") continue;
+						json[key] = entityData[key];
+					}
+
+					var entity = new Class(this, json, id);
+					entity.init();
+					if (entity.getId() == "player") {
+						this.player = entity;
+					}
+					this.entities.push(entity);
+					this.entitiesById[entity.getId()] = entity;
+					--nLeft;
+					if (nLeft == 0) {
+						this.startGame();
+					}
+				}.bind(this, entityData));
+			}
+
+			// create the renderer
 			this.renderer = new Renderer(this, this.json["world"]);
 
 			// Dave init stuff
 			this.initDave();
 		},
 
+		getEntity: function(id) {
+			return this.entitiesById[id];
+		},
+
+		startGame: function() {
+			this.entitiesLoaded = true;
+		},
+
 		initDave: function() {
 			this.area = new GameArea(this, "game");
-			this.triggers = new Trigger(this);
+			/*this.triggers = new Trigger(this);
 			this.entities = new Entity(this);
-			this.monster = new Monster(this, new Vector2(200, 200));
+			this.monster = new Monster(this, new Vector2(200, 200));*/
 		},
 
 		tick: function(dt) {
 
-			this.player.update(dt);
+			// update all entities
+			for (var i = 0; i < this.entities.length; ++i) {
+				var entity = this.entities[i];
+				entity.update(dt);
+				if (entity.isDead()) {
+					this.entities.splice(i, 1);
+					--i;
+				}
+			}
 
+			// sort all entities by x-coordinate
+			this.entities.sort(function(a, b) {
+				if (a.getZ() < b.getZ()) return -1;
+				else if (a.getZ() > b.getZ()) return 1;
+				else if (a.getBaseX() > b.getBaseX()) return -1;
+				else if (a.getBaseX() < b.getBaseX()) return 1;
+				return 0;
+			});
+
+			// draw all entities
 			var ctx = this.canvas.getContext("2d");
 			ctx.fillStyle = "#000000";
 			ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 			ctx.save();
 			ctx.translate(-this.player.getLoc().x + this.canvas.width/2, 470);
 			this.renderer.draw(ctx);
-			
+
+			// draw the entities
+			for (var i = 0; i < this.entities.length; ++i) {
+				this.entities[i].draw(ctx);
+			}
 			// Dave tick stuff
 			this.tickDave(ctx);
 
@@ -149,7 +215,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 
 		tickDave: function(ctx) {
 			this.area.debugDraw(ctx);
-
+/*
 			this.triggers.checkIfActivated();
 			this.triggers.debugDraw(ctx);
 
@@ -157,14 +223,14 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			this.entities.debugDraw(ctx);
 
 			this.monster.move();
-			this.monster.debugDraw(ctx);
+			this.monster.debugDraw(ctx);*/
 		},
 
         loadImages: function(fileNames) {
         	this.images = new Array();
         	this.imagesPending = fileNames.length;
         	for(var i = 0, length = fileNames.length; fileName = fileNames[i], i < length; i++) {
-				require(["image!data/" + fileName + '.png?bust=' + (new Date().getTime())], this.imageLoaded.bind(this, fileName));
+				require(["image!data/" + fileName + '?bust=' + (new Date().getTime())], this.imageLoaded.bind(this, fileName));
 			}
         },
 

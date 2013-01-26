@@ -1,0 +1,25 @@
+{
+	"entities": [
+		{
+			"id": "player",
+			"className": "Player",
+			"json": "Player.json"
+		},
+		{
+			"id": "trigger1",
+			"className": "Trigger",
+			"json": "Trigger.json",
+			"active": false,
+			"activated": true,
+			"activateRange": 10000,
+			"loc": [200, 50]
+		},
+		{
+			"id": "trapdoor1",
+			"className": "Trapdoor",
+			"json": "Trapdoor.json",
+			"loc": [400, 100],
+			"triggerId": "trigger1"
+		}
+	]
+}

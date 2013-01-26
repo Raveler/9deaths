@@ -1,19 +1,19 @@
-define(["Compose", "Vector2", "Logger", "Animation"], function(Compose, Vector2, Logger, Animation) {
+define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose, Vector2, Logger, Entity, Animation) {
 
-	var Player = Compose(function(game, json) {
+	var Player = Compose(Entity, function(game, json) {
 		this.game = game;
-		this.loc = new Vector2(json.startingLocation);
+		this.startingLocation = new Vector2(json.startingLocation);
 		this.speed = 5;
-		this.animation = new Animation(this.game, json);
+		this.animation = new Animation(game, json);
 	},
 	{
-		getLoc: function() {
-			return this.loc;
+		init: function() {
+			this.setLoc(this.startingLocation);
 		},
 
 		update: function(dt) { // TODO use dt!
-			var x = this.loc.x;
-			var y = this.loc.y;
+			this.animation.update(dt);
+			var loc = this.getLoc();
 			var dx = 0, dy = 0;
 			if (this.game.isKeyDown(this.game.keyCodes.up)) {
 				dy = -this.speed;
@@ -48,18 +48,10 @@ define(["Compose", "Vector2", "Logger", "Animation"], function(Compose, Vector2,
 			}
 
 			// Check whether the new position is valid before updating
-			var valid = this.game.isValidPosition(new Vector2(x+dx, y+dy));
+			var valid = this.game.isValidPosition(new Vector2(loc.x+dx, loc.y+dy));
 			if (valid) {
-				this.loc.x += dx;
-				this.loc.y += dy;
+				this.setLoc(this.getLoc().add(new Vector2(dx, dy)));
 			}
-			this.animation.update(dt);
-		},
-
-		// compute the baseline x of the player - relative to the 0-coordinate
-		getBaseX: function() {
-			var baseX = this.loc.x - (this.loc.y / Math.tan(Math.PI/4));
-			return baseX;
 		},
 
 		draw: function(ctx) {

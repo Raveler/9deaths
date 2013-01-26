@@ -1,0 +1,18 @@
+{
+	"width": 261,
+	"height": 220,
+	"frameRate": 40,
+	"focusPoint": [0, 0],
+	"scale": 1.0,
+	"animations": [
+		{
+			"name": "closed",
+			"length": 1
+		},
+		{
+			"name": "open",
+			"length": 1
+		}
+	],
+	"fileName": "hatch_h220.png"
+}

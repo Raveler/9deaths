@@ -11,29 +11,19 @@ define(["Compose", "Vector2", "Layer", "Room", "Player", "Loader", "Logger"], fu
 		// the game
 		this.game = game;
 
-		// loader
-		this.loader = new Loader();
-
 		// rooms
 		this.rooms = [];
+		var x = 0;
 		for (var i = 0; i < json.rooms.length; ++i) {
-			var room = new Room(json.rooms[i], this.wallHeight);
+			var room = new Room(this.game, json.rooms[i], this.wallHeight, x);
+			room.init();
+			x += room.getWidth();
+			room.setX(x);
 			this.rooms.push(room);
-			this.loader.add(room);
+			this.game.entities.push(room);
 		}
-
-		// add done callback
-		this.loaded = false;
-		this.loader.addCallback(this);
 	},
 	{
-		onDone: function() {
-			this.loaded = true;
-		},
-
-		isLoaded: function() {
-			return this.loaded;
-		},
 
 		isInArea: function(loc) {
 
@@ -74,10 +64,9 @@ define(["Compose", "Vector2", "Layer", "Room", "Player", "Loader", "Logger"], fu
 
 		draw: function(ctx) {
 
-			if (!this.loaded) return;
 
 			// find the last room we are left of
-			var idx = -1;
+			/*var idx = -1;
 			var x = 0;
 			var baseX = this.game.player.getBaseX();
 			for (var i = 0; i < this.rooms.length; ++i) {
@@ -85,6 +74,7 @@ define(["Compose", "Vector2", "Layer", "Room", "Player", "Loader", "Logger"], fu
 				x += this.rooms[i].getWidth();
 				++idx;
 			}
+
 
 			// draw all rooms to the left of the player, but draw from right to left
 			ctx.save();
@@ -104,6 +94,8 @@ define(["Compose", "Vector2", "Layer", "Room", "Player", "Loader", "Logger"], fu
 				}
 			}
 			ctx.restore();
+*/
+
 		}
 	});
 

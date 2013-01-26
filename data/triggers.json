@@ -3,9 +3,7 @@
 	{
 		"location": [500, 0],
 		"targetId": 0,
-		"active": false,
-		"activated": true,
-		"activateRange": 10000
+		
 	},
 	{
 		"location": [0, 0],

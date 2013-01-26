@@ -1,0 +1,18 @@
+{
+	"width": 50,
+	"height": 100,
+	"frameRate": 40,
+	"focusPoint": [25, 50],
+	"scale": 1.0,
+	"animations": [
+		{
+			"name": "on",
+			"length": 1
+		},
+		{
+			"name": "off",
+			"length": 1
+		}
+	],
+	"fileName": "lever.png"
+}

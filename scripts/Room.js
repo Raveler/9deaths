@@ -1,7 +1,10 @@
-define(["Compose", "Vector2", "Loadable", "Logger"], function(Compose, Vector2, Loadable, Logger) {
+define(["Compose", "Vector2", "Logger"], function(Compose, Vector2, Logger) {
 
 	// one room in the game
-	var Room = Compose(Loadable, function(json, wallHeight) {
+	var Room = Compose(function(game, json, wallHeight, x) {
+
+		// game & obj
+		this.game = game;
 
 		// data
 		this.wallHeight = wallHeight;
@@ -9,20 +12,31 @@ define(["Compose", "Vector2", "Loadable", "Logger"], function(Compose, Vector2, 
 		// door width
 		this.doorWidth = 72;
 
+		// image
+		this.img = this.game.images[json.fileName];
+
 		// door Y
 		this.doorY = json.doorY;
 
+		// x position for sorting
+		this.x = x + this.getWidth();
+
 		// image
 		this.fileName = json.fileName;
-
-		// loaded
-		require(["image!" + json.fileName], function(img) {
-			this.loaded();
-			this.img = img;
-			this.init();
-		}.bind(this));
 	},
 	{
+		setX: function(x) {
+			this.x = x;
+		},
+
+		init: function() {
+
+		},
+
+		update: function(dt) {
+			// do nothing
+		},
+
 		init: function() {
 
 			// compute the room height - this is the height without the wall height
@@ -33,7 +47,11 @@ define(["Compose", "Vector2", "Loadable", "Logger"], function(Compose, Vector2, 
 		},
 
 		draw: function(ctx) {
-			ctx.drawImage(this.img, 0, 0);
+			ctx.save();
+			//ctx.translate(0, -this.wallHeight);
+			//ctx.translate(-this.getWidth(), 0);
+			ctx.drawImage(this.img, this.x-this.width, -this.wallHeight);
+			ctx.restore();
 		},
 
 		getWidth: function() {
@@ -42,6 +60,22 @@ define(["Compose", "Vector2", "Loadable", "Logger"], function(Compose, Vector2, 
 
 		getHeight: function() {
 			return this.height;
+		},
+
+		getLoc: function() {
+			return new Vector2(this.x, 0);
+		},
+
+		getBaseX: function() {
+			return this.x;
+		},
+
+		getZ: function() {
+			this.z = 0;
+		},
+
+		isDead: function() {
+			return false;
 		},
 
 		isNearDoor: function(loc) {

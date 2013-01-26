@@ -1,8 +1,8 @@
-define(["Compose", "Logger", "Vector2", "Loadable"], function(Compose, Logger, Vector2, Loadable) {
+define(["Compose", "Logger", "Vector2"], function(Compose, Logger, Vector2) {
 	
 	var animationFrameRate = 5;
 
-	var Animation = Compose(Loadable, function constructor(game, json) {
+	var Animation = Compose(function constructor(game, json) {
 		this.game = game;
 		this.data = json;
 		this.img = this.game.images[this.data.fileName];
