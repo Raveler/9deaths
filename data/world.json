@@ -3,14 +3,15 @@
 		{
 			"fileName": "data/ground.png",
 			"loc": [0, 0],
-			"scale": "0.2"
+			"scale": 0.3
 		}
 	],
 
 	"walls": [
 		{
 			"fileName": "data/HorizontaleMuur.png",
-			"loc": [0, 0]
+			"loc": [0, 0],
+			"scale": 0.3
 		}
 	]
 }

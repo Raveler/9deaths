@@ -4,7 +4,7 @@ define(["Compose", "Vector2", "Loadable", "Logger"], function(Compose, Vector2, 
 	var Ground = Compose(Loadable, function(json) {
 
 		// location
-		this.loc = new Vector2(json.loc.x, json.loc.y);
+		this.loc = new Vector2(json.loc);
 		this.scale = json.scale;
 
 		// image
@@ -18,10 +18,10 @@ define(["Compose", "Vector2", "Loadable", "Logger"], function(Compose, Vector2, 
 	},
 	{
 		draw: function(ctx) {
-			Logger.log(this.loc);
-			Logger.log(this.img);
+			ctx.save();
 			ctx.scale(this.scale, this.scale);
 			ctx.drawImage(this.img, this.loc.x, this.loc.y);
+			ctx.restore();
 		}
 	});
 
