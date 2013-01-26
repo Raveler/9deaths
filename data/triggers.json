@@ -1,0 +1,16 @@
+{
+	"regions": [
+	{
+		"location": [500, 0],
+		"targetId": 100,
+		"activated": true,
+		"activateRange": 10000
+	},
+	{
+		"location": [0, 0],
+		"targetId": 100,
+		"activated": false,
+		"activateRange": 10000
+	}
+	]
+}

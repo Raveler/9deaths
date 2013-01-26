@@ -1,5 +1,5 @@
-define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer"],
-	function(Compose, Logger, GameArea, Vector2, Player, Renderer) {
+define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigger"],
+	function(Compose, Logger, GameArea, Vector2, Player, Renderer, Trigger) {
 	
 	var Game = Compose(function constructor() {
 
@@ -25,6 +25,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer"],
 		var jsonFileNames = [];
 		jsonFileNames.push("game");
 		jsonFileNames.push("world");
+		jsonFileNames.push("triggers");
 		this.loadJson(jsonFileNames);
 
 		// keys
@@ -48,7 +49,8 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer"],
 			down: 40,
 			up: 38,
 			left: 37,
-			right: 39
+			right: 39, 
+			space: 32
 		};
 
 		this.isKeyDown = function(key) {
@@ -77,7 +79,6 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer"],
 				this.mousePressed = true;
 				mousePosX -= this.canvas.offsetLeft;
 				mousePosY -= this.canvas.offsetTop;
-
 				this.MousePosition = new Vector2(mousePosX, mousePosY);
 			}
 		};
@@ -120,8 +121,8 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer"],
 		},
 
 		initDave: function() {
-			var area = new GameArea(this, "game");
-			area.isInArea(new Vector2(10.5, 1.5));
+			this.area = new GameArea(this, "game");
+			this.triggers = new Trigger(this);
 		},
 
 		tick: function(dt) {
@@ -135,13 +136,21 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer"],
 			this.renderer.draw(ctx);
 			
 			// Dave tick stuff
-			this.tickDave();
+			this.tickDave(ctx);
 
 			ctx.restore();
 		},
 
-		tickDave: function() {
-			//this.daveshizzle.draw(ctx); // dave shizzle here - teken in "echte" coördinaten, niet relatief tov de speler dus
+		tickDave: function(ctx) {
+			this.area.debugDraw(ctx);
+
+			this.triggers.checkIfActivated();
+			this.triggers.draw(ctx);
+
+			/*if (this.isKeyDown(this.keyCodes.space)) {
+				this.trigger.activate();
+			}*/
+			this.mousePressed = false;
 		},
 
         loadImages: function(fileNames) {
