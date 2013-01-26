@@ -2,37 +2,50 @@ define(["Compose", "Vector2", "Logger"], function(Compose, Vector2, Logger) {
 
 	var Trigger = Compose(function(game) {
 		this.game = game;
-		this.activateRange = 10000;
-
-		this.triggers = this.game.json["triggers"];
+		this.triggers = this.game.json["triggers"].triggers;
 	},
 	{
 		checkIfActivated: function() {
 			for(var i = 0; i < this.triggers.length; i++) {
+				var trigger = this.triggers[i];
 
-				//Logger.log(this.trigger[i]);
+				// If trigger is activated manually, only activate if spacebar is pressed
+				if (trigger.activated && !(this.game.isKeyDown(this.game.keyCodes.space) == true)) {
+					if (trigger.active) {
+						Logger.log("Disabled trigger " + i);
+						trigger.active = false;
+					}
+					continue;
+				}
+
+				// Check distance to trigger
+				if ((((this.game.player.getLoc().x - trigger.location[0]) * (this.game.player.getLoc().x - trigger.location[0]))
+						+ ((this.game.player.getLoc().y - trigger.location[1]) * (this.game.player.getLoc().y - trigger.location[1]))) > trigger.activateRange) {
+					if (trigger.active) {
+						Logger.log("Disabled trigger " + i);
+						trigger.active = false;
+					}
+					continue;
+				}
+
+				if (trigger.active == false) {
+					trigger.active = true;
+					Logger.log("Activated trigger " + i);
+					this.animate();
+				}
 			}
-
-
-			/*if ((((this.game.player.getLoc().x - this.loc.x) * (this.game.player.getLoc().x - this.loc.x))
-				+ ((this.game.player.getLoc().y - this.loc.y) * (this.game.player.getLoc().y - this.loc.y))) > this.activateRange) {
-				Logger.log("nope");
-				return false;
-			}*/
-
-			//Logger.log("activated");
-
-			this.animate();
-			return true;
 		},
 
 		animate: function() {
 
 		},
 
-		draw: function(ctx) {
-			ctx.fillStyle = "#0000FF";
-			//ctx.fillRect(this.loc.x - 20, this.loc.y - 20, 40, 40);
+		debugDraw: function(ctx) {
+			for(var i = 0; i < this.triggers.length; i++) {
+				var trigger = this.triggers[i];
+				ctx.fillStyle = "#0000FF";
+				ctx.fillRect(trigger.location[0] - 20, trigger.location[1] - 20, 40, 40);
+			}
 		}
 	});
 

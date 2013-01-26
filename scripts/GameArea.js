@@ -35,7 +35,6 @@ define(["Compose", "Logger", "Vector2"], function(Compose, Logger, Vector2) {
 
 		debugDraw: function(ctx) {
 			for(var j = 0; j < this.areaData.regions.length; j++) {
-				var inside = true;
 				var length = this.areaData.regions[j].path.length;
 		    	for(var i = 0; i < length; i++) {
 					var a = new Vector2(this.areaData.regions[j].path[i][0], this.areaData.regions[j].path[i][1]);

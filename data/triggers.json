@@ -1,14 +1,16 @@
 {
-	"regions": [
+	"triggers": [
 	{
 		"location": [500, 0],
-		"targetId": 100,
+		"targetId": 0,
+		"active": false,
 		"activated": true,
 		"activateRange": 10000
 	},
 	{
 		"location": [0, 0],
-		"targetId": 100,
+		"targetId": 1,
+		"active": false,
 		"activated": false,
 		"activateRange": 10000
 	}
