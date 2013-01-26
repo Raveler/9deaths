@@ -1,0 +1,19 @@
+{
+	"startingLocation": [400, 150],
+	"width": 650,
+	"height": 280,
+	"frameRate": 65,
+	"focusPoint": [325, 200],
+	"scale": 0.65,
+	"animations": [
+		{
+			"name": "walk",
+			"length": 15
+		},
+		{
+			"name": "idle",
+			"length": 15
+		}
+	],
+	"fileName": "monsta3_Spritesheet15x1.png"
+}

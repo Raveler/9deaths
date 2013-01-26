@@ -31,6 +31,8 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		imagesFileNames.push("room 01.jpg");
 		imagesFileNames.push("BloodPool.jpg");
 		imagesFileNames.push("blood.png");
+		imagesFileNames.push("SpikeDeath.png");
+		imagesFileNames.push("monsta3_Spritesheet15x1.png");
 		this.loadImages(imagesFileNames);
 
 		// Load json data
@@ -43,6 +45,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		jsonFileNames.push("Player");
 		jsonFileNames.push("Pit");
 		jsonFileNames.push("BloodRoom");
+		jsonFileNames.push("Monster");
 		this.loadJson(jsonFileNames);
 
 		// load entitity classes
@@ -53,6 +56,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		entityClasses["Pit"] = Pit;
 		entityClasses["Player"] = Player;
 		entityClasses["BloodRoom"] = BloodRoom;
+		entityClasses["Monster"] = Monster;
 		this.entityClasses = entityClasses;
 
 
@@ -192,6 +196,8 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 
 		init: function() {
 			this.firstTime = false;
+			this.monsters = new Array();
+			this.trapdoors = new Array();
 
 			// go over all entities, and load those into the game
 			this.entities = [];
@@ -237,11 +243,10 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		},
 
 		initDave: function() {
-			this.debugDraw = true;
+			//this.debugDraw = true;
 			this.area = new GameArea(this, "game");
 			/*this.triggers = new Trigger(this);
-			this.entities = new Entity(this);
-			this.monster = new Monster(this, new Vector2(200, 200));*/
+			this.entities = new Entity(this);*/
 		},
 
 		tick: function(dt) {
@@ -332,6 +337,18 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		isValidPosition: function(loc) {
 			if (this.area.isInArea(loc)) {
 				return false;
+			}
+			return this.renderer.isInArea(loc);
+		},
+
+		isValidAndSafePosition: function(loc) {
+			if (this.area.isInArea(loc)) {
+				return false;
+			}
+			for(var i = 0; i < this.trapdoors.length; i++) {
+				if (this.trapdoors[i].isAboveTrap(loc) && this.trapdoors[i].opened) {
+					return false;
+				}
 			}
 			return this.renderer.isInArea(loc);
 		}

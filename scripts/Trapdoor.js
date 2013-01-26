@@ -19,6 +19,7 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 	    	this.path[i][0] = json.path[i][0] + this.loc.x;
 	    	this.path[i][1] = json.path[i][1] + this.loc.y;
 		}
+		this.game.trapdoors.push(this);
 	},
 	{
 		init: function() {
@@ -45,9 +46,28 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 		update: function(dt) {
 			this.animation.update(dt);
 
-			// Check whether player is above the trapdoor
-			var a = this.game.player.loc;
-			var inside = true;
+			for(var i = 0; i < this.game.monsters.length; i++) {
+				if (this.isAboveTrap(this.game.monsters[i].getLoc())) {
+					if (this.opened) {
+						this.game.monsters[i].die();
+					} else if (this.autoOpen) {
+						this.animation.setAnimation("open");
+						this.game.monsters[i].die();
+					}
+				}
+			}
+
+			if (this.isAboveTrap(this.game.player.loc)) {
+				if (this.opened) {
+					this.game.player.die();
+				} else if (this.autoOpen) {
+					this.animation.setAnimation("open");
+					this.game.player.die();
+				}
+			}
+		},
+
+		isAboveTrap: function(a) {
 			var length = this.path.length;
 		   	for(var i = 0; i < length; i++) {
 				var b = new Vector2(this.path[i][0], this.path[i][1]);
@@ -60,17 +80,10 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 				//Logger.log(a + " - " + b + " - " + c);
 				// Check whether the pointers are counterclockwise
 				if (((b.x - a.x)*(c.y - a.y) - (b.y - a.y)*(c.x - a.x)) > 0) {
-					inside = false;
-					break;
+					return false;
 				}
 			}
-
-			if (inside && this.opened) {
-				this.game.player.fall();
-			} else if (inside && this.autoOpen) {
-				this.animation.setAnimation("open");
-				this.game.player.fall();
-			}
+			return true;
 		},
 
 		draw: function(ctx) {

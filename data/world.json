@@ -78,7 +78,13 @@
 					"id": "player",
 					"className": "Player",
 					"json": "Player"
-				},
+				}
+			]
+		},
+		{
+			"doorY": 114,
+			"fileName": "room 01.jpg",
+			"entities": [
 				{
 					"id": "trigger1",
 					"className": "Trigger",
@@ -86,7 +92,7 @@
 					"active": false,
 					"activated": true,
 					"activateRange": 10000,
-					"loc": [290, 0],
+					"loc": [575, 50],
 					"toggled": true
 				},
 				{
@@ -96,37 +102,30 @@
 					"active": false,
 					"activated": true,
 					"activateRange": 10000,
-					"loc": [655, 0],
+					"loc": [1120, 50],
 					"toggled": true
 				},
 				{
 					"id": "trapdoor1",
 					"className": "Trapdoor",
 					"json": "Trapdoor",
-					"loc": [400, 0],
+					"loc": [937, 75],
 					"triggerId": ["trigger1", "trigger2"]
 				},
 				{
 					"id": "trapdoor2",
 					"className": "Trapdoor",
 					"json": "Trapdoor",
-					"loc": [480, 80],
+					"loc": [572, 75],
 					"triggerId": ["trigger1", "trigger2"]
 				},
 				{
-					"id": "trapdoor3",
-					"className": "Trapdoor",
-					"json": "Trapdoor",
-					"openAuto": false,
-					"loc": [560, 160],
-					"triggerId": ["trigger1", "trigger2"]
-				},
-				{
-					"id": "trapdoor4",
-					"className": "Trapdoor",
-					"json": "Trapdoor",
-					"loc": [640, 240],
-					"triggerId": ["trigger1", "trigger2"]
+					"id": "monster1",
+					"className": "Monster",
+					"json": "Monster",
+					"loc": [1250, 150],
+					"activeRange": 1000,
+					"xlimit": [1400, 2450]
 				}
 			]
 		},
