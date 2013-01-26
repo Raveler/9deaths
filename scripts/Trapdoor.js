@@ -23,12 +23,10 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 		activate: function(on) {
 			if (on) {
 				this.opened = true;
-				Logger.log("trapdoor on!");
 				this.animation.setAnimation("open");
 			}
 			else {
 				this.opened = false;
-				Logger.log("trapdoor off!");
 				this.animation.setAnimation("closed");
 			}
 		},
