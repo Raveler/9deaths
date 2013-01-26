@@ -1,5 +1,5 @@
-define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigger", "Entity"],
-	function(Compose, Logger, GameArea, Vector2, Player, Renderer, Trigger, Entity) {
+define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigger", "Entity", "Monster"],
+	function(Compose, Logger, GameArea, Vector2, Player, Renderer, Trigger, Entity, Monster) {
 	
 	var Game = Compose(function constructor() {
 
@@ -125,6 +125,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			this.area = new GameArea(this, "game");
 			this.triggers = new Trigger(this);
 			this.entities = new Entity(this);
+			this.monster = new Monster(this, new Vector2(200, 200));
 		},
 
 		tick: function(dt) {
@@ -147,11 +148,13 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			this.area.debugDraw(ctx);
 
 			this.triggers.checkIfActivated();
-			this.triggers.debugDraw(ctx);
+			//this.triggers.debugDraw(ctx);
 
 			this.entities.checkIfActivated(this.player.loc);
-			this.entities.debugDraw(ctx);
+			//this.entities.debugDraw(ctx);
 
+			this.monster.move();
+			//this.monster.debugDraw(ctx);
 		},
 
         loadImages: function(fileNames) {
