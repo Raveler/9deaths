@@ -168,6 +168,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		},
 
 		initDave: function() {
+			this.debugDraw = true;
 			this.area = new GameArea(this, "game");
 			/*this.triggers = new Trigger(this);
 			this.entities = new Entity(this);

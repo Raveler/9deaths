@@ -12,7 +12,8 @@
 			"active": false,
 			"activated": true,
 			"activateRange": 10000,
-			"loc": [200, 50]
+			"loc": [200, 50],
+			"toggled": true
 		},
 		{
 			"id": "trapdoor1",
