@@ -8,6 +8,14 @@
 		},
 		{
 			"doorY": 114,
+			"fileName": "room 01.jpg"
+		},
+		{
+			"doorY": 114,
+			"fileName": "BloodPool.jpg"
+		},
+		{
+			"doorY": 114,
 			"fileName": "scaryLevel.jpg"
 		}
 	]

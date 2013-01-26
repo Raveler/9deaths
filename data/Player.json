@@ -4,7 +4,7 @@
 	"height": 200,
 	"frameRate": 40,
 	"focusPoint": [50, 168],
-	"scale": 1.5,
+	"scale": 1,
 	"animations": [
 		{
 			"name": "walk",

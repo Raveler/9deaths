@@ -25,6 +25,8 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		imagesFileNames.push("lever.png");
 		imagesFileNames.push("hatch_h220.png");
 		imagesFileNames.push("scaryLevel.jpg");
+		imagesFileNames.push("room 01.jpg");
+		imagesFileNames.push("BloodPool.jpg");
 		this.loadImages(imagesFileNames);
 
 		// Load json data
@@ -210,9 +212,19 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			this.renderer.draw(ctx);
 
 			// draw the entities
+			var roomX = this.renderer.getRoomX(this.player.getBaseX());
 			for (var i = 0; i < this.entities.length; ++i) {
-				this.entities[i].draw(ctx);
+				var entity = this.entities[i];
+				if (entity.getId() == "player") continue;
+				if (entity.getBaseX() > roomX) entity.draw(ctx);
 			}
+			this.player.draw(ctx);
+			for (var i = 0; i < this.entities.length; ++i) {
+				var entity = this.entities[i];
+				if (entity.getId() == "player") continue;
+				if (entity.getBaseX() <= roomX) entity.draw(ctx);
+			}
+
 			// Dave tick stuff
 			this.tickDave(ctx);
 
