@@ -5,6 +5,8 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 		this.trapdoor = json;
 		this.triggerId = json.triggerId;
 		this.animation = new Animation(game, json);
+		this.flip = json.flip;
+		if (typeof this.flip == "undefined") this.flip = false;
 		this.opened = false;
 		if (typeof json.openAuto == "undefined") {
 			this.autoOpen = false;
@@ -27,12 +29,16 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 		},
 
 		activate: function(on) {
-			if (on) {
-				this.opened = true;
+			if (this.flip) {
+				this.opened = !this.opened;
+				Logger.log("FLIP");
+			}
+			else if (on) this.opened = true;
+			else this.opened = false;
+			if (this.opened) {
 				this.animation.setAnimation("open");
 			}
 			else {
-				this.opened = false;
 				this.animation.setAnimation("closed");
 			}
 		},

@@ -5,6 +5,7 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 		this.startingLocation = new Vector2(json.startingLocation);
 		this.speed = 5;
 		this.fallSpeed = 5;
+		this.moving = false;
 		this.falling = false;
 		this.animation = new Animation(game, json);
 	},
@@ -57,10 +58,12 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 
 			// we are walking
 			if (Math.abs(dx) > 0.001 || Math.abs(dy) > 0.001) {
+				this.moving = true;
 				this.animation.setAnimation("walk");
 				this.animation.setFlip(dx < 0);
 			}
 			else {
+				this.moving = false;
 				this.animation.setAnimation("idle");
 			}
 
@@ -69,6 +72,10 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 			if (valid) {
 				this.setLoc(this.getLoc().add(new Vector2(dx, dy)));
 			}
+		},
+
+		isMoving: function() {
+			return this.moving;
 		},
 
 		draw: function(ctx) {

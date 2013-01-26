@@ -48,8 +48,6 @@ define(["Compose", "Vector2", "Logger"], function(Compose, Vector2, Logger) {
 
 			// compute the width of the room - this is the width of the image subtracted by the room height
 			this.width = this.img.width - (this.height / Math.tan(Math.PI/4));
-			Logger.log("width: " + this.width);
-			Logger.log("height: " + this.height);
 		},
 
 		draw: function(ctx) {

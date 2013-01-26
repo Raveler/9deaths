@@ -17,7 +17,6 @@ define(["Compose", "Vector2", "Logger"], function(Compose, Vector2, Logger) {
 						var c = new Vector2(this.entities[j].path[0][0], this.entities[j].path[0][1]);
 					}
 
-					//Logger.log(a + " - " + b + " - " + c);
 					// Check whether the pointers are counterclockwise
 					if (((b.x - a.x)*(c.y - a.y) - (b.y - a.y)*(c.x - a.x)) > 0) {
 						inside = false;
@@ -27,12 +26,10 @@ define(["Compose", "Vector2", "Logger"], function(Compose, Vector2, Logger) {
 
 				if (inside) {
 					if (this.entities[j].active != true) {
-						Logger.log("Activated entity " + j);
 						this.entities[j].active = true;
 					}
 				} else {
 					if (this.entities[j].active == true) {
-						Logger.log("Disabled entity " + j);
 						this.entities[j].active = false;
 					}
 				}

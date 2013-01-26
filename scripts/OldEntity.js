@@ -53,7 +53,6 @@ define(["Compose", "Vector2"], function(Compose, Vector2) {
 		draw: function(ctx) {
 			ctx.save();
 			ctx.fillStyle = "#00FF00";
-			//Logger.log(this.loc);
 			ctx.translate(this.loc.x, this.loc.y);
 			ctx.fillRect(-2, -2, 4, 4);
 			for (var i = 0; i < this.components.length; ++i) {
