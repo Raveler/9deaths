@@ -19,6 +19,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		// Load images
 		var imagesFileNames=[];
 		//imagesFileNames.push("xx");
+		imagesFileNames.push("character");
 		this.loadImages(imagesFileNames);
 
 		// Load json data
@@ -26,6 +27,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		jsonFileNames.push("game");
 		jsonFileNames.push("world");
 		jsonFileNames.push("triggers");
+		jsonFileNames.push("character");
 		jsonFileNames.push("entity");
 		this.loadJson(jsonFileNames);
 
@@ -114,7 +116,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			this.firstTime = false;
 
 			var gameData = this.json["game"];
-			this.player = new Player(this, new Vector2(gameData.startingLocation[0], gameData.startingLocation[1]));
+			this.player = new Player(this, this.json["character"]);
 			this.renderer = new Renderer(this, this.json["world"]);
 
 			// Dave init stuff
@@ -133,9 +135,10 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			this.player.update(dt);
 
 			var ctx = this.canvas.getContext("2d");
-			ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+			ctx.fillStyle = "#000000";
+			ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 			ctx.save();
-			ctx.translate(-this.player.getLoc().x + this.canvas.width/2, -this.player.getLoc().y + this.canvas.height/2);
+			ctx.translate(-this.player.getLoc().x + this.canvas.width/2, 470);
 			this.renderer.draw(ctx);
 			
 			// Dave tick stuff
@@ -161,7 +164,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
         	this.images = new Array();
         	this.imagesPending = fileNames.length;
         	for(var i = 0, length = fileNames.length; fileName = fileNames[i], i < length; i++) {
-				require(["image!data/" + fileName + '.png'], this.imageLoaded.bind(this, fileName));
+				require(["image!data/" + fileName + '.png?bust=' + (new Date().getTime())], this.imageLoaded.bind(this, fileName));
 			}
         },
 
@@ -175,7 +178,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			this.json = new Array();
 			this.jsonPending = fileNames.length;
 			for(var i = 0, length = fileNames.length; fileName = fileNames[i], i < length; i++) {
-				require(["json!data/" + fileName + '.json'], this.jsonLoaded.bind(this, fileName));
+				require(["json!data/" + fileName + '.json?bust=' + (new Date().getTime())], this.jsonLoaded.bind(this, fileName));
 			}
 		},
 
@@ -186,6 +189,13 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 
 		getCanvas: function() {
 			return this.canvas;
+		},
+
+		isValidPosition: function(loc) {
+			if (this.area.isInArea(loc)) {
+				return false;
+			}
+			return this.renderer.isInArea(loc);
 		}
 	});
 	

@@ -12,7 +12,7 @@ require(["Logger", "Loader", "Game", "FPSTimer"], function callback(Logger, Load
 	
 	// set up update loop/FPS timer
 	var fpsTimer = new FPSTimer(60, function(dt) {
-		game.update();
+		game.update(dt);
 		document.getElementById('fps').innerHTML = "FPS: " + fpsTimer.getFPS();
 	});
 	fpsTimer.start();
