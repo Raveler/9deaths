@@ -8,6 +8,8 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 		this.active = json.active;
 		this.activateRange = json.activateRange;
 		this.animation = new Animation(game, json);
+		this.toggled = json.toggled;
+		this.keyProcessed = false;
 	},
 	{
 		init: function() {
@@ -21,34 +23,71 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 		update: function(dt) {
 			this.animation.update(dt);
 
-			// If trigger is activated manually, only activate if spacebar is pressed
-			if (this.activated && !(this.game.isKeyDown(this.game.keyCodes.space) == true)) {
-				if (this.active) {
-					for (var i = 0; i < this.triggerables.length; ++i) this.triggerables[i].activate(false);
-						this.animation.setAnimation("off");
-					Logger.log("Disabled trigger");
-					this.active = false;
+			if (this.toggled) {
+				// If trigger is activated manually, only activate if spacebar is pressed
+				if (this.activated && !(this.game.isKeyDown(this.game.keyCodes.space) == true)) {
+					this.keyProcessed = false;
+					return;
 				}
-				return;
-			}
 
-			// Check distance to trigger
-			if ((((this.game.player.getLoc().x - this.getLoc().x) * (this.game.player.getLoc().x - this.getLoc().x))
-					+ ((this.game.player.getLoc().y - this.getLoc().y) * (this.game.player.getLoc().y - this.getLoc().y))) > this.activateRange) {
-				if (this.active) {
-					Logger.log("Disabled trigger");
-					for (var i = 0; i < this.triggerables.length; ++i) this.triggerables[i].activate(false);
-						this.animation.setAnimation("off");
-					this.active = false;
+				// Check distance to trigger
+				if ((((this.game.player.getLoc().x - this.getLoc().x) * (this.game.player.getLoc().x - this.getLoc().x))
+						+ ((this.game.player.getLoc().y - this.getLoc().y) * (this.game.player.getLoc().y - this.getLoc().y))) > this.activateRange) {
+					this.keyProcessed = false;
+					return;
 				}
-				return;
-			}
 
-			if (this.active == false) {
-				this.active = true;
-				for (var i = 0; i < this.triggerables.length; ++i) this.triggerables[i].activate(true);
+				if (this.keyProcessed == false) {
+					this.keyProcessed = true;
+
+					this.active = !this.active;
+					for (var i = 0; i < this.triggerables.length; ++i) {
+						this.triggerables[i].activate(this.active);
+					}
+					if (this.active) {
 						this.animation.setAnimation("on");
-				Logger.log("Activated trigger");
+						Logger.log("Activated trigger");
+					} else {
+						this.animation.setAnimation("off");
+						Logger.log("Disabled trigger");
+					}	
+				}
+			} else {
+				// If trigger is activated manually, only activate if spacebar is pressed
+				if (this.activated && !(this.game.isKeyDown(this.game.keyCodes.space) == true)) {
+					if (this.active) {
+						for (var i = 0; i < this.triggerables.length; ++i) {
+							this.triggerables[i].activate(false);
+						}
+						this.animation.setAnimation("off");
+						Logger.log("Disabled trigger");
+						this.active = false;
+					}
+					return;
+				}
+
+				// Check distance to trigger
+				if ((((this.game.player.getLoc().x - this.getLoc().x) * (this.game.player.getLoc().x - this.getLoc().x))
+						+ ((this.game.player.getLoc().y - this.getLoc().y) * (this.game.player.getLoc().y - this.getLoc().y))) > this.activateRange) {
+					if (this.active) {
+						Logger.log("Disabled trigger");
+						for (var i = 0; i < this.triggerables.length; ++i) {
+							this.triggerables[i].activate(false);
+						}
+						this.animation.setAnimation("off");
+						this.active = false;
+					}
+					return;
+				}
+
+				if (this.active == false) {
+					this.active = true;
+					for (var i = 0; i < this.triggerables.length; ++i) {
+						this.triggerables[i].activate(true);
+					}
+					this.animation.setAnimation("on");
+					Logger.log("Activated trigger");
+				}
 			}
 		},
 
