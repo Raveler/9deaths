@@ -11,7 +11,7 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 
 		// create the trapdoors
 		var id = json.id;
-		var pitWidth = 100;
+		var pitWidth = 146;
 		for (var x = 0; x < 5; ++x) {
 			for (var y = 0; y < 5; ++y) {
 				this.trapdoorJson.id = id + "-trapdoor-" + x + y;
