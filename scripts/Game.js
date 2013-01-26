@@ -17,6 +17,9 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		this.canvas.width = this.width;
 		this.canvas.height = this.height;
 
+		// reset timer
+		this.resetTimer = 0;
+
 		// Load images
 		var imagesFileNames=[];
 		//imagesFileNames.push("xx");
@@ -97,20 +100,28 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		this.canvas.onmousedown = this.mouseClick.bind(this);
 	},
 	{
-		reset: function() {
-
-		},
-
 		getImage: function(name) {
 			return this.images[name];
 		},
 
 		update: function(dt) {
-			if (this.gameOver) {
-				this.drawGameOver();
-				return;
+
+			// player dead
+			if (this.player.isDead()) {
+				this.resetTimer = 2000;
 			}
 
+			// fade to black
+			if (this.resetTimer > 0) {
+				var ctx = this.canvas.getContext("2d");
+				ctx.fillStyle = "#000000";
+				ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+				ctx.fillStyle = "#DD0000";
+				ctx.font = "50px verdana";
+				ctx.fillText("YOU ARE LE DEAD", 20, 20);
+				this.resetTimer -= dt;
+				if (this.resetTimer <= 0) this.reset();
+			}
 			if (!(this.imagesPending == 0) || !(this.jsonPending == 0)) {
 				return;
 			}
@@ -120,6 +131,11 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			else if (this.entitiesLoaded) {
 				this.tick(dt);
 			}
+		},
+
+		reset: function() {
+			this.player.dead = false;
+			this.player.setLoc(this.player.startingLocation());
 		},
 
 		init: function() {
