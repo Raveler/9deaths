@@ -25,6 +25,10 @@ define(["Compose", "Vector2", "Logger"], function(Compose, Vector2, Logger) {
 		this.fileName = json.fileName;
 	},
 	{
+		getId: function() {
+			return "room";
+		},
+		
 		setX: function(x) {
 			this.x = x;
 		},

@@ -24,6 +24,13 @@ define(["Compose", "Vector2", "Layer", "Room", "Player", "Loader", "Logger"], fu
 		}
 	},
 	{
+		getRoomX: function(x) {
+			var roomX = 0;
+			for (var i = 0; i < this.rooms.length; ++i) {
+				if (this.rooms[i].getLoc().x < x) roomX = this.rooms[i].getLoc().x;
+			}
+			return roomX;
+		},
 
 		isInArea: function(loc) {
 
