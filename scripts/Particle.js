@@ -1,4 +1,4 @@
-define(["Compose", "Logger", "Background", "Random", "Vector2"], function(Compose, Logger, Background, Random, Vector2) {
+define(["Compose", "Logger", "Random", "Vector2"], function(Compose, Logger, Random, Vector2) {
 
 	var Particle = Compose(function constructor(game, imageName, point, rotation, scale, velocity, angularVelocity) {
 		this.game = game;
@@ -12,14 +12,10 @@ define(["Compose", "Logger", "Background", "Random", "Vector2"], function(Compos
 		this.scale = scale;
 		this.velocity = velocity;
 		this.angularVelocity = angularVelocity;
-
-		this.lifeTime = 500;
+		this.lifeTime = 250;
 	},
 	{
-		init: function() {
 
-		},
-		
 		update: function(dt) {
 			this.lifeTime -= dt;
 			this.velocity.x *= 0.995;
@@ -28,16 +24,14 @@ define(["Compose", "Logger", "Background", "Random", "Vector2"], function(Compos
 			this.position.x += this.velocity.x;
 			this.position.y += this.velocity.y;
 			this.rotation = this.rotation + this.angularVelocity;
-
-			if ((this.position.y > this.game.height)
-				|| (this.position.y < (0 - this.height))) {
-				this.game.stopParticle(this);
-				return;
-			}
 		},
 
-		isDead: function() {
-			return this.lifeTime <= 0;
+		getBaseX: function() {
+			return this.position.x;
+		},
+
+		getId: function() {
+			return "particle";
 		},
 
 		draw: function(ctx) {
@@ -52,6 +46,10 @@ define(["Compose", "Logger", "Background", "Random", "Vector2"], function(Compos
 
 			ctx.restore();
 		},
+
+		isDead: function() {
+			return this.lifeTime <= 0;
+		}
 
 	});
 	

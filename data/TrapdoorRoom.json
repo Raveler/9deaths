@@ -3,6 +3,7 @@
 		"id": "TODO",
 		"className": "Trapdoor",
 		"json": "Trapdoor",
+		"flip": true,
 		"loc": [0, 0],
 		"triggerId": []
 	},

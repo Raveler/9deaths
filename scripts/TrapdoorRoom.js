@@ -6,8 +6,11 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 		this.trapdoorJson = json.trapdoor;
 		this.triggerJson = json.trigger;
 
-		// number of triggers
+		// triggers
 		this.triggers = json.triggers;
+
+		// open pits
+		this.open = json.open;
 
 		// create the trapdoors
 		var id = json.id;
@@ -15,8 +18,7 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 		for (var x = 0; x < 5; ++x) {
 			for (var y = 0; y < 5; ++y) {
 				this.trapdoorJson.id = id + "-trapdoor-" + x + y;
-				this.trapdoorJson.loc = [this.getLoc().x + x * pitWidth + y * 60, this.getLoc().y + y * 60];
-				Logger.log(this.trapdoorJson.loc);
+				this.trapdoorJson.loc = [this.getLoc().x + y * pitWidth + x * 60, this.getLoc().y + x * 60];
 				this.game.createEntity(this.trapdoorJson);
 			}
 		}
@@ -36,12 +38,18 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 			for (var i = 0; i < this.triggers.length; ++i) {
 				var triggerArray = this.triggers[i];
 				var trigger = this.game.getEntity(this.getId() + "-trigger-" + i);
-				//Logger.log(trigger);
 				for (var j = 0; j < triggerArray.length; ++j) {
 					var trapdoorArray = triggerArray[j];
 					var trapdoor = this.game.getEntity(this.getId() + "-trapdoor-" + trapdoorArray[0] + trapdoorArray[1]);
 					trigger.addTriggerable(trapdoor);
 				}
+			}
+
+			// open the triggers
+			for (var i = 0; i < this.open.length; ++i) {
+				var trapdoorArray = this.open[i];
+				var trapdoor = this.game.getEntity(this.getId() + "-trapdoor-" + trapdoorArray[0] + trapdoorArray[1]);
+				trapdoor.activate(true);
 			}
 
 		},
