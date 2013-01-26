@@ -1,5 +1,5 @@
-define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer"],
-	function(Compose, Logger, GameArea, Vector2, Player, Renderer) {
+define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Usable"],
+	function(Compose, Logger, GameArea, Vector2, Player, Renderer, usable) {
 	
 	var Game = Compose(function constructor() {
 
@@ -77,7 +77,6 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer"],
 				this.mousePressed = true;
 				mousePosX -= this.canvas.offsetLeft;
 				mousePosY -= this.canvas.offsetTop;
-
 				this.MousePosition = new Vector2(mousePosX, mousePosY);
 			}
 		};
@@ -141,14 +140,6 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer"],
 
 		tickDave: function(ctx) {
 			this.area.debugDraw(ctx);
-			if (this.mousePressed == true) {
-				//this.area.isInArea(new Vector2(this.MousePosition));
-
-				var worldPosition = this.MousePosition + new Vector2(this.player.getLoc().x - this.canvas.width/2, this.player.getLoc().y - this.canvas.height/2);
-
-				Logger.log(worldPosition);
-
-			}
 			this.mousePressed = false;
 		},
 

@@ -23,14 +23,13 @@ define(["Compose", "Logger", "Vector2"], function(Compose, Logger, Vector2) {
 
 					//Logger.log(a + " - " + b + " - " + c);
 					// Check whether the pointers are counterclockwise
-					if (((b.x - a.x)*(c.y - a.y) - (b.y - a.y)*(c.x - a.x)) >= 0) {
+					if (((b.x - a.x)*(c.y - a.y) - (b.y - a.y)*(c.x - a.x)) > 0) {
 						inside = false;
 						break;
 					}
 				}
 
 				if (inside == true) {
-					Logger.log("INSIDE!!");
 					return true;
 				}
 			}
@@ -39,8 +38,6 @@ define(["Compose", "Logger", "Vector2"], function(Compose, Logger, Vector2) {
 		},
 
 		debugDraw: function(ctx) {
-
-
 			for(var j = 0; j < this.areaData.regions.length; j++) {
 				var inside = true;
 				var length = this.areaData.regions[j].path.length;
@@ -52,17 +49,12 @@ define(["Compose", "Logger", "Vector2"], function(Compose, Logger, Vector2) {
 						var b = new Vector2(this.areaData.regions[j].path[0][0], this.areaData.regions[j].path[0][1]);
 					}
 
-			ctx.beginPath();
-			ctx.moveTo(a.x,a.y);
-			ctx.lineTo(b.x,b.y);
-			ctx.stroke();
-
+					ctx.beginPath();
+					ctx.moveTo(a.x,a.y);
+					ctx.lineTo(b.x,b.y);
+					ctx.stroke();
 				}
 			}
-
-
-
-
 		}
 
 	})
