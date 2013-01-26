@@ -1,0 +1,19 @@
+{
+	"trapdoor": {
+		"id": "TODO",
+		"className": "Trapdoor",
+		"json": "Trapdoor",
+		"loc": [0, 0],
+		"triggerId": []
+	},
+	"trigger": {
+		"id": "TODO",
+		"className": "Trigger",
+		"json": "Trigger",
+		"active": false,
+		"activated": true,
+		"activateRange": 5000,
+		"loc": [0, 0],
+		"toggled": true
+	}
+}

@@ -14,6 +14,7 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 	{
 		init: function() {
 			//this.setLoc(new Vector2(250, 250));
+			this.animation.setAnimation(this.active ? "on" : "off");
 		},
 
 		addTriggerable: function(obj) {
@@ -46,10 +47,8 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 					}
 					if (this.active) {
 						this.animation.setAnimation("on");
-						Logger.log("Activated trigger");
 					} else {
 						this.animation.setAnimation("off");
-						Logger.log("Disabled trigger");
 					}	
 				}
 			} else {
@@ -60,7 +59,6 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 							this.triggerables[i].activate(false);
 						}
 						this.animation.setAnimation("off");
-						Logger.log("Disabled trigger");
 						this.active = false;
 					}
 					return;
@@ -70,7 +68,6 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 				if ((((this.game.player.getLoc().x - this.getLoc().x) * (this.game.player.getLoc().x - this.getLoc().x))
 						+ ((this.game.player.getLoc().y - this.getLoc().y) * (this.game.player.getLoc().y - this.getLoc().y))) > this.activateRange) {
 					if (this.active) {
-						Logger.log("Disabled trigger");
 						for (var i = 0; i < this.triggerables.length; ++i) {
 							this.triggerables[i].activate(false);
 						}
@@ -86,7 +83,6 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 						this.triggerables[i].activate(true);
 					}
 					this.animation.setAnimation("on");
-					Logger.log("Activated trigger");
 				}
 			}
 		},

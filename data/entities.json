@@ -3,12 +3,12 @@
 		{
 			"id": "player",
 			"className": "Player",
-			"json": "Player.json"
+			"json": "Player"
 		},
 		{
 			"id": "trigger1",
 			"className": "Trigger",
-			"json": "Trigger.json",
+			"json": "Trigger",
 			"active": false,
 			"activated": true,
 			"activateRange": 10000,
@@ -18,7 +18,7 @@
 		{
 			"id": "trigger2",
 			"className": "Trigger",
-			"json": "Trigger.json",
+			"json": "Trigger",
 			"active": false,
 			"activated": true,
 			"activateRange": 10000,
@@ -28,21 +28,21 @@
 		{
 			"id": "trapdoor1",
 			"className": "Trapdoor",
-			"json": "Trapdoor.json",
+			"json": "Trapdoor",
 			"loc": [400, 0],
 			"triggerId": ["trigger1", "trigger2"]
 		},
 		{
 			"id": "trapdoor2",
 			"className": "Trapdoor",
-			"json": "Trapdoor.json",
+			"json": "Trapdoor",
 			"loc": [480, 80],
 			"triggerId": ["trigger1", "trigger2"]
 		},
 		{
 			"id": "trapdoor3",
 			"className": "Trapdoor",
-			"json": "Trapdoor.json",
+			"json": "Trapdoor",
 			"openAuto": false,
 			"loc": [560, 160],
 			"triggerId": ["trigger1", "trigger2"]
@@ -50,39 +50,51 @@
 		{
 			"id": "trapdoor4",
 			"className": "Trapdoor",
-			"json": "Trapdoor.json",
+			"json": "Trapdoor",
 			"loc": [640, 240],
 			"triggerId": ["trigger1", "trigger2"]
 		},
 		{
+			"id": "trapdoorroom1",
+			"className": "TrapdoorRoom",
+			"json": "TrapdoorRoom",
+			"loc": [1200, 0],
+			"triggers": [
+				[[0, 0], [0, 1], [0, 2]],
+				[[1, 0], [1,1], [1, 2]],
+				[[2, 0], [2, 1], [2, 2]],
+				[[3, 0], [3, 1], [3, 2]]
+			]
+		},
+		{
 			"id": "pitOfdoom1",
 			"className": "Pit",
-			"json": "Pit.json",
+			"json": "Pit",
 			"loc": [2400, 0]
 		},
 		{
 			"id": "pitOfdoom2",
 			"className": "Pit",
-			"json": "Pit.json",
-			"loc": [2466, 67]
+			"json": "Pit",
+			"loc": [2457, 60]
 		},
 		{
 			"id": "pitOfdoom3",
 			"className": "Pit",
-			"json": "Pit.json",
-			"loc": [2560, 134]
+			"json": "Pit",
+			"loc": [2514, 120]
 		},
 		{
 			"id": "pitOfdoom4",
 			"className": "Pit",
-			"json": "Pit.json",
-			"loc": [2640, 201]
+			"json": "Pit",
+			"loc": [2571, 180]
 		},
 		{
 			"id": "pitOfdoom4",
 			"className": "Pit",
-			"json": "Pit.json",
-			"loc": [2640, 268]
+			"json": "Pit",
+			"loc": [2628, 240]
 		}
 	]
 }

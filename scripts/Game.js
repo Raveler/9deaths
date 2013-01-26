@@ -1,5 +1,5 @@
-define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigger", "Entity", "Monster"],
-	function(Compose, Logger, GameArea, Vector2, Player, Renderer, Trigger, Entity, Monster) {
+define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigger", "Entity", "Monster", "Trapdoor", "TrapdoorRoom", "Pit"],
+	function(Compose, Logger, GameArea, Vector2, Player, Renderer, Trigger, Entity, Monster, Trapdoor, TrapdoorRoom, Pit) {
 	
 	var Game = Compose(function() {
 
@@ -16,6 +16,9 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		this.canvas.style = "canvas-game";
 		this.canvas.width = this.width;
 		this.canvas.height = this.height;
+
+		// reset timer
+		this.resetTimer = 0;
 
 		// Load images
 		var imagesFileNames=[];
@@ -36,7 +39,22 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		jsonFileNames.push("entities");
 		jsonFileNames.push("world");
 		jsonFileNames.push("game");
+		jsonFileNames.push("Trigger");
+		jsonFileNames.push("Trapdoor");
+		jsonFileNames.push("TrapdoorRoom");
+		jsonFileNames.push("Player");
+		jsonFileNames.push("Pit");
 		this.loadJson(jsonFileNames);
+
+		// load entitity classes
+		var entityClasses = {};
+		entityClasses["Trapdoor"] = Trapdoor;
+		entityClasses["TrapdoorRoom"] = TrapdoorRoom;
+		entityClasses["Trigger"] = Trigger;
+		entityClasses["Pit"] = Pit;
+		entityClasses["Player"] = Player;
+		this.entityClasses = entityClasses;
+
 
 		// keys
 		this.keys = {};
@@ -98,19 +116,11 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		this.canvas.onmousedown = this.mouseClick.bind(this);
 	},
 	{
-		reset: function() {
-
-		},
-
 		getImage: function(name) {
 			return this.images[name];
 		},
 
 		update: function(dt) {
-			if (this.gameOver) {
-				this.drawGameOver();
-				return;
-			}
 
 			if (!(this.imagesPending == 0) || !(this.jsonPending == 0)) {
 				return;
@@ -119,8 +129,65 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 				this.init();
 			}
 			else if (this.entitiesLoaded) {
-				this.tick(dt);
+
+			// player dead
+				if (this.player.isDead() && this.resetTimer == 0) {
+					this.resetTimer = 2000;
+				}
+
+				// fade to black
+				if (this.resetTimer > 0) {
+					var ctx = this.canvas.getContext("2d");
+					ctx.fillStyle = "#000000";
+					ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+					ctx.fillStyle = "#DD0000";
+					ctx.font = "50px verdana";
+					ctx.fillText("YOU ARE LE DEAD", 20, 50);
+					this.resetTimer -= dt;
+					if (this.resetTimer <= 0) this.reset();
+				}
+
+				// normal tick
+				else this.tick(dt);
 			}
+		},
+
+		reset: function() {
+			this.resetTimer = 0;
+			this.player.dead = false;
+			this.player.setLoc(this.player.startingLocation);
+		},
+
+		cloneObject: function(obj) {
+		    // Handle the 3 simple types, and null or undefined
+		    if (null == obj || "object" != typeof obj) return obj;
+
+		    // Handle Date
+		    if (obj instanceof Date) {
+		        var copy = new Date();
+		        copy.setTime(obj.getTime());
+		        return copy;
+		    }
+
+		    // Handle Array
+		    if (obj instanceof Array) {
+		        var copy = [];
+		        for (var i = 0, len = obj.length; i < len; i++) {
+		            copy[i] = this.cloneObject(obj[i]);
+		        }
+		        return copy;
+		    }
+
+		    // Handle Object
+		    if (obj instanceof Object) {
+		        var copy = {};
+		        for (var attr in obj) {
+		            if (obj.hasOwnProperty(attr)) copy[attr] = this.cloneObject(obj[attr]);
+		        }
+		        return copy;
+		    }
+
+		    throw new Error("Unable to copy obj! Its type isn't supported.");
 		},
 
 		init: function() {
@@ -132,32 +199,13 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 
 			// go over all entities in the file
 			var json = this.json["entities"];
-			var nLeft = 0;
+			this.nLeft = 0;
 			for (var i = 0; i < json.entities.length; ++i) {
 				var entityData = json.entities[i];
 				var className = entityData.className;
-				++nLeft;
-				require([className, "json!data/" + entityData.json], function(entityData, Class, json) {
 
-					// copy the entity data onto the json
-					var id = entityData.id;
-					for (var key in entityData) {
-						if (key == "className") continue;
-						json[key] = entityData[key];
-					}
-
-					var entity = new Class(this, json, id);
-					entity.init();
-					if (entity.getId() == "player") {
-						this.player = entity;
-					}
-					this.entities.push(entity);
-					this.entitiesById[entity.getId()] = entity;
-					--nLeft;
-					if (nLeft == 0) {
-						this.startGame();
-					}
-				}.bind(this, entityData));
+				// normal case
+				this.createEntity(entityData);
 			}
 
 			// create the renderer
@@ -165,6 +213,33 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 
 			// Dave init stuff
 			this.initDave();
+		},
+
+		createEntity: function(entityData) {
+			++this.nLeft;
+			entityData = this.cloneObject(entityData);
+			var className = entityData.className;
+			var json = this.cloneObject(this.json[entityData.json]);
+
+			// copy the entity data onto the json
+			var id = entityData.id;
+			for (var key in entityData) {
+				if (key == "className") continue;
+				json[key] = entityData[key];
+			}
+
+			var entity = new this.entityClasses[className](this, json, id);
+			entity.init();
+			if (entity.getId() == "player") {
+				this.player = entity;
+			}
+			this.entities.push(entity);
+			this.entitiesById[entity.getId()] = entity;
+			--this.nLeft;
+			if (this.nLeft == 0  && !this.entitiesLoaded) {
+				this.startGame();
+			}
+			return entity;
 		},
 
 		getEntity: function(id) {
@@ -176,7 +251,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		},
 
 		initDave: function() {
-			this.debugDraw = true;
+			//this.debugDraw = true;
 			this.area = new GameArea(this, "game");
 			/*this.triggers = new Trigger(this);
 			this.entities = new Entity(this);
@@ -201,7 +276,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 				else if (a.getBaseX() < b.getBaseX()) return 1;
 				else if (a.getLoc().y < b.getLoc().y) return -1;
 				else if (a.getLoc().y > b.getLoc().y) return 1;
-				return 0;
+				return a.getId() < b.getId() ? -1 : 1;
 			}.bind(this));
 
 			// draw all entities
@@ -214,10 +289,11 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 
 			// draw the entities
 			var roomX = this.renderer.getRoomX(this.player.getBaseX());
+			var roomEndX = this.renderer.getRoomEndX(this.player.getBaseX());
 			for (var i = 0; i < this.entities.length; ++i) {
 				var entity = this.entities[i];
 				if (entity.getId() == "player") continue;
-				if (entity.getBaseX() > roomX) entity.draw(ctx);
+				if (roomX < entity.getBaseX() && entity.getBaseX() <= roomEndX) entity.draw(ctx);
 			}
 			this.player.draw(ctx);
 			for (var i = 0; i < this.entities.length; ++i) {

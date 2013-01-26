@@ -14,7 +14,8 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 		},
 
 		fall: function() {
-			this.falling = true;
+			this.die();
+			//this.falling = true;
 		},
 
 		update: function(dt) { // TODO use dt!
@@ -68,10 +69,6 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 			if (valid) {
 				this.setLoc(this.getLoc().add(new Vector2(dx, dy)));
 			}
-		},
-
-		die: function() {
-
 		},
 
 		draw: function(ctx) {
