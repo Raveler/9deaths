@@ -1,7 +1,7 @@
 define(["Compose", "Vector2", "Logger"], function(Compose, Vector2, Logger) {
 
 	var Player = Compose(function(game, loc) {
-		this.game = game;
+		this.game
 		this.loc = loc;
 	},
 	{
@@ -37,4 +37,4 @@ define(["Compose", "Vector2", "Logger"], function(Compose, Vector2, Logger) {
 	});
 
 	return Player;
-});
+}); = game;
