@@ -31,7 +31,6 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 		activate: function(on) {
 			if (this.flip) {
 				this.opened = !this.opened;
-				Logger.log("FLIP");
 			}
 			else if (on) this.opened = true;
 			else this.opened = false;
@@ -88,9 +87,9 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 
 		draw: function(ctx) {
 			ctx.save();
-			ctx.fillStyle = "#00FFFF";
+			//ctx.fillStyle = "#00FFFF";
 			ctx.translate(this.getLoc().x, this.getLoc().y);
-			ctx.fillRect(-2, -2, 4, 4);
+			//ctx.fillRect(-2, -2, 4, 4);
 			this.animation.draw(ctx);
 			ctx.restore();
 
