@@ -52,6 +52,19 @@
 			"json": "Trapdoor.json",
 			"loc": [640, 240],
 			"triggerId": ["trigger1", "trigger2"]
+		},
+		{
+			"id": "pitOfdoom",
+			"className": "Pit",
+			"json": "Pit.json",
+			"loc": [2400, 0],
+			"path":
+			[
+				[0, 0],
+				[100, 300],
+				[200, 300],
+				[100, 0]
+			]
 		}
 	]
 }

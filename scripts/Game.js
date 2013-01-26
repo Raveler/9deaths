@@ -233,15 +233,6 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 
 		tickDave: function(ctx) {
 			this.area.debugDraw(ctx);
-/*
-			this.triggers.checkIfActivated();
-			this.triggers.debugDraw(ctx);
-
-			this.entities.checkIfActivated(this.player.loc);
-			this.entities.debugDraw(ctx);
-
-			this.monster.move();
-			this.monster.debugDraw(ctx);*/
 		},
 
         loadImages: function(fileNames) {

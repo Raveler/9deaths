@@ -17,6 +17,9 @@ define(["Compose", "Vector2"], function(Compose, Vector2) {
 
 		// id
 		this.id = id;
+
+		//json
+		this.json = json;
 	},
 	{
 		getId: function() {
