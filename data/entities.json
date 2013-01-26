@@ -12,7 +12,7 @@
 			"active": false,
 			"activated": true,
 			"activateRange": 10000,
-			"loc": [200, 50],
+			"loc": [300, 0],
 			"toggled": true
 		},
 		{
@@ -20,6 +20,14 @@
 			"className": "Trapdoor",
 			"json": "Trapdoor.json",
 			"loc": [400, 100],
+			"triggerId": "trigger1"
+		}
+		,
+		{
+			"id": "trapdoor2",
+			"className": "Trapdoor",
+			"json": "Trapdoor.json",
+			"loc": [400, 200],
 			"triggerId": "trigger1"
 		}
 	]

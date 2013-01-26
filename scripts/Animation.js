@@ -41,15 +41,19 @@ define(["Compose", "Logger", "Vector2"], function(Compose, Logger, Vector2) {
 			while (this.frame > this.data.animations[this.currentAnimation].length) this.frame -= this.data.animations[this.currentAnimation].length;
 		},
 
-		draw: function(ctx) {
+		draw: function(ctx, z) {
 			ctx.save();
 			var frame = Math.floor(this.frame);
+			var height = this.data.height;
+			if (typeof z == "undefined") z = 0;
+			if (z < 0) height += z;
+			if (height < 0) height = 0;
 			if (this.flip) {
 				ctx.scale(-1, 1);
-				ctx.drawImage(this.img, frame * this.data.width, this.currentAnimation * this.data.height, this.data.width, this.data.height,  -this.focusPoint.x * this.data.scale, -this.focusPoint.y * this.data.scale, this.data.width * this.data.scale, this.data.height * this.data.scale);
+				ctx.drawImage(this.img, frame * this.data.width, this.currentAnimation * this.data.height, this.data.width, height,  -this.focusPoint.x * this.data.scale, -this.focusPoint.y * this.data.scale - z, this.data.width * this.data.scale, height * this.data.scale);
 			}
 			else {
-				ctx.drawImage(this.img, frame * this.data.width, this.currentAnimation * this.data.height, this.data.width, this.data.height,  -this.focusPoint.x * this.data.scale, -this.focusPoint.y * this.data.scale, this.data.width * this.data.scale, this.data.height * this.data.scale);
+				ctx.drawImage(this.img, frame * this.data.width, this.currentAnimation * this.data.height, this.data.width, height,  -this.focusPoint.x * this.data.scale, -this.focusPoint.y * this.data.scale - z, this.data.width * this.data.scale, height * this.data.scale);
 			}
 			ctx.restore();
 		}

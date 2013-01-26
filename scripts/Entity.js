@@ -13,6 +13,7 @@ define(["Compose", "Vector2"], function(Compose, Vector2) {
 
 		// z
 		this.z = json.z;
+		if (typeof this.z == "undefined") this.z = 0;
 
 		// id
 		this.id = id;

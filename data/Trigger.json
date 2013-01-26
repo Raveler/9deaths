@@ -1,8 +1,9 @@
 {
+	"z": -1,
 	"width": 50,
 	"height": 100,
 	"frameRate": 40,
-	"focusPoint": [25, 50],
+	"focusPoint": [25, 200],
 	"scale": 1.0,
 	"animations": [
 		{
