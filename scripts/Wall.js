@@ -4,7 +4,8 @@ define(["Compose", "Vector2", "Loadable"], function(Compose, Vector2, Loadable) 
 	var Wall = Compose(Loadable, function(json) {
 
 		// location
-		this.loc = new Vector2(json.loc.x, json.loc.y);
+		this.loc = new Vector2(json.loc);
+		this.scale = json.scale;
 
 		// image
 		this.fileName = json.fileName;
@@ -18,7 +19,14 @@ define(["Compose", "Vector2", "Loadable"], function(Compose, Vector2, Loadable) 
 	{
 
 		draw: function(ctx) {
+			ctx.save();
+			ctx.scale(this.scale, this.scale);
 			ctx.drawImage(this.img, this.loc.x, this.loc.y);
+			ctx.restore();
+		},
+
+		isBefore: function(player) {
+			return this.loc.x < player.getLoc().x || this.loc.y < player.getLoc().y;
 		}
 	});
 

@@ -1,6 +1,12 @@
 define(["Compose"], function(Compose) {
 	
 	var Vector2 = Compose(function constructor(x, y) {
+
+		if (x instanceof Array) {
+			this.x = x[0];
+			this.y = x[1];
+			return;
+		}
 		
 		// default
 		if (typeof x == 'undefined') x = 0;

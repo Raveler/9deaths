@@ -18,11 +18,11 @@ define(["Compose", "Vector2", "Layer", "Ground", "Player", "Loader", "Wall"], fu
 
 		// go over all walls
 		this.walls = [];
-		/*for (var i = 0; i < json.walls.length; ++i) {
+		for (var i = 0; i < json.walls.length; ++i) {
 			var wall = new Wall(json.walls[i]);
 			this.walls.push(wall);
 			this.loader.add(wall);
-		}*/
+		}
 
 		// add done callback
 		this.loaded = false;
@@ -43,11 +43,16 @@ define(["Compose", "Vector2", "Layer", "Ground", "Player", "Loader", "Wall"], fu
 				this.grounds[i].draw(ctx);
 			}
 			for (var i = 0; i < this.walls.length; ++i) {
-				this.walls[i].draw(ctx);
+				if (!this.walls[i].isBefore(this.game.player)) {
+					this.walls[i].draw(ctx);
+				}
 			}
-
-			ctx.fillStyle = "#FF0000";
-			ctx.fillRect(300, 300, 200, 200);
+			this.game.player.draw(ctx);
+			for (var i = 0; i < this.walls.length; ++i) {
+				if (this.walls[i].isBefore(this.game.player)) {
+					this.walls[i].draw(ctx);
+				}
+			}
 		}
 	});
 

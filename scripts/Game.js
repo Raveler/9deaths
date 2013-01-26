@@ -44,6 +44,17 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer"],
 			if (e.keyCode != 116) e.preventDefault();
 		};
 
+		this.keyCodes = {
+			down: 40,
+			up: 38,
+			left: 37,
+			right: 39
+		};
+
+		this.isKeyDown = function(key) {
+			return this.keys['key' + key];
+		};
+
 		this.mouseClick = function(e) {
 			if (this.phase != 0) {
 				this.phase--;
@@ -80,7 +91,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer"],
 			return this.images[name];
 		},
 
-		update: function() {
+		update: function(dt) {
 			if (this.gameOver) {
 				this.drawGameOver();
 				return;
@@ -93,7 +104,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer"],
 				this.init();
 			}
 			else {
-				this.tick();
+				this.tick(dt);
 			}
 		},
 
@@ -101,7 +112,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer"],
 			this.firstTime = false;
 
 			var gameData = this.json["game"];
-			this.player = new Player(new Vector2(gameData.startingLocation.x, gameData.startingLocation.y));
+			this.player = new Player(this, new Vector2(gameData.startingLocation[0], gameData.startingLocation[1]));
 			this.renderer = new Renderer(this, this.json["world"]);
 
 			// Dave init stuff
@@ -113,16 +124,19 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer"],
 			area.isInArea(new Vector2(10.5, 1.5));
 		},
 
-		tick: function() {
+		tick: function(dt) {
+
+			this.player.update(dt);
+
 			var ctx = this.canvas.getContext("2d");
+			ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 			ctx.save();
 			ctx.translate(-this.player.getLoc().x + this.canvas.width/2, -this.player.getLoc().y + this.canvas.height/2);
-			this.player.draw(ctx);
+			this.renderer.draw(ctx);
 			
 			// Dave tick stuff
 			this.tickDave();
 
-			this.renderer.draw(ctx);
 			ctx.restore();
 		},
 
