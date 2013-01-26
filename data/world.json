@@ -3,15 +3,11 @@
 
 	"rooms": [
 		{
-			"width": 900,
-			"height": 400,
-			"doorY": 150,
+			"doorY": 114,
 			"fileName": "data/placeHolder_BG.JPG"
 		},
 		{
-			"width": 900,
-			"height": 400,
-			"doorY": 100,
+			"doorY": 114,
 			"fileName": "data/placeHolder_BG.JPG"
 		}
 	]

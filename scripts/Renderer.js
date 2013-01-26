@@ -5,6 +5,9 @@ define(["Compose", "Vector2", "Layer", "Room", "Player", "Loader", "Logger"], fu
 		// wall height
 		this.wallHeight = json.wallHeight;
 
+		// wall margin
+		this.wallMargin = 10;
+
 		// the game
 		this.game = game;
 
@@ -32,38 +35,75 @@ define(["Compose", "Vector2", "Layer", "Room", "Player", "Loader", "Logger"], fu
 			return this.loaded;
 		},
 
+		isInArea: function(loc) {
+
+			// don't move up the wall
+			if (loc.y < 0) return false;
+
+			// find the room we're in
+			var baseX = loc.x - (loc.y / Math.tan(Math.PI/4));
+
+			var x = 0;
+			for (var i = 0; i < this.rooms.length; ++i) {
+				var room = this.rooms[i];
+				if (x <= baseX && baseX < x + room.getWidth()) {
+
+					// compute the height of the room
+					if (loc.y > room.getHeight()) return false;
+
+					// close to the border - check for door
+					if (baseX < x + this.wallMargin && i > 0) {
+						return this.rooms[i-1].isNearDoor(loc);
+					}
+					else if (baseX > x + room.getWidth() - this.wallMargin) {
+						return room.isNearDoor(loc);
+					}
+
+					// just ok
+					else {
+						return true;
+					}
+				}
+				x += room.getWidth();
+			}
+
+			// NO ROOM :(
+			// oh hi mark
+			return false;
+		},
+
 		draw: function(ctx) {
 
 			if (!this.loaded) return;
-			// compute the baseline x of the player - relative to the 0-coordinate
-			var playerLoc = this.game.player.getLoc();
-			var baseX = playerLoc.x - (playerLoc.y / Math.tan(Math.PI/4));
-			Logger.log("player: " + playerLoc.toString() + ", BaseX: " + baseX);
-			Logger.log(Math.tan(Math.PI/2));
 
 			// find the last room we are left of
 			var idx = -1;
 			var x = 0;
+			var baseX = this.game.player.getBaseX();
 			for (var i = 0; i < this.rooms.length; ++i) {
 				if (x > baseX) break;
 				x += this.rooms[i].getWidth();
 				++idx;
 			}
-			Logger.log("idx: " + idx);
-			Logger.log("x: " + x);
 
 			// draw all rooms to the left of the player, but draw from right to left
 			ctx.save();
-			ctx.translate(0, -this.wallHeight);
-			ctx.translate(x, 0);
+			var firstPlayer = true;
 			while (idx >= 0) {
 				var room = this.rooms[idx];
-				ctx.translate(-room.getWidth(), 0);
+				ctx.save();
+				ctx.translate(0, -this.wallHeight);
+				ctx.translate(x-room.getWidth(), 0);
+				x -= room.getWidth();
 				room.draw(ctx);
+				ctx.restore();
 				--idx;
+				if (x < baseX && firstPlayer) {
+					firstPlayer = false;
+					this.game.player.draw(ctx);
+				}
 			}
 			ctx.restore();
-			this.game.player.draw(ctx);
 		}
 	});
 

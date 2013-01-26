@@ -3,10 +3,6 @@ define(["Compose", "Logger", "Vector2"], function(Compose, Logger, Vector2) {
 	var GameArea = Compose(function(game, areaName) {
 		this.game = game;
 		this.areaData = this.game.json[areaName];
-
-		Logger.log("starting location:" + this.areaData.startingLocation);
-		Logger.log("regions:" + this.areaData.regions[0].path);
-		Logger.log("layers:" + this.areaData.layers);
 	},
 	{
 		isInArea: function(a) {

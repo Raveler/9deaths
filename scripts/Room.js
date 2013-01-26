@@ -6,6 +6,12 @@ define(["Compose", "Vector2", "Loadable", "Logger"], function(Compose, Vector2, 
 		// data
 		this.wallHeight = wallHeight;
 
+		// door width
+		this.doorWidth = 72;
+
+		// door Y
+		this.doorY = json.doorY;
+
 		// image
 		this.fileName = json.fileName;
 
@@ -36,6 +42,10 @@ define(["Compose", "Vector2", "Loadable", "Logger"], function(Compose, Vector2, 
 
 		getHeight: function() {
 			return this.height;
+		},
+
+		isNearDoor: function(loc) {
+			return Math.abs(loc.y - this.doorY) < this.doorWidth/2;
 		}
 	});
 
