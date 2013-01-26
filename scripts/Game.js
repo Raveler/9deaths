@@ -1,5 +1,5 @@
-define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigger"],
-	function(Compose, Logger, GameArea, Vector2, Player, Renderer, Trigger) {
+define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigger", "Entity"],
+	function(Compose, Logger, GameArea, Vector2, Player, Renderer, Trigger, Entity) {
 	
 	var Game = Compose(function constructor() {
 
@@ -26,6 +26,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		jsonFileNames.push("game");
 		jsonFileNames.push("world");
 		jsonFileNames.push("triggers");
+		jsonFileNames.push("entity");
 		this.loadJson(jsonFileNames);
 
 		// keys
@@ -123,6 +124,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		initDave: function() {
 			this.area = new GameArea(this, "game");
 			this.triggers = new Trigger(this);
+			this.entities = new Entity(this);
 		},
 
 		tick: function(dt) {
@@ -145,12 +147,11 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			this.area.debugDraw(ctx);
 
 			this.triggers.checkIfActivated();
-			this.triggers.draw(ctx);
+			this.triggers.debugDraw(ctx);
 
-			/*if (this.isKeyDown(this.keyCodes.space)) {
-				this.trigger.activate();
-			}*/
-			this.mousePressed = false;
+			this.entities.checkIfActivated(this.player.loc);
+			this.entities.debugDraw(ctx);
+
 		},
 
         loadImages: function(fileNames) {

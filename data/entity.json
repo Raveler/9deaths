@@ -1,0 +1,30 @@
+{
+	"entities": [
+	{
+		"imageName": "test",
+		"imageLocation": [0, 0],
+		"id": 0,
+		"active": false,
+		"path":
+			[
+				[300, 300],
+				[300, 350],
+				[350, 350],
+				[350, 300]
+			]
+	},
+	{
+		"imageName": "test",
+		"imageLocation": [0, 0],
+		"id": 1,
+		"active": false,
+		"path":
+			[
+				[500, 500],
+				[500, 550],
+				[550, 550],
+				[550, 500]
+			]
+	}
+	]
+}
