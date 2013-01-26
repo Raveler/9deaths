@@ -87,7 +87,7 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 					var b = new Vector2(this.path[0][0], this.path[0][1]);
 				}
 
-				ctx.strokeStyle="#FF0000"
+				ctx.strokeStyle="#FF0000";
 				ctx.beginPath();
 				ctx.moveTo(a.x,a.y);
 				ctx.lineTo(b.x,b.y);

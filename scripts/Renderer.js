@@ -34,8 +34,8 @@ define(["Compose", "Vector2", "Layer", "Room", "Player", "Loader", "Logger"], fu
 
 		getRoomEndX: function(x) {
 			var roomX = this.rooms[0].width;
-			for (var i = 0; i < this.rooms.length; ++i) {
-				if (this.rooms[i].getLoc().x < x) roomX = this.rooms[i].getLoc().x + this.rooms[i].width;
+			for (var i = 0; i < this.rooms.length-1; ++i) {
+				if (this.rooms[i].getLoc().x < x) roomX = this.rooms[i].getLoc().x + this.rooms[i+1].width;
 			}
 			return roomX;
 		},

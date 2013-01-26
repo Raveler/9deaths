@@ -15,8 +15,8 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 		for (var x = 0; x < 5; ++x) {
 			for (var y = 0; y < 5; ++y) {
 				this.trapdoorJson.id = id + "-trapdoor-" + x + y;
-				Logger.log(this.trapdoorJson.id);
 				this.trapdoorJson.loc = [this.getLoc().x + x * pitWidth + y * 60, this.getLoc().y + y * 60];
+				Logger.log(this.trapdoorJson.loc);
 				this.game.createEntity(this.trapdoorJson);
 			}
 		}
