@@ -53,6 +53,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		entityClasses["Trigger"] = Trigger;
 		entityClasses["Pit"] = Pit;
 		entityClasses["Player"] = Player;
+		entityClasses["Monster"] = Monster;
 		this.entityClasses = entityClasses;
 
 
@@ -256,8 +257,8 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			//this.debugDraw = true;
 			this.area = new GameArea(this, "game");
 			/*this.triggers = new Trigger(this);
-			this.entities = new Entity(this);
-			this.monster = new Monster(this, new Vector2(200, 200));*/
+			this.entities = new Entity(this);*/
+			this.monster = new Monster(this, new Vector2(500, 200));
 		},
 
 		tick: function(dt) {
@@ -312,6 +313,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 
 		tickDave: function(ctx) {
 			this.area.debugDraw(ctx);
+			this.monster.update();
 		},
 
         loadImages: function(fileNames) {

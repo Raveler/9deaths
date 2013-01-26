@@ -1,12 +1,12 @@
-define(["Compose", "Vector2", "Logger"], function(Compose, Vector2, Logger) {
+define(["Compose", "Vector2", "Logger", "Entity"], function(Compose, Vector2, Logger, Entity) {
 
-	var Monster = Compose(function(game, location) {
+	var Monster = Compose(Entity, function(game, json) {
 		this.game = game;
-		this.location = location;
-		this.triggers = this.game.json["triggers"].triggers;
+		this.location = new Vector2(200, 200);
+		//this.location = json.loc;
 	},
 	{
-		move: function() {
+		update: function() {
 			var moveVector = this.game.player.loc.subtract(this.location);
 			if (moveVector.length() > 1) {
 				moveVector.normalize();
@@ -34,7 +34,10 @@ define(["Compose", "Vector2", "Logger"], function(Compose, Vector2, Logger) {
 			}
 		},
 
-		debugDraw: function(ctx) {
+		draw: function(ctx) {
+
+			Logger.log("draw");
+
 			ctx.fillStyle = "#00FFF0";
 			ctx.fillRect(this.location.x - 20, this.location.y - 20, 40, 40);
 		}
