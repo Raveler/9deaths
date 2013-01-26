@@ -1,17 +1,18 @@
 {
-	"grounds": [
-		{
-			"fileName": "data/ground.png",
-			"loc": [0, 0],
-			"scale": 0.3
-		}
-	],
+	"wallHeight": 470,
 
-	"walls": [
+	"rooms": [
 		{
-			"fileName": "data/HorizontaleMuur.png",
-			"loc": [0, 0],
-			"scale": 0.3
+			"width": 900,
+			"height": 400,
+			"doorY": 150,
+			"fileName": "data/placeHolder_BG.JPG"
+		},
+		{
+			"width": 900,
+			"height": 400,
+			"doorY": 100,
+			"fileName": "data/placeHolder_BG.JPG"
 		}
 	]
 }
