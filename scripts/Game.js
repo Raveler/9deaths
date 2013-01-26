@@ -127,7 +127,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			this.area = new GameArea(this, "game");
 			this.triggers = new Trigger(this);
 			this.entities = new Entity(this);
-			this.monster = new Monster(this, new Vector2(200, 200));
+			this.monster = new Monster(this, new Vector2(250, 200));
 		},
 
 		tick: function(dt) {

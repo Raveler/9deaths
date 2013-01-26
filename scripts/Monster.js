@@ -16,29 +16,22 @@ define(["Compose", "Vector2", "Logger"], function(Compose, Vector2, Logger) {
 			moveVector = moveVector.multiply(0.01);
 
 			var newLocation = this.location.add(moveVector);
-			if (this.game.area.isInArea(newLocation)) {
+			if (this.game.isValidPosition(newLocation)) {
 				this.location = newLocation;
 				return;
 			}
 
 			newLocation = new Vector2(this.location.x + (moveVector.x / Math.abs(moveVector.x)), this.location.y);
-			if (this.game.area.isInArea(newLocation)) {
+			if (this.game.isValidPosition(newLocation)) {
 				this.location = newLocation
 				return;
 			}
 
 			newLocation = new Vector2(this.location.x, this.location.y + (moveVector.y / Math.abs(moveVector.y)));
-			if (this.game.area.isInArea(newLocation)) {
+			if (this.game.isValidPosition(newLocation)) {
 				this.location = newLocation
 				return;
 			}
-
-
-			/*var newLocation = this.location.add(moveVector.multiply(0.01));
-			if (this.game.area.isInArea(newLocation)) {
-				this.location = newLocation
-				return;
-			}*/
 		},
 
 		debugDraw: function(ctx) {
