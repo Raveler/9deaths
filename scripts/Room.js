@@ -47,6 +47,10 @@ define(["Compose", "Vector2", "Logger"], function(Compose, Vector2, Logger) {
 		},
 
 		draw: function(ctx) {
+
+			// only draw when the player is to the left of is
+			if (this.game.player.getBaseX() < this.x - this.width) return;
+
 			ctx.save();
 			//ctx.translate(0, -this.wallHeight);
 			//ctx.translate(-this.getWidth(), 0);
@@ -63,7 +67,7 @@ define(["Compose", "Vector2", "Logger"], function(Compose, Vector2, Logger) {
 		},
 
 		getLoc: function() {
-			return new Vector2(this.x, 0);
+			return new Vector2(this.x, this.game.player.getBaseX() < this.x ? 0 : this.height);
 		},
 
 		getBaseX: function() {
@@ -71,7 +75,7 @@ define(["Compose", "Vector2", "Logger"], function(Compose, Vector2, Logger) {
 		},
 
 		getZ: function() {
-			this.z = 0;
+			return 0;
 		},
 
 		isDead: function() {

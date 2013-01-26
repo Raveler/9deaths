@@ -1,5 +1,5 @@
 {
-	"wallHeight": 470,
+	"wallHeight": 292,
 
 	"rooms": [
 		{
@@ -8,7 +8,7 @@
 		},
 		{
 			"doorY": 114,
-			"fileName": "placeHolder_BG.JPG"
+			"fileName": "scaryLevel.jpg"
 		}
 	]
 }

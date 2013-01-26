@@ -4,11 +4,17 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 		this.game = game;
 		this.startingLocation = new Vector2(json.startingLocation);
 		this.speed = 5;
+		this.fallSpeed = 5;
+		this.falling = false;
 		this.animation = new Animation(game, json);
 	},
 	{
 		init: function() {
 			this.setLoc(this.startingLocation);
+		},
+
+		fall: function() {
+			this.falling = true;
 		},
 
 		update: function(dt) { // TODO use dt!
@@ -38,6 +44,16 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 				dy = this.speed * 0.7;
 			}
 
+			// we are falling
+			if (this.falling) {
+				this.z -= this.fallSpeed;
+				this.animation.setAnimation("idle");
+				if (this.z < this.animation.data.height) {
+					this.die();
+				}
+				return;
+			}
+
 			// we are walking
 			if (Math.abs(dx) > 0.001 || Math.abs(dy) > 0.001) {
 				this.animation.setAnimation("walk");
@@ -54,13 +70,17 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 			}
 		},
 
+		die: function() {
+
+		},
+
 		draw: function(ctx) {
 			ctx.save();
 			ctx.fillStyle = "#00FF00";
 			//Logger.log(this.loc);
 			ctx.translate(this.loc.x, this.loc.y);
 			ctx.fillRect(-2, -2, 4, 4);
-			this.animation.draw(ctx);
+			this.animation.draw(ctx, this.z);
 			ctx.restore();
 		}
 	});

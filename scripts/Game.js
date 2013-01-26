@@ -9,7 +9,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 
 		// width, height
 		this.width = 1024;
-		this.height = 768;
+		this.height = 590;
 
 		// the canvas
 		this.canvas = document.createElement('canvas');
@@ -24,6 +24,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		imagesFileNames.push("placeHolder_BG.JPG");
 		imagesFileNames.push("lever.png");
 		imagesFileNames.push("hatch_h220.png");
+		imagesFileNames.push("scaryLevel.jpg");
 		this.loadImages(imagesFileNames);
 
 		// Load json data
@@ -94,6 +95,10 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		this.canvas.onmousedown = this.mouseClick.bind(this);
 	},
 	{
+		reset: function() {
+
+		},
+
 		getImage: function(name) {
 			return this.images[name];
 		},
@@ -188,19 +193,19 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 
 			// sort all entities by x-coordinate
 			this.entities.sort(function(a, b) {
-				if (a.getZ() < b.getZ()) return -1;
-				else if (a.getZ() > b.getZ()) return 1;
-				else if (a.getBaseX() > b.getBaseX()) return -1;
+				if (a.getBaseX() > b.getBaseX()) return -1;
 				else if (a.getBaseX() < b.getBaseX()) return 1;
+				else if (a.getLoc().y < b.getLoc().y) return -1;
+				else if (a.getLoc().y > b.getLoc().y) return 1;
 				return 0;
-			});
+			}.bind(this));
 
 			// draw all entities
 			var ctx = this.canvas.getContext("2d");
 			ctx.fillStyle = "#000000";
 			ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 			ctx.save();
-			ctx.translate(-this.player.getLoc().x + this.canvas.width/2, 470);
+			ctx.translate(-this.player.getLoc().x + this.canvas.width/2, 292);
 			this.renderer.draw(ctx);
 
 			// draw the entities
