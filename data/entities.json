@@ -12,23 +12,46 @@
 			"active": false,
 			"activated": true,
 			"activateRange": 10000,
-			"loc": [300, 0],
+			"loc": [290, 50],
+			"toggled": true
+		},
+		{
+			"id": "trigger2",
+			"className": "Trigger",
+			"json": "Trigger.json",
+			"active": false,
+			"activated": true,
+			"activateRange": 10000,
+			"loc": [655, 50],
 			"toggled": true
 		},
 		{
 			"id": "trapdoor1",
 			"className": "Trapdoor",
 			"json": "Trapdoor.json",
-			"loc": [400, 100],
-			"triggerId": "trigger1"
-		}
-		,
+			"loc": [400, 0],
+			"triggerId": ["trigger1", "trigger2"]
+		},
 		{
 			"id": "trapdoor2",
 			"className": "Trapdoor",
 			"json": "Trapdoor.json",
-			"loc": [400, 200],
-			"triggerId": "trigger1"
+			"loc": [480, 80],
+			"triggerId": ["trigger1", "trigger2"]
+		},
+		{
+			"id": "trapdoor3",
+			"className": "Trapdoor",
+			"json": "Trapdoor.json",
+			"loc": [560, 160],
+			"triggerId": ["trigger1", "trigger2"]
+		},
+		{
+			"id": "trapdoor4",
+			"className": "Trapdoor",
+			"json": "Trapdoor.json",
+			"loc": [640, 240],
+			"triggerId": ["trigger1", "trigger2"]
 		}
 	]
 }

@@ -6,15 +6,18 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 		this.triggerId = json.triggerId;
 		this.animation = new Animation(game, json);
 		this.opened = false;
-		this.path = json.path;
-	    for(var i = 0; i < this.path.length; i++) {
-	    	this.path[i][0] = this.path[i][0] + this.loc.x;
-	    	this.path[i][1] = this.path[i][1] + this.loc.y;
+		this.path = new Array();
+	    for(var i = 0; i < json.path.length; i++) {
+	    	this.path[i] = new Array();
+	    	this.path[i][0] = json.path[i][0] + this.loc.x;
+	    	this.path[i][1] = json.path[i][1] + this.loc.y;
 		}
 	},
 	{
 		init: function() {
-			this.game.getEntity(this.triggerId).addTriggerable(this);
+			for(var i = 0; i < this.triggerId.length; i++) {
+				this.game.getEntity(this.triggerId[i]).addTriggerable(this);
+			}
 		},
 
 		activate: function(on) {
