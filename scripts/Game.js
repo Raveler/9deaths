@@ -35,8 +35,6 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		// Load json data
 		var jsonFileNames = [];
 		jsonFileNames.push("world");
-		jsonFileNames.push("entities");
-		jsonFileNames.push("world");
 		jsonFileNames.push("game");
 		jsonFileNames.push("Trigger");
 		jsonFileNames.push("Trapdoor");
@@ -198,26 +196,17 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			this.entities = [];
 			this.entitiesById = {};
 
-			// go over all entities in the file
-			var json = this.json["entities"];
-			this.nLeft = 0;
-			for (var i = 0; i < json.entities.length; ++i) {
-				var entityData = json.entities[i];
-				var className = entityData.className;
-
-				// normal case
-				this.createEntity(entityData);
-			}
-
 			// create the renderer
 			this.renderer = new Renderer(this, this.json["world"]);
 
 			// Dave init stuff
 			this.initDave();
+
+			// start shizzle
+			this.startGame();
 		},
 
 		createEntity: function(entityData) {
-			++this.nLeft;
 			entityData = this.cloneObject(entityData);
 			var className = entityData.className;
 			var json = this.cloneObject(this.json[entityData.json]);
@@ -228,7 +217,6 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 				if (key == "className") continue;
 				json[key] = entityData[key];
 			}
-
 			var entity = new this.entityClasses[className](this, json, id);
 			entity.init();
 			if (entity.getId() == "player") {
@@ -236,10 +224,6 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			}
 			this.entities.push(entity);
 			this.entitiesById[entity.getId()] = entity;
-			--this.nLeft;
-			if (this.nLeft == 0  && !this.entitiesLoaded) {
-				this.startGame();
-			}
 			return entity;
 		},
 
