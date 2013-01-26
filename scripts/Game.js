@@ -148,13 +148,13 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			this.area.debugDraw(ctx);
 
 			this.triggers.checkIfActivated();
-			//this.triggers.debugDraw(ctx);
+			this.triggers.debugDraw(ctx);
 
 			this.entities.checkIfActivated(this.player.loc);
-			//this.entities.debugDraw(ctx);
+			this.entities.debugDraw(ctx);
 
 			this.monster.move();
-			//this.monster.debugDraw(ctx);
+			this.monster.debugDraw(ctx);
 		},
 
         loadImages: function(fileNames) {
