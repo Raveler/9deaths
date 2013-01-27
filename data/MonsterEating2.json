@@ -1,0 +1,14 @@
+{
+	"width": 344,
+	"height": 129,
+	"frameRate": 40,
+	"focusPoint": [172, 120],
+	"scale": 1,
+	"animations": [
+		{
+			"name": "eat",
+			"length": 1
+		}
+	],
+	"fileName": "ScreamDeath.png"
+}

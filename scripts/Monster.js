@@ -11,6 +11,10 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "ContainedAnimati
 		this.game.monsters.push(this);
 		this.skipMe = true;
 		this.speed = json.speed;
+		this.name = json.name;
+		if (this.name == "Shadow") {
+			this.death = true; // Hacky, shadow must be spawned explicitely
+		}
 		if (typeof this.speed == "undefined") this.speed = 2.7;
 		if (typeof json.moreFreedom != "undefined") {
 			this.moreFreedom = json.moreFreedom;
@@ -52,7 +56,11 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "ContainedAnimati
 			if ((Math.abs(moveVector.x) < 110) && (Math.abs(moveVector.y) < 15)) {
 				this.game.player.die();
 				this.eating = true;
-				this.eatingAnimation = new ContainedAnimation(this.game, this.game.json["MonsterEating"], this.getLoc());
+				if (this.name == "Shadow") 	{
+					this.eatingAnimation = new ContainedAnimation(this.game, this.game.json["MonsterEating2"], this.getLoc());
+				} else {
+					this.eatingAnimation = new ContainedAnimation(this.game, this.game.json["MonsterEating"], this.getLoc());		
+				}
 				this.eatingAnimation.animation.setAnimation("eating");
 				this.eatingAnimation.animation.setFlip(true);
 				this.eatingAnimation.init();

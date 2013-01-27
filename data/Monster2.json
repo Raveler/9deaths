@@ -1,0 +1,20 @@
+{
+	"startingLocation": [400, 150],
+	"name": "Shadow",
+	"width": 750,
+	"height": 420,
+	"frameRate": 65,
+	"focusPoint": [375, 400],
+	"scale": 0.60,
+	"animations": [
+		{
+			"name": "walk",
+			"length": 40
+		},
+		{
+			"name": "idle",
+			"length": 1
+		}
+	],
+	"fileName": "BeEn4A_Spritesheet40x1.png"
+}
