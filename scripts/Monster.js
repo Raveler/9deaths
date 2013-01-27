@@ -8,7 +8,6 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "ContainedAnimati
 		this.death = false;
 		this.eating = false;
 		this.animation = new Animation(game, json);
-		//this.eatingAnimation = this.game.json["MonsterEating"];
 		this.game.monsters.push(this);
 		this.skipMe = true;
 	},
@@ -79,8 +78,9 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "ContainedAnimati
 		},
 
 		die: function() {
-			Logger.log("DIEDIE");
-			this.eatingAnimation.die();
+			if (this.eatingAnimation instanceof Object) {
+				this.eatingAnimation.die();
+			}
 			this.death = true;
 		},
 
