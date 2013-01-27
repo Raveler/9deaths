@@ -17,6 +17,10 @@
 		{
 			"name": "idle",
 			"length": 1
+		},
+		{
+			"name": "floating",
+			"length": 54
 		}
 	],
 	"fileName": "character.png"

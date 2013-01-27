@@ -9,8 +9,13 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 		this.eating = false;
 		this.animation = new Animation(game, json);
 		this.game.monsters.push(this);
+		this.skipMe = true;
 	},
 	{
+		init: function() {
+			this.game.movables.push(this);
+		},
+
 		update: function(dt) {
 			this.animation.update(dt);
 

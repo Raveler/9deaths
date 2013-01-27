@@ -4,6 +4,21 @@
 	"rooms": [
 		{
 			"doorY": 114,
+			"fileName": "BloodPool.jpg",
+
+			"entities": [
+				{
+					"id": "bloodRoom1",
+					"className": "BloodRoom",
+					"json": "BloodRoom",
+					"loc": [0, 0],
+					"hotSpots": [[1000, 114]],
+					"width": 1200
+				}
+			]
+		},
+		{
+			"doorY": 114,
 			"fileName": "room 01.jpg",
 
 			"entities": [
@@ -123,21 +138,6 @@
 					"className": "Pit",
 					"json": "Pit",
 					"loc": [896, 252]
-				}
-			]
-		},
-		{
-			"doorY": 114,
-			"fileName": "BloodPool.jpg",
-
-			"entities": [
-				{
-					"id": "bloodRoom1",
-					"className": "BloodRoom",
-					"json": "BloodRoom",
-					"loc": [0, 0],
-					"hotSpots": [[1000, 114]],
-					"width": 1200
 				}
 			]
 		},
