@@ -1,0 +1,14 @@
+{
+	"width": 350,
+	"height": 210,
+	"frameRate": 40,
+	"focusPoint": [200, 200],
+	"scale": 1,
+	"animations": [
+		{
+			"name": "eat",
+			"length": 80
+		}
+	],
+	"fileName": "Monsta2_eat_Spritesheet80x1.png"
+}

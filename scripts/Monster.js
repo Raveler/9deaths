@@ -1,4 +1,4 @@
-define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose, Vector2, Logger, Entity, Animation) {
+define(["Compose", "Vector2", "Logger", "Entity", "Animation", "ContainedAnimation"], function(Compose, Vector2, Logger, Entity, Animation, ContainedAnimation) {
 
 	var Monster = Compose(Entity, function(game, json) {
 		this.game = game;
@@ -8,6 +8,7 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 		this.death = false;
 		this.eating = false;
 		this.animation = new Animation(game, json);
+		//this.eatingAnimation = this.game.json["MonsterEating"];
 		this.game.monsters.push(this);
 		this.skipMe = true;
 	},
@@ -20,7 +21,7 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 			this.animation.update(dt);
 
 			// Ignore if death
-			if (this.death) {
+			if (this.death || this.eating) {
 				return;
 			}
 
@@ -31,9 +32,14 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 				return;
 			} 
 			
-			Logger.log(Math.abs(moveVector.x));
 			if ((Math.abs(moveVector.x) < 110) && (Math.abs(moveVector.y) < 15)) {
 				this.game.player.die();
+				this.eating = true;
+				this.eatingAnimation = new ContainedAnimation(this.game, this.game.json["MonsterEating"], this.getLoc());
+				this.eatingAnimation.animation.setAnimation("eating");
+				this.eatingAnimation.animation.setFlip(true);
+				this.eatingAnimation.init();
+				return;
 			}
 
 			moveVector = moveVector.normalize();
@@ -73,16 +79,14 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 		},
 
 		die: function() {
+			Logger.log("DIEDIE");
+			this.eatingAnimation.die();
 			this.death = true;
-		},
-
-		eat: function() {
-			this.eating = true;
 		},
 
 		draw: function(ctx) {
 			// Ignore if death
-			if (this.death) {
+			if (this.death || this.eating) {
 				return;
 			}
 

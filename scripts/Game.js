@@ -33,6 +33,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		imagesFileNames.push("blood.png");
 		imagesFileNames.push("SpikeDeath.png");
 		imagesFileNames.push("monsta3_Spritesheet15x1.png");
+		imagesFileNames.push("Monsta2_eat_Spritesheet80x1.png");
 		this.loadImages(imagesFileNames);
 
 		// Load json data
@@ -46,6 +47,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		jsonFileNames.push("Pit");
 		jsonFileNames.push("BloodRoom");
 		jsonFileNames.push("Monster");
+		jsonFileNames.push("MonsterEating");
 		this.loadJson(jsonFileNames);
 
 		// load entitity classes
