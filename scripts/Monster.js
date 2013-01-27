@@ -70,7 +70,7 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "ContainedAnimati
 			var newLocation = this.getLoc().add(moveVector);
 
 			if (this.game.isValidAndSafePosition(newLocation)) {
-				if ((newLocation.x > (roomPos.x - roomWidth + 420)) && (newLocation.x < (roomPos.x - 50))) {		
+				if ((newLocation.x > (roomPos.x - roomWidth + 410)) && (newLocation.x < (roomPos.x - 50))) {		
 					this.setLoc(newLocation);
 				} else {
 					this.animation.setAnimation("idle");
@@ -80,7 +80,7 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "ContainedAnimati
 
 			newLocation = new Vector2(this.getLoc().x + (moveVector.x / Math.abs(moveVector.x)), this.getLoc().y);
 			if (this.game.isValidAndSafePosition(newLocation)) {
-				if ((newLocation.x > (roomPos.x - roomWidth + 420)) && (newLocation.x < (roomPos.x - 50))) {		
+				if ((newLocation.x > (roomPos.x - roomWidth + 410)) && (newLocation.x < (roomPos.x - 50))) {		
 					this.setLoc(newLocation);
 				} else {
 					this.animation.setAnimation("idle");
@@ -90,13 +90,15 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "ContainedAnimati
 
 			newLocation = new Vector2(this.getLoc().x, this.getLoc().y + (moveVector.y / Math.abs(moveVector.y)));
 			if (this.game.isValidAndSafePosition(newLocation)) {
-				if ((newLocation.x > (roomPos.x - roomWidth + 420)) && (newLocation.x < (roomPos.x - 50))) {		
+				if ((newLocation.x > (roomPos.x - roomWidth + 410)) && (newLocation.x < (roomPos.x - 50))) {		
 					this.setLoc(newLocation);
 				} else {
 					this.animation.setAnimation("idle");
 				}
 				return;
 			}
+
+			this.animation.setAnimation("idle");
 		},
 
 		init: function() {
