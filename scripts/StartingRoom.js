@@ -51,7 +51,7 @@ define(["Compose", "Logger", "Vector2", "Animation", "Particle", "Random"], func
 			ctx.font = "18px Croissant One";
 			ctx.fillStyle = "#696660";
 			ctx.textAlign = "center";
-			ctx.fillText(name, 1000 + i * 190, -150);
+			ctx.fillText(name, 1975 + i * 190, -150);
 			}
 		}
 	});

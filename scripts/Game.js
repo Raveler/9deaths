@@ -260,6 +260,8 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		},
 
 		reset: function() {
+			this.audio.Ambientcreep.pause();
+			this.audio.Ambientcreep.currentTime = 0;
 			this.audio.MansionFIN.currentTime = 0;
 			this.audio.MansionFIN.play();
 			this.resetTimer = 0;

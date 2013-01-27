@@ -67,12 +67,10 @@ define(["Compose", "Logger", "Vector2", "Animation", "Particle", "Random"], func
 				this.timer += dt;
 				if (this.game.player.speed > 0.8) this.game.player.speed -= 0.03;
 				if (!this.screaming && this.screamIndex < this.screamStarts.length && this.timer / 1000 > this.screamStarts[this.screamIndex]) {
-					Logger.log("SCREAMING START");
 					this.screaming = true;
 					this.screamCounter = 0;
 				}
 				if (this.screaming && this.timer / 1000 > this.screamEnds[this.screamIndex]) {
-					Logger.log("SCREAMING END");
 					this.screaming = false;
 					++this.screamIndex;
 				}
