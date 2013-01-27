@@ -242,6 +242,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			this.resetTimer = 0;
 			this.player.dead = false;
 			this.player.setLoc(this.player.startingLocation);
+			this.offset = 500;
 			this.player.reset();
 
 		},
@@ -295,6 +296,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			this.trapdoors = new Array();
 			this.pits = new Array();
 			this.movables = [];
+			this.offset = 500;
 
 			// go over all entities, and load those into the game
 			this.entities = [];
@@ -380,7 +382,10 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			ctx.fillStyle = "#000000";
 			ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 			ctx.save();
-			ctx.translate(-this.player.getLoc().x + this.canvas.width/2, 292);
+			if (this. offset > 1) {
+				this.offset = this.offset - (this.offset / 20);
+			}
+			ctx.translate(-this.player.getLoc().x + this.offset + this.canvas.width/2, 292);
 			this.renderer.draw(ctx);
 
 			// draw the entities

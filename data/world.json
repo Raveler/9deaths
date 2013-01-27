@@ -64,8 +64,7 @@
 					"className": "Monster",
 					"json": "Monster",
 					"loc": [1150, 150],
-					"activeRange": 1000,
-					"xlimit": [1400, 2450]
+					"activeRange": 1000
 				}
 			]
 		},
@@ -143,57 +142,138 @@
 					"active": false,
 					"activated": true,
 					"activateRange": 10000,
-					"loc": [375, 50],
-					"toggled": true
-				},
-				{
-					"id": "trigger2",
-					"className": "Trigger",
-					"json": "Trigger",
-					"active": false,
-					"activated": true,
-					"activateRange": 10000,
-					"loc": [1120, 50],
+					"loc": [560, 50],
 					"toggled": true
 				},
 				{
 					"id": "trapdoor1",
 					"className": "Trapdoor",
 					"json": "Trapdoor",
-					"loc": [564, 60],
+					"loc": [732, 63],
 					"triggerId": ["trigger1", "trigger2"]
 				},
 				{
 					"id": "monster1",
 					"className": "Monster",
 					"json": "Monster",
-					"loc": [1150, 150],
-					"activeRange": 1000,
-					"xlimit": [1400, 2450]
+					"loc": [1150, 85],
+					"activeRange": 1000
 				},
 				{
 					"id": "pitOfdoom1",
 					"className": "Pit",
 					"json": "Pit",
-					"loc": [500, 0]
+					"loc": [668, 0]
+				},
+				{
+					"id": "pitOfdoom2",
+					"className": "Pit",
+					"json": "Pit",
+					"loc": [794, 126]
 				},
 				{
 					"id": "pitOfdoom3",
 					"className": "Pit",
 					"json": "Pit",
-					"loc": [626, 126]
+					"loc": [857, 189]
 				},
 				{
 					"id": "pitOfdoom4",
 					"className": "Pit",
 					"json": "Pit",
-					"loc": [689, 189]
+					"loc": [919, 252]
+				}
+			]
+		},
+		{
+			"doorY": 114,
+			"fileName": "room 01.jpg",
+			"entities": [
+				{
+					"id": "trapdoor1",
+					"className": "Trapdoor",
+					"json": "Trapdoor",
+					"loc": [488, 0],
+					"blooded": true,
+					"openAuto": true,
+					"triggerId": []
+				},	
+				{
+					"id": "trapdoor2",
+					"className": "Trapdoor",
+					"json": "Trapdoor",
+					"loc": [551, 63],
+					"blooded": true,
+					"openAuto": true,
+					"triggerId": []
 				},
 				{
-					"id": "pitOfdoom5",
-					"className": "Pit",
-					"json": "Pit",
-					"loc": [751, 252]
+					"id": "trapdoor3",
+					"className": "Trapdoor",
+					"json": "Trapdoor",
+					"loc": [613, 126],
+					"blooded": true,
+					"openAuto": true,
+					"triggerId": []
+				},
+				{
+					"id": "trapdoor4",
+					"className": "Trapdoor",
+					"json": "Trapdoor",
+					"loc": [676, 189],
+					"triggerId": []
+				},
+				{
+					"id": "trapdoor5",
+					"className": "Trapdoor",
+					"json": "Trapdoor",
+					"loc": [738, 252],
+					"blooded": true,
+					"openAuto": true,
+					"triggerId": []
+				},
+				{
+					"id": "trapdoor6",
+					"className": "Trapdoor",
+					"json": "Trapdoor",
+					"loc": [855, 0],
+					"blooded": true,
+					"openAuto": true,
+					"triggerId": []
+				},
+				{
+					"id": "trapdoor7",
+					"className": "Trapdoor",
+					"json": "Trapdoor",
+					"loc": [918, 63],
+					"blooded": true,
+					"openAuto": true,
+					"triggerId": []
+				},
+				{
+					"id": "trapdoor8",
+					"className": "Trapdoor",
+					"json": "Trapdoor",
+					"loc": [980, 126],
+					"triggerId": []
+				},
+				{
+					"id": "trapdoor9",
+					"className": "Trapdoor",
+					"json": "Trapdoor",
+					"loc": [1043, 189],
+					"blooded": true,
+					"openAuto": true,
+					"triggerId": []
+				},
+				{
+					"id": "trapdoor10",
+					"className": "Trapdoor",
+					"json": "Trapdoor",
+					"loc": [1105, 252],
+					"blooded": true,
+					"openAuto": true,
+					"triggerId": []
 				}
 			]
 		},
