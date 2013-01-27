@@ -44,8 +44,7 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random", "Partic
 			// too close - die!
 			if (minDistance < 60) {
 				this.game.player.die();
-				if (Random.getInt(0, 1) == 0) this.game.audio.manscream1.play();
-				else this.game.audio.manscream2.play();
+				this.game.player.scream();
 				var animation = new ContainedAnimation(this.game, this.bodyAnimation, new Vector2(playerLoc.x, Math.max(40, playerLoc.y)));
 				animation.animation.setAnimation("floating");
 				animation.init();

@@ -12,6 +12,8 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random"], functi
 		this.nChars = 4;
 		this.originalNames = this.game.cloneObject(this.game.json["Names"]);
 		this.names = this.game.cloneObject(this.originalNames);
+		this.fading = false;
+		this.fadeTime = 0;
 	},
 	{
 		init: function() {
@@ -20,6 +22,9 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random"], functi
 		},
 
 		reset: function() {
+
+			this.fading = false;
+			this.fadeTime = 0;
 
 			this.speed = 5;
 
@@ -45,8 +50,23 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random"], functi
 			var pick = Random.getInt(0, nNames-1);
 			this.name = this.names[type][pick];
 			this.names[type].splice(pick, 1);
+		},
 
+		fade: function() {
+			this.fading = true;
+		},
 
+		scream: function() {
+			var pick = Random.getInt(1, 9);
+			if (pick == 1) this.game.audio.manscream1.play();
+			if (pick == 2) this.game.audio.manscream2.play();
+			if (pick == 3) this.game.audio.manscream3.play();
+			if (pick == 4) this.game.audio.manscream4.play();
+			if (pick == 5) this.game.audio.manscream5.play();
+			if (pick == 6) this.game.audio.manscream6.play();
+			if (pick == 7) this.game.audio.manscream7.play();
+			if (pick == 8) this.game.audio.manscream8.play();
+			if (pick == 9) this.game.audio.manscream9.play();
 		},
 
 		fall: function() {
@@ -55,7 +75,7 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random"], functi
 		},
 
 		update: function(dt) { // TODO use dt!
-
+			if (this.fading) this.fadeTime += dt;
 			this.animation.update(dt);
 			var loc = this.getLoc();
 			var dx = 0, dy = 0;
@@ -139,6 +159,9 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random"], functi
 			ctx.save();
 			//ctx.fillStyle = "#00FF00";
 			ctx.translate(this.loc.x, this.loc.y);
+			if (this.fading) {
+				ctx.globalAlpha = Math.max(0, 1.0 - this.fadeTime / 1000);
+			}
 			//ctx.fillRect(-2, -2, 4, 4);
 			this.animation.draw(ctx, this.z);
 			ctx.restore();

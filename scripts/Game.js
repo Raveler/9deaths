@@ -15,6 +15,14 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		this.killCount = 0;
 		this.lastDeaths = [];
 
+		// credits
+		this.credits = false;
+		this.creditsY = 0;
+
+		// tree name
+		this.treeName = "Nicodemus";
+		this.fadeToBlack = false;
+		this.fadeTime = 0;
 
 		// reset timer
 		this.resetTimer = 0;
@@ -45,6 +53,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		imagesFileNames.push("RoomSpawn.jpg");
 		imagesFileNames.push("spawnRoomFront.png");
 		imagesFileNames.push("tree.jpg");
+		imagesFileNames.push("endCredit.jpg");
 		this.loadImages(imagesFileNames);
 
 		// Load json data
@@ -80,6 +89,13 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		audioFileNames.push("HBfast2");
 		audioFileNames.push("manscream1");
 		audioFileNames.push("manscream2");
+		audioFileNames.push("manscream3");
+		audioFileNames.push("manscream4");
+		audioFileNames.push("manscream5");
+		audioFileNames.push("manscream6");
+		audioFileNames.push("manscream7");
+		audioFileNames.push("manscream8");
+		audioFileNames.push("manscream9");
 		audioFileNames.push("Bloodfootsteps");
 		audioFileNames.push("Footsteps");
 		audioFileNames.push("Door");
@@ -94,7 +110,6 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			if (audio.canPlayType('audio/ogg')) fileName += ".ogg";
 			else fileName += ".mp3";
 			fileName = "data/sounds/" + fileName;
-			Logger.log(fileName);
 			audio.src = fileName;
 			audio.addEventListener("canplay", function(name, audio) {
 				--this.nAudioPending;
@@ -126,13 +141,14 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			}
 			var ch = String.fromCharCode(e.keyCode);
 			this.keys['key' + e.keyCode] = true;
-			if (e.keyCode != 116) e.preventDefault();
+			if (e.keyCode == 40 || e.keyCode == 38 || e.keyCode == 37 || e.keyCode == 39 || e.keyCode == 32) e.preventDefault();
 		};
 		
 		this.keyUp = function(e) {
 			var ch = String.fromCharCode(e.keyCode);
 			this.keys['key' + e.keyCode] = false;
-			if (e.keyCode != 116) e.preventDefault();
+			if (e.keyCode == 40 || e.keyCode == 38 || e.keyCode == 37 || e.keyCode == 39 || e.keyCode == 32) e.preventDefault();
+			//if (e.keyCode != 116) e.preventDefault();
 		};
 
 		this.keyCodes = {
@@ -183,8 +199,12 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			return this.images[name];
 		},
 
-		update: function(dt) {
+		win: function() {
+			this.fadeToBlack = true;
+			this.fadeTime = 0;
+		},
 
+		update: function(dt) {
 			if (!(this.imagesPending == 0) || !(this.jsonPending == 0) || this.nAudioPending > 0) {
 				return;
 			}
@@ -244,6 +264,8 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			this.player.setLoc(this.player.startingLocation);
 			this.offset = 500;
 			this.player.reset();
+			this.credits = false;
+			this.fadeToBlack = false;
 
 		},
 
@@ -358,6 +380,12 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 
 		tick: function(dt) {
 
+			// credits
+			if (this.credits) {
+				this.showCredits(dt);
+				return;
+			}
+
 			// update all entities
 			for (var i = 0; i < this.entities.length; ++i) {
 				var entity = this.entities[i];
@@ -422,7 +450,63 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 
 			ctx.restore();
 
-			ctx.drawImage(this.images["AmbientDarkness.png"], 0, 0);
+
+			// fade
+			if (this.fadeToBlack) {
+				ctx.save();
+				this.fadeTime += dt;
+				ctx.globalAlpha = this.fadeTime / 2500.0;
+				if (ctx.globalAlpha > 1) ctx.globalAlpha = 1;
+				ctx.fillStyle = "#000000";
+				ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+				if (this.fadeTime >= 3000.0) {
+					this.treeName = this.player.name;
+					this.fadeToBlack = false;
+					this.credits = true;
+					this.creditsY = 0;
+					console.log(this.getEntity("endRoom"));
+					this.getEntity("endRoom").done = false;
+				}
+				ctx.restore();
+			}
+
+			else ctx.drawImage(this.images["AmbientDarkness.png"], 0, 0);
+		},
+
+		showCredits: function(dt) {
+
+			// render the credits bg
+			var ctx = this.canvas.getContext("2d");
+			ctx.drawImage(this.images["endCredit.jpg"], 0, 0);
+
+			// render the name of the person
+			ctx.save();
+			ctx.font = "16px Finger Paint";
+			ctx.fillStyle = "#1c0f0b";
+			ctx.translate(680, 40);
+			ctx.rotate(0.6);
+			ctx.fillText(this.treeName, 0, 0);
+			ctx.restore();
+			this.creditsY -= dt * 0.13;
+			ctx.save();
+			ctx.translate(0, 600);
+			ctx.translate(0, this.creditsY);
+			ctx.font = "16px verdana";
+			ctx.fillStyle = "#FFFFFF";
+			ctx.fillText("9 Deaths", 30, -80);
+			ctx.fillText("Made for the 2013 Global Game Jam", 30, -60);
+			ctx.fillText("Programmer: Karel Crombecq", 30, 0);
+			ctx.fillText("Programmer: David Staessens", 30, 20);
+			ctx.fillText("Lead artist: Elliot Bockxtaele", 30, 40);
+			ctx.fillText("Artist: Thibaut Van Houtte", 30, 60);
+			ctx.fillText("Design & sound: Lena Leel-Össy", 30, 80);
+			ctx.fillText("Writing & sound: Zindzi Owusu", 30, 100);
+			ctx.fillText("Writing: Laurens Adeaga", 30, 120);
+			ctx.restore();
+			if (this.creditsY < -750) {
+				this.credits = false;
+				this.reset();
+			}
 		},
 
 		tickDave: function(ctx) {

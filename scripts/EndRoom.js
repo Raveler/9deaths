@@ -8,10 +8,13 @@ define(["Compose", "Logger", "Vector2", "Animation", "Particle", "Random"], func
 		this.started = false;
 		this.loc = new Vector2(json.loc);
 		this.dialog = false;
+		this.appearing = false;
+		this.form = document.getElementById("dialog");
+		this.done = false;
 	},
 	{
 		getId: function() {
-			return "";
+			return "endRoom";
 		},
 
 		init: function() {
@@ -28,10 +31,30 @@ define(["Compose", "Logger", "Vector2", "Animation", "Particle", "Random"], func
 		},
 
 		update: function(dt) {
-			Logger.log(this.game.player.getBaseX() + " vs " + (this.room.getLoc().x - this.room.getWidth() + 400));
-			if (!this.dialog && this.game.player.getBaseX() > this.room.getLoc().x - this.room.getWidth() + 400) {
+			if (!this.done && !this.dialog && this.game.player.getBaseX() > this.room.getLoc().x - this.room.getWidth() + 400) {
+				document.getElementById("dialog-text").value = "";
 				this.dialog = true;
 				this.game.player.speed = 0;
+				this.form.style.display = "inline-block";
+				this.form.onkeydown = function(e) {
+					if (e.keyCode == 13) {
+						this.submit();
+					}
+				}.bind(this);
+				document.getElementById("dialog-submit").onclick = this.submit.bind(this);
+			}
+		},
+
+		submit: function() {
+			this.dialog = false;
+			this.done = true;
+			this.form.style.display = "none";
+			if (this.game.player.name.toLowerCase() != document.getElementById("dialog-text").value.toLowerCase()) {
+				this.game.player.scream();
+				this.game.player.die();
+			}
+			else {
+				this.game.win();
 			}
 		},
 
@@ -51,6 +74,16 @@ define(["Compose", "Logger", "Vector2", "Animation", "Particle", "Random"], func
 				ctx.fillText("One who does not know his own name...", x, -180);
 				ctx.fillText("... is not worthy of eternal life.", x+100, -150);
 			}
+
+
+			// render the name of the person
+			ctx.save();
+			ctx.font = "16px Finger Paint";
+			ctx.fillStyle = "#1c0f0b";
+			ctx.translate(this.room.getLoc().x - this.room.getWidth() + 720, -240);
+			ctx.rotate(0.6);
+			ctx.fillText(this.game.treeName, 0, 0);
+			ctx.restore();
 
 			/*if (this.isDead()) {
 				return;

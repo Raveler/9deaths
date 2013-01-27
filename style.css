@@ -32,3 +32,30 @@ body {
 	top: 5px;
 	right: 5px;
 }
+
+#dialog {
+	display: none;
+	position: absolute;
+	z-index: 1;
+	margin-left: auto;
+	margin-right: auto;
+	left: 0;
+	right: 0;
+	top: 560px;
+	background-color: #000000;
+	width: 300px;
+	padding: 10px;
+}
+
+#dialog-text {
+	font-family: "Finger Paint";
+	color: #6b0000;
+	border: 0px;
+	background-color: #BBBBBB;
+}
+
+#dialog-submit {
+	color: #FFFFFF;
+	border: 1px solid #ea0000;
+	background-color: #6b0000;
+}

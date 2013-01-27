@@ -88,20 +88,12 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random"], functi
 
 			if (this.isAboveTrap(this.game.player.loc)) {
 				if (this.opened) {
-					if (Random.getInt(0, 1) == 0) {
-						this.game.audio.manscream1.play();
-					} else {
-						this.game.audio.manscream2.play();
-					}
+					this.game.player.scream();
 					this.game.player.die();
 					this.blooded = true;
 					this.animation.setAnimation("open_bloody");
 				} else if (this.autoOpen) {
-					if (Random.getInt(0, 1) == 0) {
-						this.game.audio.manscream1.play();
-					} else {
-						this.game.audio.manscream2.play();
-					}
+					this.game.player.scream();
 					if (this.blooded) {
 						this.animation.setAnimation("open_bloody");
 					} else {

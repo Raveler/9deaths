@@ -9,3 +9,7 @@
 - pimp particle system
 - fix monster voor scary room
 - moar screams
+
+- deur
+- graves
+- control screen & loading screen
