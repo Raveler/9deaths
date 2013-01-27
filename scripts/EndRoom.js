@@ -78,9 +78,9 @@ define(["Compose", "Logger", "Vector2", "Animation", "Particle", "Random"], func
 
 			// render the name of the person
 			ctx.save();
-			ctx.font = "16px Finger Paint";
+			ctx.font = "18px Finger Paint";
 			ctx.fillStyle = "#1c0f0b";
-			ctx.translate(this.room.getLoc().x - this.room.getWidth() + 720, -240);
+			ctx.translate(this.room.getLoc().x - this.room.getWidth() + 738, -226);
 			ctx.rotate(0.6);
 			ctx.fillText(this.game.treeName, 0, 0);
 			ctx.restore();
