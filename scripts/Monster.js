@@ -10,6 +10,8 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "ContainedAnimati
 		this.animation = new Animation(game, json);
 		this.game.monsters.push(this);
 		this.skipMe = true;
+		this.speed = json.speed;
+		if (typeof this.speed == "undefined") this.speed = 2.7;
 	},
 	{
 		init: function() {
@@ -63,7 +65,7 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "ContainedAnimati
 			}
 
 			// Scale monster speed
-			moveVector = moveVector.multiply(2.7);
+			moveVector = moveVector.multiply(this.speed);
 
 			var roomPos = this.room.getLoc();
 			var roomWidth = this.room.getWidth();

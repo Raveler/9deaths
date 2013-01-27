@@ -4,7 +4,14 @@
 	"rooms": [
 		{
 			"doorY": 114,
-			"fileName": "room 01.jpg",
+			"fileName": "spawnRoomFront.png",
+
+			"entities": [
+			]
+		},
+		{
+			"doorY": 114,
+			"fileName": "RoomSpawn.jpg",
 
 			"entities": [
 				{
@@ -274,10 +281,39 @@
 			]
 		},
 		{
-			"doorY": 114,
+			"doorY": 94,
 			"fileName": "scaryLevel.jpg",
 
-			"entities": []
+			"entities": [
+				{
+					"id": "babyRoom",
+					"className": "BabyRoom",
+					"json": "BabyRoom",
+					"loc": [0, 0]
+				},
+				{
+					"id": "monsterBabyRoom",
+					"className": "Monster",
+					"json": "Monster",
+					"loc": [100, 50],
+					"activeRange": 1000,
+					"xlimit": [1500, 2450],
+					"speed": 0.5
+				}
+			]
+		},
+		{
+			"doorY": 114,
+			"fileName": "tree.jpg",
+
+			"entities": [
+				{
+					"id": "endRoom",
+					"className": "EndRoom",
+					"json": "EndRoom",
+					"loc": [0, 0]
+				}
+			]
 		}
 	]
 }

@@ -1,28 +1,34 @@
 define(["Compose", "Logger", "Random", "Vector2"], function(Compose, Logger, Random, Vector2) {
 
-	var Particle = Compose(function constructor(game, imageName, point, rotation, scale, velocity, angularVelocity) {
+	var Particle = Compose(function constructor(game, imageName, point, rotation, scale, speed, direction, directionChange, angularVelocity) {
 		this.game = game;
 		this.image = this.game.images[imageName];
 
 		this.width = this.image.width;
 		this.height = this.image.height;
 
-		this.position = new Vector2(point.x - (this.width / 2), point.y - (this.height / 2));
+		this.position = new Vector2(point.x - (this.width / 2), point.y - (this.height / 2) + 15);
+		this.originalPosition = this.position.copy();
 		this.rotation = rotation;
 		this.scale = scale;
-		this.velocity = velocity;
 		this.angularVelocity = angularVelocity;
 		this.lifeTime = 250;
+		this.skipMe = true;
+		this.speed = speed;
+		this.direction = direction;
+		this.directionChange = directionChange;
 	},
 	{
 
 		update: function(dt) {
 			this.lifeTime -= dt;
-			this.velocity.x *= 0.995;
-			this.velocity.y += 0.075;
+			/*this.velocity.x *= 0.995;
+			this.velocity.y += 0.075;*/
 
-			this.position.x += this.velocity.x;
-			this.position.y += this.velocity.y;
+			this.direction += this.directionChange;
+
+			this.position.x += this.speed * Math.cos(this.direction);
+			this.position.y += this.speed * Math.sin(this.direction);
 			this.rotation = this.rotation + this.angularVelocity;
 		},
 
@@ -32,6 +38,10 @@ define(["Compose", "Logger", "Random", "Vector2"], function(Compose, Logger, Ran
 
 		getId: function() {
 			return "particle";
+		},
+
+		getLoc: function() {
+			return this.originalPosition;
 		},
 
 		draw: function(ctx) {

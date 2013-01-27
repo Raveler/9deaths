@@ -9,7 +9,7 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random", "Partic
 		}
 		this.particlePending = 0;
 		this.bodies = [];
-		this.bodyAnimation = this.game.json["Player"];
+		this.bodyAnimation = this.game.player.json;
 	},
 	{
 		init: function() {
@@ -44,11 +44,12 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random", "Partic
 			// too close - die!
 			if (minDistance < 60) {
 				this.game.player.die();
+				if (Random.getInt(0, 1) == 0) this.game.audio.manscream1.play();
+				else this.game.audio.manscream2.play();
 				var animation = new ContainedAnimation(this.game, this.bodyAnimation, new Vector2(playerLoc.x, Math.max(40, playerLoc.y)));
 				animation.animation.setAnimation("floating");
 				animation.init();
 				this.bodies.push(animation);
-
 				return;
 			}
 			if (loc.x < playerLoc.x && playerLoc.x < loc.x + this.width && this.game.player.isMoving()) {
@@ -62,7 +63,8 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random", "Partic
 				// generate particles
 				while (this.particlePending > 0) {
 					--this.particlePending;
-					var particle = new Particle(this.game, "blood.png", playerLoc.copy(), Random.getDouble(1.2, 2.2), Random.getDouble(0.5, 1.5), new Vector2(Random.getDouble(-4, 4), Random.getDouble(-6, -3)), 0.2);
+					var particle = new Particle(this.game, "blood.png", this.game.player.getLoc().copy().add(new Vector2(Random.getDouble(-15, 15)), 15), Random.getDouble(0, 2 * Math.PI), Random.getDouble(0.7, 1.5), Random.getDouble(6.5 * ratio * 0.05, 15.5 * ratio * 0.05), -Math.PI/2, (Random.getInt(0,1) == 0 ? -1.0 : 1.0) * Random.getDouble(0.0, 0.1), 0.2);
+					this.game.movables.push(particle);
 					this.game.entities.push(particle);
 				}
 			}

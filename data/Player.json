@@ -1,5 +1,5 @@
 {
-	"startingLocation": [7000, 150],
+	"startingLocation": [13050, 150],
 	"width": 360,
 	"height": 200,
 	"frameRate": 40,
@@ -20,7 +20,7 @@
 		},
 		{
 			"name": "floating",
-			"length": 54
+			"length": 40
 		}
 	],
 	"fileName": "Characters/character1.png"

@@ -1,8 +1,11 @@
 - film grain
 - teller op het einde
 - diary notes
-- deur
 - random heartbeat en pulserende schadow
-- meerdere chars
 - namen
 - ogen flikkeren in baby room
+- leeg stuk muziek aan het einde van de MansionFIN
+- Nicodemus
+- pimp particle system
+- fix monster voor scary room
+- moar screams

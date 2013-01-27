@@ -6,9 +6,7 @@ require(["Logger", "Loader", "Game", "FPSTimer"], function callback(Logger, Load
 	log.appendChild(Logger.getElement());
 	
 	// launch the game
-	var main = document.getElementById("main");
 	var game = new Game();
-	main.appendChild(game.getCanvas());
 	
 	// set up update loop/FPS timer
 	var fpsTimer = new FPSTimer(60, function(dt) {

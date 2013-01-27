@@ -31,6 +31,16 @@ define(["Compose", "Vector2", "Layer", "Room", "Player", "Loader", "Logger", "Do
 				if (typeof entity.loc != "undefined") entity.loc[0] += x - room.getWidth();
 				var obj = this.game.createEntity(entity);
 				obj.room = room;
+
+				// create a door
+				if (room.fileName != "tree.jpg" && room.fileName != "scaryLevel.jpg") {
+					this.game.createEntity({
+						id: "door",
+						className: "Door",
+						json: "Door",
+						loc: [x, room.doorY + room.doorWidth/2]
+					});
+				}
 			}
 		}
 	},

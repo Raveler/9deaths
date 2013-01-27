@@ -1,7 +1,66 @@
 {
-	"names": [
-		"Wilbert Hamilton",
-		"Sir William Brakanol",
-		"Dimitri Brokonov"
+	"types": [
+		"normal",
+		"normal",
+		"fancy",
+		"exotic"
+	],
+
+	"normal": [
+		"Elliot",
+		"Dimitri",
+		"William",
+		"Patrick",
+		"Davide",
+		"Maxim",
+		"Hector",
+		"Albert",
+		"Samuel",
+		"George",
+		"Edmund",
+		"Gabriel",
+		"Lucas",
+		"Norris",
+		"Gilbert",
+		"Martin",
+		"Rufus",
+		"Julio",
+		"Thomas",
+		"Virgil"
+	],
+
+	"fancy": [
+		"Archibald",
+		"Cornelius",
+		"Carolus",
+		"Sir Henry",
+		"Oscar",
+		"Benedict",
+		"Roderick",
+		"Franklin",
+		"Sir Luther",
+		"Ser Dominic",
+		"Lawrence",
+		"Philippe",
+		"Jean-Baptiste",
+		"Salvatore",
+		"Petrus",
+		"Alexei"
+
+	],
+
+	"exotic": [
+		"Octavius",
+		"Lucius",
+		"Marcellus",
+		"Ronan",
+		"Javier",
+		"Nathaniel",
+		"Elijah",
+		"Abel",
+		"Brutus",
+		"Gustav",
+		"Detlev",
+		"Isaac"
 	]
 }

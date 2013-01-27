@@ -34,6 +34,7 @@ define(["Compose", "Logger", "Vector2"], function(Compose, Logger, Vector2) {
 		},
 
 		debugDraw: function(ctx) {
+			if (!this.game.debugDraw) return;
 			for(var j = 0; j < this.areaData.regions.length; j++) {
 				var length = this.areaData.regions[j].path.length;
 		    	for(var i = 0; i < length; i++) {

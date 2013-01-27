@@ -1,5 +1,5 @@
-define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigger", "Entity", "Monster", "Trapdoor", "TrapdoorRoom", "Pit", "BloodRoom"],
-	function(Compose, Logger, GameArea, Vector2, Player, Renderer, Trigger, Entity, Monster, Trapdoor, TrapdoorRoom, Pit, BloodRoom) {
+define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigger", "Entity", "Monster", "Trapdoor", "TrapdoorRoom", "Pit", "BloodRoom", "Door", "BabyRoom", "StartingRoom", "EndRoom"],
+	function(Compose, Logger, GameArea, Vector2, Player, Renderer, Trigger, Entity, Monster, Trapdoor, TrapdoorRoom, Pit, BloodRoom, Door, BabyRoom, StartingRoom, EndRoom) {
 	
 	var Game = Compose(function() {
 
@@ -11,14 +11,14 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		this.width = 1024;
 		this.height = 590;
 
-		// the canvas
-		this.canvas = document.createElement('canvas');
-		this.canvas.style = "canvas-game";
-		this.canvas.width = this.width;
-		this.canvas.height = this.height;
+		// kill count
+		this.killCount = 0;
+		this.lastDeaths = [];
+
 
 		// reset timer
 		this.resetTimer = 0;
+		this.controlScreen = true;
 
 		// Load images
 		var imagesFileNames=[];
@@ -35,8 +35,16 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		imagesFileNames.push("monsta3_Spritesheet15x1.png");
 		imagesFileNames.push("LongBloodPool.jpg");
 		imagesFileNames.push("Monsta2_eat_Spritesheet80x1.png");
+		imagesFileNames.push("Characters/character0.png");
 		imagesFileNames.push("Characters/character1.png");
+		imagesFileNames.push("Characters/character2.png");
+		imagesFileNames.push("Characters/character3.png");
 		imagesFileNames.push("AmbientDarkness.png");
+		imagesFileNames.push("door.png");
+		imagesFileNames.push("ControlScreen.jpg");
+		imagesFileNames.push("RoomSpawn.jpg");
+		imagesFileNames.push("spawnRoomFront.png");
+		imagesFileNames.push("tree.jpg");
 		this.loadImages(imagesFileNames);
 
 		// Load json data
@@ -52,6 +60,10 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		jsonFileNames.push("Monster");
 		jsonFileNames.push("MonsterEating");
 		jsonFileNames.push("Names");
+		jsonFileNames.push("Door");
+		jsonFileNames.push("BabyRoom");
+		jsonFileNames.push("StartingRoom");
+		jsonFileNames.push("EndRoom");
 		this.loadJson(jsonFileNames);
 
 		// audio files
@@ -70,6 +82,9 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		audioFileNames.push("manscream2");
 		audioFileNames.push("Bloodfootsteps");
 		audioFileNames.push("Footsteps");
+		audioFileNames.push("Door");
+		audioFileNames.push("NormalNoDoor");
+		audioFileNames.push("Ambientcreep");
 		this.nAudioPending = audioFileNames.length;
 		this.audio = {};
 		for (var i = 0; i < audioFileNames.length; ++i) {
@@ -96,6 +111,10 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		entityClasses["Player"] = Player;
 		entityClasses["BloodRoom"] = BloodRoom;
 		entityClasses["Monster"] = Monster;
+		entityClasses["Door"] = Door;
+		entityClasses["BabyRoom"] = BabyRoom;
+		entityClasses["StartingRoom"] = StartingRoom;
+		entityClasses["EndRoom"] = EndRoom;
 		this.entityClasses = entityClasses;
 
 
@@ -156,7 +175,8 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		
 		document.onkeydown = this.keyDown.bind(this);
 		document.onkeyup = this.keyUp.bind(this);
-		this.canvas.onmousedown = this.mouseClick.bind(this);
+
+		this.startingRoom = new StartingRoom(this);
 	},
 	{
 		getImage: function(name) {
@@ -171,12 +191,25 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			else if (this.firstTime) {
 				this.init();
 			}
+			else if (this.controlScreen) {
+				var ctx = this.canvas.getContext("2d");
+				ctx.drawImage(this.images["ControlScreen.jpg"], 0, 0);
+				if (this.isKeyDown(this.keyCodes.space)) {
+					this.controlScreen = false;
+					this.startGame();
+				}
+			}
 			else if (this.entitiesLoaded) {
 
 			// player dead
 				if (this.player.isDead() && this.resetTimer == 0) {
+					this.audio.Bloodfootsteps.pause();
+					this.audio.Footsteps.pause();
 					this.audio.HBfast2.play();
 					this.resetTimer = 5500;
+					++this.killCount;
+					Logger.log(this.player.name);
+					this.lastDeaths.push(this.player.name);
 				}
 
 				// fade to black
@@ -185,9 +218,16 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 					ctx.fillStyle = "#000000";
 					ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 					ctx.fillStyle = "#DD0000";
-					ctx.font = "50px verdana";
-					ctx.fillText("YOU ARE LE DEAD", 20, 50);
 					this.resetTimer -= dt;
+
+					ctx.save();
+					ctx.fillStyle = "#DD0000";
+					ctx.globalAlpha = Math.max(0, (this.resetTimer-2500) / 3000);
+					ctx.font = "500px Finger Paint";
+					ctx.textBaseLine = "top";
+					ctx.textAlign = "center";
+					ctx.fillText(this.killCount, 1024/2, 490);
+					ctx.restore();
 					if (this.resetTimer <= 0) this.reset();
 				}
 
@@ -202,6 +242,8 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			this.resetTimer = 0;
 			this.player.dead = false;
 			this.player.setLoc(this.player.startingLocation);
+			this.player.reset();
+
 		},
 
 		cloneObject: function(obj) {
@@ -237,6 +279,17 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		},
 
 		init: function() {
+
+			// the canvas
+			this.canvas = document.createElement('canvas');
+			this.canvas.style = "canvas-game";
+			this.canvas.width = this.width;
+			this.canvas.height = this.height;
+			var main = document.getElementById("main");
+			main.innerHTML = "";
+			main.appendChild(this.canvas);
+
+
 			this.firstTime = false;
 			this.monsters = new Array();
 			this.trapdoors = new Array();
@@ -252,9 +305,6 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 
 			// Dave init stuff
 			this.initDave();
-
-			// start shizzle
-			this.startGame();
 		},
 
 		createEntity: function(entityData) {
@@ -289,7 +339,10 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		startGame: function() {
 			this.audio.MansionFIN.play();
 			this.audio.MansionFIN.addEventListener("ended", function() {
-				
+				this.audio.NormalNoDoor.play();
+			}.bind(this));
+			this.audio.NormalNoDoor.addEventListener("ended", function() {
+				this.audio.NormalNoDoor.play();
 			}.bind(this));
 			this.entitiesLoaded = true;
 		},
@@ -345,8 +398,13 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 				else if (a.getBaseX() < b.getBaseX()) return 1;
 				return a.getId() < b.getId() ? -1 : 1;
 			}.bind(this));
+			this.startingRoom.draw(ctx);
 			for (var i = 0; i < this.movables.length; ++i) {
 				this.movables[i].draw(ctx);
+				if (this.movables[i].isDead() && this.movables[i].getId() != "player") {
+					this.movables.splice(i, 1);
+					--i;
+				}
 			}
 			for (var i = 0; i < this.entities.length; ++i) {
 				var entity = this.entities[i];

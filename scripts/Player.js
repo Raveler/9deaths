@@ -1,4 +1,4 @@
-define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose, Vector2, Logger, Entity, Animation) {
+define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random"], function(Compose, Vector2, Logger, Entity, Animation, Random) {
 
 	var Player = Compose(Entity, function(game, json) {
 		this.game = game;
@@ -7,13 +7,46 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 		this.fallSpeed = 5;
 		this.moving = false;
 		this.falling = false;
-		this.animation = new Animation(game, json);
-		this.onBlood = false;
-		this.bloodWalking = false;
+		this.json = json;
+		this.charIndex = Random.getInt(0, 3);
+		this.nChars = 4;
+		this.originalNames = this.game.cloneObject(this.game.json["Names"]);
+		this.names = this.game.cloneObject(this.originalNames);
 	},
 	{
 		init: function() {
 			this.setLoc(this.startingLocation);
+			this.reset();
+		},
+
+		reset: function() {
+
+			this.speed = 5;
+
+			// next char
+			this.charIndex = (this.charIndex+1) % (this.nChars);
+
+			// generate a random character
+			var json = this.json;
+			this.animationJson = json;
+			json.fileName = "Characters/character" + this.charIndex + ".png";
+			this.animation = new Animation(this.game, json);
+			this.onBlood = false;
+			this.bloodWalking = false;
+			this.babyRoom = false;
+
+			// pick a name based on its type
+			var type = this.names.types[this.charIndex];
+			var nNames = this.names[type].length;
+			if (nNames == 0) {
+				this.names = this.game.cloneObject(this.originalNames);
+				nNames = this.names[type].length; // reset!
+			}
+			var pick = Random.getInt(0, nNames-1);
+			this.name = this.names[type][pick];
+			this.names[type].splice(pick, 1);
+
+
 		},
 
 		fall: function() {
@@ -75,7 +108,7 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 				this.game.audio.Footsteps.pause();
 			}
 
-			if (this.moving) {
+			if (this.moving && !this.babyRoom) {
 				if (this.bloodWalking) {
 					this.game.audio.Footsteps.pause();
 					this.game.audio.Bloodfootsteps.play();
