@@ -1,0 +1,14 @@
+{
+	"width": 80,
+	"height": 330,
+	"frameRate": 40,
+	"focusPoint": [0, 0],
+	"scale": 1.0,
+	"animations": [
+		{
+			"name": "idle",
+			"length": 60
+		}
+	],
+	"fileName": "hangman.png"
+}
