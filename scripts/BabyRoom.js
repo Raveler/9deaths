@@ -39,7 +39,7 @@ define(["Compose", "Logger", "Vector2", "Animation", "Particle", "Random"], func
 			if (!this.started) {
 
 				// START
-				if (dx > 0) {
+				if (dx > 100) {
 					this.game.player.babyRoom = true;
 					this.game.audio.Bloodfootsteps.pause();
 					this.game.audio.Footsteps.pause();
@@ -48,16 +48,9 @@ define(["Compose", "Logger", "Vector2", "Animation", "Particle", "Random"], func
 					this.game.audio.Ambientcreep.play();
 					this.timer = 0;
 					this.started = true;
-/*
-					// spawn monster
-					this.game.createEntity({
-						"id": "monsterBabyRoom",
-						"className": "Monster",
-						"json": "Monster",
-						"loc": [500, 250],
-						"activeRange": 1000,
-						"speed": 0.75
-					});*/
+
+					// spawn shadow monster
+					this.game.getEntity("monsterBabyRoom").death = false;
 				}
 			}
 

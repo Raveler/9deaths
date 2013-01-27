@@ -374,11 +374,11 @@
 				{
 					"id": "monsterBabyRoom",
 					"className": "Monster",
-					"json": "Monster",
-					"loc": [100, 50],
+					"json": "Monster2",
+					"loc": [100, 10],
 					"activeRange": 1000,
-					"xlimit": [1500, 2450],
-					"speed": 0.5
+					"speed": 0.95,
+					"moreFreedom": true
 				}
 			]
 		},

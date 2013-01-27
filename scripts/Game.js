@@ -45,6 +45,8 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		imagesFileNames.push("RoomSpawn.jpg");
 		imagesFileNames.push("spawnRoomFront.png");
 		imagesFileNames.push("tree.jpg");
+		imagesFileNames.push("ScreamDeath.png");
+		imagesFileNames.push("BeEn4A_Spritesheet40x1.png");
 		this.loadImages(imagesFileNames);
 
 		// Load json data
@@ -59,6 +61,8 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		jsonFileNames.push("BloodRoom");
 		jsonFileNames.push("Monster");
 		jsonFileNames.push("MonsterEating");
+		jsonFileNames.push("Monster2");
+		jsonFileNames.push("MonsterEating2");
 		jsonFileNames.push("Names");
 		jsonFileNames.push("Door");
 		jsonFileNames.push("BabyRoom");
@@ -208,7 +212,6 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 					this.audio.HBfast2.play();
 					this.resetTimer = 5500;
 					++this.killCount;
-					Logger.log(this.player.name);
 					this.lastDeaths.push(this.player.name);
 				}
 
@@ -241,8 +244,10 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			this.audio.MansionFIN.play();
 			this.resetTimer = 0;
 			this.player.dead = false;
+			this.player.speed = 5;
 			this.player.setLoc(this.player.startingLocation);
-			this.offset = 500;
+			this.offset = 750;
+			this.offsetSpeed = 30;
 			this.player.reset();
 
 		},
@@ -296,7 +301,8 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			this.trapdoors = new Array();
 			this.pits = new Array();
 			this.movables = [];
-			this.offset = 500;
+			this.offset = 900;
+			this.offsetSpeed = 80;
 
 			// go over all entities, and load those into the game
 			this.entities = [];
@@ -383,7 +389,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 			ctx.save();
 			if (this. offset > 1) {
-				this.offset = this.offset - (this.offset / 20);
+				this.offset = this.offset - (this.offset / this.offsetSpeed);
 			}
 			ctx.translate(-this.player.getLoc().x + this.offset + this.canvas.width/2, 292);
 			this.renderer.draw(ctx);
