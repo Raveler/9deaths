@@ -47,13 +47,13 @@ define(["Compose", "Logger", "Vector2", "Animation", "Particle", "Random"], func
 
 		submit: function() {
 			this.dialog = false;
-			this.done = true;
 			this.form.style.display = "none";
 			if (this.game.player.name.toLowerCase() != document.getElementById("dialog-text").value.toLowerCase()) {
 				this.game.player.scream();
 				this.game.player.die();
 			}
 			else {
+				this.done = true;
 				this.game.win();
 			}
 		},
