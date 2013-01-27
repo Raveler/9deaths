@@ -40,7 +40,6 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 
 				if (this.keyProcessed == false) {
 					this.keyProcessed = true;
-
 					this.active = !this.active;
 					for (var i = 0; i < this.triggerables.length; ++i) {
 						this.triggerables[i].activate(this.active);
