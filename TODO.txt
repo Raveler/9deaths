@@ -1,10 +1,8 @@
 
 
-Fix flicker problem
 Add extra room: monster + spikes
 
 
-fix dog -> niet blokeren als room van lokatie verandert
 Muziek
 Extra levels
 random notes

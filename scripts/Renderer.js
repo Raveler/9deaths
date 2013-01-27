@@ -29,8 +29,8 @@ define(["Compose", "Vector2", "Layer", "Room", "Player", "Loader", "Logger"], fu
 			for (var j = 0; j < entities.length; ++j) {
 				var entity = entities[j];
 				if (typeof entity.loc != "undefined") entity.loc[0] += x - room.getWidth();
-				this.game.createEntity(entity);
-				entity.room = room;
+				var obj = this.game.createEntity(entity);
+				obj.room = room;
 			}
 		}
 	},

@@ -38,7 +38,7 @@ define(["Compose", "Logger", "Vector2"], function(Compose, Logger, Vector2) {
 
 			// update the frame - not integer!
 			this.frame += dt / this.frameRate;
-			while (this.frame > this.data.animations[this.currentAnimation].length) this.frame -= this.data.animations[this.currentAnimation].length;
+			while (this.frame >= this.data.animations[this.currentAnimation].length) this.frame -= this.data.animations[this.currentAnimation].length;
 		},
 
 		draw: function(ctx, z) {

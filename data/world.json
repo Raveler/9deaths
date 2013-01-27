@@ -56,7 +56,7 @@
 					"id": "monster1",
 					"className": "Monster",
 					"json": "Monster",
-					"loc": [1250, 150],
+					"loc": [1150, 150],
 					"activeRange": 1000,
 					"xlimit": [1400, 2450]
 				}
