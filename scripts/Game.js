@@ -268,6 +268,8 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		},
 
 		reset: function() {
+			this.getEntity("endRoom").done = false;
+			this.getEntity("babyRoom").started = false;
 			this.audio.Ambientcreep.pause();
 			this.audio.Ambientcreep.currentTime = 0;
 			this.audio.MansionFIN.currentTime = 0;
@@ -480,8 +482,9 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 					this.fadeToBlack = false;
 					this.credits = true;
 					this.creditsY = 0;
-					console.log(this.getEntity("endRoom"));
+					//console.log(this.getEntity("endRoom"));
 					this.getEntity("endRoom").done = false;
+					this.getEntity("babyRoom").started = false;
 				}
 				ctx.restore();
 			}

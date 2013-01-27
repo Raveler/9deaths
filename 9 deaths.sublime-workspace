@@ -4,6 +4,30 @@
 		"selected_items":
 		[
 			[
+				"eat",
+				"eatingAnimation"
+			],
+			[
+				"bo",
+				"bodyInPit"
+			],
+			[
+				"stand",
+				"standingOnBody"
+			],
+			[
+				"le",
+				"length"
+			],
+			[
+				"activate",
+				"activateRange"
+			],
+			[
+				"get",
+				"getLoc"
+			],
+			[
 				"first",
 				"firstTime"
 			]
@@ -12,45 +36,116 @@
 	"buffers":
 	[
 		{
-			"contents": "define([\"Compose\", \"Logger\", \"Background\", \"Random\", \"Building\", \"Vector2\", \"Dino\", \"Animation\", \"Particle\", \"Projectile\", \"Color\", \"Rectangle\", \"Civilian\", \"Chopper\", \"Tank\"],\n	function(Compose, Logger, Background, Random, Building, Vector2, Dino, Animation, Particle, Projectile, Color, Rectangle, Civilian, Chopper, Tank) {\n	\n	var Game = Compose(function constructor() {\n		\n		// first time\n		this.firstTime = true;\n\n		// width, height\n		this.width = 1000;\n		this.height = 600;\n\n		// floor height\n		this.floorHeight = 25;\n		\n		// the canvas\n		this.canvas = document.createElement('canvas');\n		this.canvas.style = \"canvas-game\";\n		this.canvas.width = this.width;\n		this.canvas.height = this.height;\n\n		// Load images\n		var imagesFileNames=[\"ground\", \"buildingBlock1\", \"buildingBlock2\", \"buildingBlock3\", \"buildingBlock4\", \"buildingBlock5\", \"buildingBlock6\", \"buildingTop1\", \"buildingTop2\", \"buildingTop3\", \"buildingTop4\", \"dinoAnimLegSS\", \"explosionSS\", \"BG2\", \"dino/body\", \"dino/headClosed\", \"dino/neckPart\", \"dino/headOpen\",\n				\"debri1\", \"debri2\", \"debri3\", \"debri4\", \"debri5\", \"debri6\", \"debri7\", \"debri8\", \"rocket\", \"beam\"];\n		imagesFileNames.push(\"dino/dinoAnimLegSS\");\n		imagesFileNames.push(\"dino/tail\");\n		imagesFileNames.push(\"dino/headClosedLaser\");\n		imagesFileNames.push(\"dino/headOpenLaser\");\n		imagesFileNames.push(\"human/civilianSS\");\n		imagesFileNames.push(\"human/heliSS\");\n		imagesFileNames.push(\"human/heli2SS\");\n		imagesFileNames.push(\"human/tankSS\");\n		imagesFileNames.push(\"human/civilian1SS\");\n		imagesFileNames.push(\"human/civilian2SS\");\n		imagesFileNames.push(\"human/civilian3SS\");\n		imagesFileNames.push(\"human/civilian4SS\");\n		imagesFileNames.push(\"human/civilian5SS\");\n		imagesFileNames.push(\"bloodSausageSS\");\n		imagesFileNames.push(\"debris/bloodSausage2SS\");\n		imagesFileNames.push(\"dino/beam\");\n		imagesFileNames.push(\"human/gore1\");\n		imagesFileNames.push(\"human/gore2\");\n		imagesFileNames.push(\"human/gore3\");\n		imagesFileNames.push(\"human/gore4\");\n		imagesFileNames.push(\"human/gore5\");\n		imagesFileNames.push(\"human/gore6\");\n		imagesFileNames.push(\"human/gore7\");\n		imagesFileNames.push(\"human/gore8\");\n		imagesFileNames.push(\"human/gore9\");\n		imagesFileNames.push(\"splashScreenBegin\");\n		imagesFileNames.push(\"splashScreenTutorial\");\n		imagesFileNames.push(\"explosionSideWaySS\");\n		\n		this.loadImages(imagesFileNames);\n\n		// Load json data\n		var jsonFileNames = [\"explosion\"];\n		jsonFileNames.push(\"dino/dinoAnimLeg\");\n		jsonFileNames.push(\"human/civilianSS\");\n		jsonFileNames.push(\"human/heliSS\");\n		jsonFileNames.push(\"human/heli2SS\");\n		jsonFileNames.push(\"human/tankSS\");\n		//jsonFileNames.push(\"human/civilian1SS\");\n		//jsonFileNames.push(\"human/civilian2SS\");\n		//jsonFileNames.push(\"human/civilian3SS\");\n		//jsonFileNames.push(\"human/civilian4SS\");\n		jsonFileNames.push(\"bloodSausageSS\");\n		jsonFileNames.push(\"debris/bloodSausageSS\");\n		jsonFileNames.push(\"debris/bloodSausage2SS\");\n		jsonFileNames.push(\"explosionSideWay\");\n\n		this.loadJson(jsonFileNames);\n\n		// Launch phase\n		this.phase = 2;\n\n		// Generate the buildings\n		this.minBuildingSpacing = 135;\n		this.maxBuildingSpacing = 220;\n		this.generateBuildings(100);\n\n		this.worldPosition = 0;\n\n		// Animations\n		this.animations = new Array();\n		// Particles\n		this.particles = new Array();\n		// Projectiles\n		this.projectiles = new Array();\n		// Actors\n		this.actors = new Array();\n\n		// dino\n		this.dino = new Dino();\n\n		// objects\n		this.civilians = new Array();\n\n		// enemies\n		this.enemies = new Array();\n\n		// game over\n		this.gameOver = false;\n\n		// enemies heuristics\n		this.minEnemies = 5;\n		this.maxEnemies = 40;\n		this.maxEnemiesTime = 240; \n		this.tankChance = 0.7;\n		this.chopperChance = 0.3;\n\n		// keys\n		this.keys = {};\n		this.keyDown = function(e) {\n			if (this.phase != 0) {\n				this.phase--;\n			}\n			var ch = String.fromCharCode(e.keyCode);\n			this.keys['key' + e.keyCode] = true;\n			if (e.keyCode != 116) e.preventDefault();\n		};\n		\n		this.keyUp = function(e) {\n			var ch = String.fromCharCode(e.keyCode);\n			this.keys['key' + e.keyCode] = false;\n			if (e.keyCode != 116) e.preventDefault();\n		};\n\n		this.mouseClick = function(e) {\n			if (this.phase != 0) {\n				this.phase--;\n			}\n			var mousePosX = -1;\n			var mousePosY = -1;\n			if (!e) var e = window.event;\n			if (e.pageX || e.pageY) 	{\n				mousePosX = e.pageX;\n				mousePosY = e.pageY;\n			}\n			else if (e.clientX || e.clientY) 	{\n				mousePosX = e.clientX + document.body.scrollLeft\n					+ document.documentElement.scrollLeft;\n				mousePosY = e.clientY + document.body.scrollTop\n					+ document.documentElement.scrollTop;\n			}\n\n			if ((this.mousePosX != -1) && (this.mousePosX != -1)) {\n				this.mousePressed = true;\n				mousePosX -= this.canvas.offsetLeft;\n				mousePosY -= this.canvas.offsetTop;\n\n				this.MousePosition = new Vector2(mousePosX, mousePosY);\n			}\n		};\n		\n		document.onkeydown = this.keyDown.bind(this);\n		document.onkeyup = this.keyUp.bind(this);\n		this.canvas.onmousedown = this.mouseClick.bind(this);\n	},\n	{\n		getImage: function(name) {\n			return this.images[name];\n		},\n\n		update: function() {\n\n			if (this.gameOver) {\n				this.drawGameOver();\n				return;\n			}\n\n			if (!(this.imagesPending == 0) || !(this.jsonPending == 0)) {\n				this.mousePressed = false;\n				return;\n			}\n\n			// Show splashes if needed\n			if (this.phase == 2) {\n				var ctx = this.canvas.getContext('2d');\n				var image = this.images['splashScreenBegin'];\n				ctx.drawImage(image, 0, 0, image.width, image.height);\n				return;\n			} else if (this.phase == 1) {\n				var ctx = this.canvas.getContext('2d');\n				var image = this.images['splashScreenTutorial'];\n				ctx.drawImage(image, 0, 0, image.width, image.height);\n				return;\n			}\n\n			if (this.firstTime) {\n				this.startTime = new Date().getTime();\n				this.dino.init(this);\n				this.firstTime = false;\n				this.mousePressed = false;\n			}\n\n			this.update_dave();\n			this.update_karel();\n\n			// Handle mouse events\n			this.handleMouseClick();\n\n			// Spawn actors\n			this.spawnActors();\n\n			// dead\n			if (this.dino.getHealth() <= 0) {\n				this.gameOver = true;\n				this.gameOverTime = this.getSurviveTime();\n				this.tip = Random.getInt(1, 12);\n			}\n		},\n\n		drawGameOver: function() {\n			var ctx = this.canvas.getContext('2d');\n			ctx.save();\n			ctx.fillStyle = \"#000000\";\n			ctx.fillRect(0, 0, this.width, this.height);\n			ctx.fillStyle = \"#FF0000\";\n			ctx.font = \"30px Arial\";\n			ctx.fillText(\"You died. Survive time: \" + this.gameOverTime + \"s\", 150, this.height/2);\n			var pick = this.tip;\n			ctx.font = \"20px Arial\";\n			ctx.fillText(\"Random tip:\", 150, this.height/2 + 50);\n			if (pick < 4) {\n				ctx.fillText(\"Try to suck less.\", 150, this.height/2 + 100);\n			}\n			else if (pick == 5) {\n				ctx.fillText(\"Civilians will flee destroyed buildings.\", 150, this.height/2 + 100);\n			}\n			else if (pick == 6) {\n				ctx.fillText(\"Moving your dino is tricky but not impossible.\", 150, this.height/2 + 100);\n			}\n			else if (pick == 7) {\n				ctx.fillText(\"Dino's can only lift one foot at a time.\", 150, this.height/2 + 100);\n			}\n			else if (pick == 8) {\n				ctx.fillText(\"Move your dino one leg at a time.\", 150, this.height/2 + 100);\n			}\n			else if (pick == 9) {\n				ctx.fillText(\"Kill choppers with your jaws to take no damage.\", 150, this.height/2 + 100);\n			}\n			else if (pick == 10) {\n				ctx.fillText(\"Eat civilians by snapping your jaws.\", 150, this.height/2 + 100);\n			}\n			else if (pick == 11) {\n				ctx.fillText(\"Kill tanks with your jaws to take no damage.\", 150, this.height/2 + 100);\n			}\n			else if (pick == 12) {\n				ctx.fillText(\"You can headbutt enemies but you will take damage.\", 150, this.height/2 + 100);\n			}\n			ctx.restore();\n		},\n\n		isKeyDown: function(c) {\n			return this.keys['key' + c.charCodeAt(0)];\n		},\n\n		update_karel: function() {\n\n			// update the different keys\n			if (this.isKeyDown('E')) this.dino.issueCommand('moveLeg', 0, false);\n			else if (this.isKeyDown('R')) this.dino.issueCommand('moveLeg', 0, true);\n			else if (this.isKeyDown('T')) this.dino.issueCommand('moveLeg', 1, false);\n			else if (this.isKeyDown('Y')) this.dino.issueCommand('moveLeg', 1, true);\n			else if (this.isKeyDown('D')) this.dino.issueCommand('moveLeg', 3, false);\n			else if (this.isKeyDown('F')) this.dino.issueCommand('moveLeg', 3, true);\n			else if (this.isKeyDown('G')) this.dino.issueCommand('moveLeg', 2, false);\n			else if (this.isKeyDown('H')) this.dino.issueCommand('moveLeg', 2, true);\n			if (this.keys['key37']) this.dino.issueCommand('moveHead', new Vector2(-1, 0));\n			if (this.keys['key38']) this.dino.issueCommand('moveHead', new Vector2(0, -1));\n			if (this.keys['key39']) this.dino.issueCommand('moveHead', new Vector2(1, 0));\n			if (this.keys['key40']) this.dino.issueCommand('moveHead', new Vector2(0, 1));\n			if (this.keys['key109']) this.dino.issueCommand('openMouth', true);\n			else if (this.keys['key107']) this.dino.issueCommand('openMouth', false);\n\n			// start\n			var ctx = this.canvas.getContext('2d');\n			ctx.save();\n			ctx.translate(-this.worldPosition, 0);\n\n			// draw the dino\n			this.dino.update();\n			this.dino.draw(ctx);\n\n			// get health\n			var health = this.dino.getHealth();\n\n			// draw civilians\n			for (var i = 0; i < this.civilians.length; ++i) {\n				this.civilians[i].update();\n				this.civilians[i].draw(ctx);\n			}\n\n			// draw the front legs of the dino\n			this.dino.drawFrontLegs(ctx);\n\n			// done\n			ctx.restore();\n\n			// draw a health bar in the right color on top of the screen\n			ctx.fillStyle = \"#000000\";\n			ctx.fillRect(50, 50, this.width-100, 50);\n			var red = new Color(255, 0, 0);\n			var green = new Color(0, 255, 0);\n			var col = new Color();\n			col.interpolate(red, green, health/100);\n			ctx.fillStyle = \"rgba(\" + col.red + \",\" + col.green + \",\" + col.blue + \",1.0)\";\n			var width = health / 100 * (this.width-108);\n			ctx.fillRect(54, 54, width, 42);\n\n			// draw laser charge\n			var laser = this.dino.neck.getLaserChargePct();\n			ctx.fillStyle = \"#000000\";\n			ctx.fillRect(50, 100, this.width-100, 12);\n			ctx.fillStyle = \"#FF00FF\";\n			ctx.fillRect(54, 100, (this.width-108) * laser, 8);\n\n			// time survived\n			ctx.fillStyle = \"#000000\";\n			var surviveTime = this.getSurviveTime();\n			ctx.font = \"30px Arial\";\n			ctx.fillText(\"Time survived: \" + surviveTime + \"s\", 60, 85);\n\n		},\n\n		getSurviveTime: function() {\n			return (new Date().getTime() - this.startTime) / 1000;\n		},\n\n        loadImages: function(fileNames) {\n        	this.images = new Array();\n        	this.imagesPending = fileNames.length;\n        	for(var i = 0, length = fileNames.length; fileName = fileNames[i], i < length; i++) {\n				require([\"image!data/\" + fileName + '.png'], this.imageLoaded.bind(this, fileName));\n			}\n        },\n\n		imageLoaded: function(fileName, img) {\n			this.imagesPending--;\n			this.images[fileName] = img;\n			//Logger.log('image loaded: ' + fileName + ' - ' + img);\n		},\n\n		loadJson: function(fileNames) {\n			this.json = new Array();\n			this.jsonPending = fileNames.length;\n			for(var i = 0, length = fileNames.length; fileName = fileNames[i], i < length; i++) {\n				//Logger.log(fileName);\n				require([\"json!data/\" + fileName + '.json'], this.jsonLoaded.bind(this, fileName));\n			}\n		},\n\n		jsonLoaded: function(fileName, json) {\n			this.jsonPending--;\n			this.json[fileName] = json;\n			//Logger.log('json loaded: ' + fileName + ' - ' + json);\n		},\n\n\n\n		update_dave: function() {\n			var ctx = this.canvas.getContext('2d');\n			ctx.save();\n			ctx.translate(-this.worldPosition, 0);\n\n			// Draw the background\n			ctx.drawImage(this.images[\"BG2\"], this.worldPosition - (Math.floor(this.worldPosition / 3) % this.width), 0);\n			ctx.drawImage(this.images[\"BG2\"], this.worldPosition - (Math.floor(this.worldPosition / 3) % this.width) + this.width, 0);\n\n			// Draw buildings\n			for(var i = 0; i < this.buildings.length; i++) {\n				if (!this.buildings[i].isVisible(this.worldPosition)) {\n					continue;\n				}\n\n				this.buildings[i].draw(ctx, this.worldPosition);\n			}	\n			// Check for collisions with projectiles\n			for(var i = 0; i < this.buildings.length; i++) {\n				if (!this.buildings[i].isVisible(this.worldPosition)) {\n					continue;\n				}\n\n				this.buildings[i].draw(ctx, this.worldPosition);\n\n				var collisionShape = this.buildings[i].getCollisionShape();\n				for(var i2 = 0; i2 < this.projectiles.length; i2++) {\n					if (this.projectiles[i2].dinoProjectile) {\n						if (this.projectiles[i2].getCollisionShape().collidesWith(collisionShape)) {\n							this.buildings[i].handleDamage(this.projectiles[i2].getDamage(), this.projectiles[i2].position);\n							this.projectiles[i2].handleDamage();\n						}\n					}\n				}\n			}\n\n			// Draw the ground\n			ctx.drawImage(this.images[\"ground\"], this.worldPosition - (this.worldPosition % this.width), this.height - 50);\n			ctx.drawImage(this.images[\"ground\"], this.worldPosition + this.width - (this.worldPosition % this.width), this.height - 50);\n			ctx.drawImage(this.images[\"ground\"], this.worldPosition + (this.width * 2) - (this.worldPosition % this.width), this.height - 50);\n\n			// Draw animations\n			for(var j = 0; j < this.animations.length; j++) {\n				this.animations[j].draw(ctx);\n			}\n\n			// Draw particles\n			for(var k = 0; k < this.particles.length; k++) {\n				this.particles[k].draw(ctx);\n			}\n			for(var k = 0; k < this.particles.length; k++) {\n				this.particles[k].update();\n			}\n\n			// Draw projectiles\n			for(var l = 0; l < this.projectiles.length; l++) {\n				this.projectiles[l].draw(ctx);\n			}\n			for(var l = 0; l < this.projectiles.length; l++) {\n				this.projectiles[l].update();\n			}\n\n			// Draw actors\n			for(var m = 0; m < this.actors.length; m++) {\n				this.actors[m].draw(ctx);\n			}\n			for(var m = 0; m < this.actors.length; m++) {\n				// Check for collisions with projectiles\n				var collisionShape = this.actors[m].getCollisionShape();\n				for(var m2 = 0; m2 < this.projectiles.length; m2++) {\n					if (this.projectiles[m2].dinoProjectile) {\n						if (this.projectiles[m2].getCollisionShape().collidesWith(collisionShape)) {\n							this.actors[m].handleDamage(this.projectiles[m2].getDamage(), this.projectiles[m2].position);\n							this.projectiles[m2].handleDamage();\n						}\n					}\n				}\n			}\n			for(var m = 0; m < this.actors.length; m++) {\n				this.actors[m].update();					\n			}\n\n			ctx.restore();\n		},\n\n\n\n		generateBuildings: function(numBuildings) {\n			this.buildings = new Array();\n			var position = 2700;\n			for(var i = 0; i < numBuildings; i++) {\n				position += Random.getInt(this.minBuildingSpacing, this.maxBuildingSpacing);\n				this.buildings[i] = new Building(this, position);\n			}\n		},\n\n		removeBuilding: function(building) {\n			var idx = this.buildings.indexOf(building);\n			if(idx != -1) {\n				this.buildings.splice(idx, 1);\n			}\n		},\n\n		handleMouseClick: function() {\n			if (!this.mousePressed) {\n				return;\n			}\n\n			this.dino.processClick(this.MousePosition);\n\n			this.mousePressed = false;\n		},\n\n\n		addAnimation: function(animation) {\n			this.animations[this.animations.length] = animation;\n		},\n\n		stopAnimation: function(animation) {\n			var idx = this.animations.indexOf(animation);\n			if(idx != -1) {\n				this.animations.splice(idx, 1);\n			}\n		},\n\n		addParticle: function(particle) {\n			this.particles[this.particles.length] = particle;\n		},\n\n		stopParticle: function(particle) {\n			var idx = this.particles.indexOf(particle);\n			if(idx != -1) {\n				this.particles.splice(idx, 1);\n			}\n		},\n\n		addProjectile: function(projectile) {\n			this.projectiles[this.projectiles.length] = projectile;\n		},\n\n		stopProjectile: function(projectile) {\n			var idx = this.projectiles.indexOf(projectile);\n			if(idx != -1) {\n				this.projectiles.splice(idx, 1);\n			}\n		},\n\n		spawnActors: function() {\n\n			// determine the number of max enemies based on the survive time\n			var maxEnemies = this.minEnemies + (this.maxEnemies - this.minEnemies) * (this.getSurviveTime() / this.maxEnemiesTime);\n			if (maxEnemies > this.maxEnemies) maxEnemies = this.maxEnemies;\n\n			// generate more enemies\n			var nNew = Math.floor(maxEnemies - this.enemies.length);\n			if (nNew > 2) nNew = 2;\n			if (nNew == 0) return;\n			while (--nNew >= 0) {\n				var loc = new Vector2(this.worldPosition + this.width + Random.getInt(0, 150), 0);\n				//Logger.log(loc);\n				var pick = Random.getDouble();\n				if (pick <= this.tankChance) {\n					var tank = new Tank(this, loc);\n					this.enemies.push(tank);\n					this.addActor(tank);\n				}\n				else {\n					loc.y = Random.getInt(250, 400);\n					var chopper = new Chopper(this, loc);\n					this.enemies.push(chopper);\n					this.addActor(chopper);\n				}\n			}\n		},\n\n		// TODO only add if list not above max size\n		addActor: function(actor) {\n			this.actors[this.actors.length] = actor;\n		},\n\n		stopActor: function(actor) {\n			var idx = this.actors.indexOf(actor);\n			if(idx != -1) {\n				this.actors.splice(idx, 1);\n			}\n		},\n		\n		getCanvas: function() {\n			return this.canvas;\n		}\n	});\n	\n	return Game;\n});",
-			"file": "StreetDinosaurFreak/Game.js",
-			"file_size": 17426,
-			"file_write_time": 130036243462683914,
-			"settings":
-			{
-				"buffer_size": 16876,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/D/bbgchallenge/www/street-dinosaur-freak/index.html",
-			"settings":
-			{
-				"buffer_size": 974,
-				"line_ending": "Windows"
-			}
-		},
-		{
 			"file": "scripts/Game.js",
 			"settings":
 			{
-				"buffer_size": 3469,
+				"buffer_size": 17504,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "scripts/Area.js",
+			"file": "scripts/BabyRoom.js",
 			"settings":
 			{
-				"buffer_size": 1052,
+				"buffer_size": 3752,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "data/game.json",
+			"file": "scripts/Monster.js",
 			"settings":
 			{
-				"buffer_size": 200,
+				"buffer_size": 4860,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "scripts/Trapdoor.js",
+			"settings":
+			{
+				"buffer_size": 4409,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "data/Player.json",
+			"settings":
+			{
+				"buffer_size": 366,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "data/world.json",
+			"settings":
+			{
+				"buffer_size": 8706,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "data/Monster.json",
+			"settings":
+			{
+				"buffer_size": 298,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "data/Monster2.json",
+			"settings":
+			{
+				"buffer_size": 296,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "data/MonsterEating.json",
+			"settings":
+			{
+				"buffer_size": 202,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "data/MonsterEating2.json",
+			"settings":
+			{
+				"buffer_size": 185,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "scripts/ContainedAnimation.js",
+			"settings":
+			{
+				"buffer_size": 923,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "scripts/EndRoom.js",
+			"settings":
+			{
+				"buffer_size": 2766,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "Searching 245 files for \"Logger.log\" (regex)\n\nC:\\Users\\Dave\\Desktop\\9deaths\\9 deaths.sublime-workspace:\n   13  	[\n   14  		{\n   15: 			\"contents\": \"define([\\\"Compose\\\", \\\"Logger\\\", \\\"Background\\\", \\\"Random\\\", \\\"Building\\\", \\\"Vector2\\\", \\\"Dino\\\", \\\"Animation\\\", \\\"Particle\\\", \\\"Projectile\\\", \\\"Color\\\", \\\"Rectangle\\\", \\\"Civilian\\\", \\\"Chopper\\\", \\\"Tank\\\"],\\n	function(Compose, Logger, Background, Random, Building, Vector2, Dino, Animation, Particle, Projectile, Color, Rectangle, Civilian, Chopper, Tank) {\\n	\\n	var Game = Compose(function constructor() {\\n		\\n		// first time\\n		this.firstTime = true;\\n\\n		// width, height\\n		this.width = 1000;\\n		this.height = 600;\\n\\n		// floor height\\n		this.floorHeight = 25;\\n		\\n		// the canvas\\n		this.canvas = document.createElement('canvas');\\n		this.canvas.style = \\\"canvas-game\\\";\\n		this.canvas.width = this.width;\\n		this.canvas.height = this.height;\\n\\n		// Load images\\n		var imagesFileNames=[\\\"ground\\\", \\\"buildingBlock1\\\", \\\"buildingBlock2\\\", \\\"buildingBlock3\\\", \\\"buildingBlock4\\\", \\\"buildingBlock5\\\", \\\"buildingBlock6\\\", \\\"buildingTop1\\\", \\\"buildingTop2\\\", \\\"buildingTop3\\\", \\\"buildingTop4\\\", \\\"dinoAnimLegSS\\\", \\\"explosionSS\\\", \\\"BG2\\\", \\\"dino/body\\\", \\\"dino/headClosed\\\", \\\"dino/neckPart\\\", \\\"dino/headOpen\\\",\\n				\\\"debri1\\\", \\\"debri2\\\", \\\"debri3\\\", \\\"debri4\\\", \\\"debri5\\\", \\\"debri6\\\", \\\"debri7\\\", \\\"debri8\\\", \\\"rocket\\\", \\\"beam\\\"];\\n		imagesFileNames.push(\\\"dino/dinoAnimLegSS\\\");\\n		imagesFileNames.push(\\\"dino/tail\\\");\\n		imagesFileNames.push(\\\"dino/headClosedLaser\\\");\\n		imagesFileNames.push(\\\"dino/headOpenLaser\\\");\\n		imagesFileNames.push(\\\"human/civilianSS\\\");\\n		imagesFileNames.push(\\\"human/heliSS\\\");\\n		imagesFileNames.push(\\\"human/heli2SS\\\");\\n		imagesFileNames.push(\\\"human/tankSS\\\");\\n		imagesFileNames.push(\\\"human/civilian1SS\\\");\\n		imagesFileNames.push(\\\"human/civilian2SS\\\");\\n		imagesFileNames.push(\\\"human/civilian3SS\\\");\\n		imagesFileNames.push(\\\"human/civilian4SS\\\");\\n		imagesFileNames.push(\\\"human/civilian5SS\\\");\\n		imagesFileNames.push(\\\"bloodSausageSS\\\");\\n		imagesFileNames.push(\\\"debris/bloodSausage2SS\\\");\\n		imagesFileNames.push(\\\"dino/beam\\\");\\n		imagesFileNames.push(\\\"human/gore1\\\");\\n		imagesFileNames.push(\\\"human/gore2\\\");\\n		imagesFileNames.push(\\\"human/gore3\\\");\\n		imagesFileNames.push(\\\"human/gore4\\\");\\n		imagesFileNames.push(\\\"human/gore5\\\");\\n		imagesFileNames.push(\\\"human/gore6\\\");\\n		imagesFileNames.push(\\\"human/gore7\\\");\\n		imagesFileNames.push(\\\"human/gore8\\\");\\n		imagesFileNames.push(\\\"human/gore9\\\");\\n		imagesFileNames.push(\\\"splashScreenBegin\\\");\\n		imagesFileNames.push(\\\"splashScreenTutorial\\\");\\n		imagesFileNames.push(\\\"explosionSideWaySS\\\");\\n		\\n		this.loadImages(imagesFileNames);\\n\\n		// Load json data\\n		var jsonFileNames = [\\\"explosion\\\"];\\n		jsonFileNames.push(\\\"dino/dinoAnimLeg\\\");\\n		jsonFileNames.push(\\\"human/civilianSS\\\");\\n		jsonFileNames.push(\\\"human/heliSS\\\");\\n		jsonFileNames.push(\\\"human/heli2SS\\\");\\n		jsonFileNames.push(\\\"human/tankSS\\\");\\n		//jsonFileNames.push(\\\"human/civilian1SS\\\");\\n		//jsonFileNames.push(\\\"human/civilian2SS\\\");\\n		//jsonFileNames.push(\\\"human/civilian3SS\\\");\\n		//jsonFileNames.push(\\\"human/civilian4SS\\\");\\n		jsonFileNames.push(\\\"bloodSausageSS\\\");\\n		jsonFileNames.push(\\\"debris/bloodSausageSS\\\");\\n		jsonFileNames.push(\\\"debris/bloodSausage2SS\\\");\\n		jsonFileNames.push(\\\"explosionSideWay\\\");\\n\\n		this.loadJson(jsonFileNames);\\n\\n		// Launch phase\\n		this.phase = 2;\\n\\n		// Generate the buildings\\n		this.minBuildingSpacing = 135;\\n		this.maxBuildingSpacing = 220;\\n		this.generateBuildings(100);\\n\\n		this.worldPosition = 0;\\n\\n		// Animations\\n		this.animations = new Array();\\n		// Particles\\n		this.particles = new Array();\\n		// Projectiles\\n		this.projectiles = new Array();\\n		// Actors\\n		this.actors = new Array();\\n\\n		// dino\\n		this.dino = new Dino();\\n\\n		// objects\\n		this.civilians = new Array();\\n\\n		// enemies\\n		this.enemies = new Array();\\n\\n		// game over\\n		this.gameOver = false;\\n\\n		// enemies heuristics\\n		this.minEnemies = 5;\\n		this.maxEnemies = 40;\\n		this.maxEnemiesTime = 240; \\n		this.tankChance = 0.7;\\n		this.chopperChance = 0.3;\\n\\n		// keys\\n		this.keys = {};\\n		this.keyDown = function(e) {\\n			if (this.phase != 0) {\\n				this.phase--;\\n			}\\n			var ch = String.fromCharCode(e.keyCode);\\n			this.keys['key' + e.keyCode] = true;\\n			if (e.keyCode != 116) e.preventDefault();\\n		};\\n		\\n		this.keyUp = function(e) {\\n			var ch = String.fromCharCode(e.keyCode);\\n			this.keys['key' + e.keyCode] = false;\\n			if (e.keyCode != 116) e.preventDefault();\\n		};\\n\\n		this.mouseClick = function(e) {\\n			if (this.phase != 0) {\\n				this.phase--;\\n			}\\n			var mousePosX = -1;\\n			var mousePosY = -1;\\n			if (!e) var e = window.event;\\n			if (e.pageX || e.pageY) 	{\\n				mousePosX = e.pageX;\\n				mousePosY = e.pageY;\\n			}\\n			else if (e.clientX || e.clientY) 	{\\n				mousePosX = e.clientX + document.body.scrollLeft\\n					+ document.documentElement.scrollLeft;\\n				mousePosY = e.clientY + document.body.scrollTop\\n					+ document.documentElement.scrollTop;\\n			}\\n\\n			if ((this.mousePosX != -1) && (this.mousePosX != -1)) {\\n				this.mousePressed = true;\\n				mousePosX -= this.canvas.offsetLeft;\\n				mousePosY -= this.canvas.offsetTop;\\n\\n				this.MousePosition = new Vector2(mousePosX, mousePosY);\\n			}\\n		};\\n		\\n		document.onkeydown = this.keyDown.bind(this);\\n		document.onkeyup = this.keyUp.bind(this);\\n		this.canvas.onmousedown = this.mouseClick.bind(this);\\n	},\\n	{\\n		getImage: function(name) {\\n			return this.images[name];\\n		},\\n\\n		update: function() {\\n\\n			if (this.gameOver) {\\n				this.drawGameOver();\\n				return;\\n			}\\n\\n			if (!(this.imagesPending == 0) || !(this.jsonPending == 0)) {\\n				this.mousePressed = false;\\n				return;\\n			}\\n\\n			// Show splashes if needed\\n			if (this.phase == 2) {\\n				var ctx = this.canvas.getContext('2d');\\n				var image = this.images['splashScreenBegin'];\\n				ctx.drawImage(image, 0, 0, image.width, image.height);\\n				return;\\n			} else if (this.phase == 1) {\\n				var ctx = this.canvas.getContext('2d');\\n				var image = this.images['splashScreenTutorial'];\\n				ctx.drawImage(image, 0, 0, image.width, image.height);\\n				return;\\n			}\\n\\n			if (this.firstTime) {\\n				this.startTime = new Date().getTime();\\n				this.dino.init(this);\\n				this.firstTime = false;\\n				this.mousePressed = false;\\n			}\\n\\n			this.update_dave();\\n			this.update_karel();\\n\\n			// Handle mouse events\\n			this.handleMouseClick();\\n\\n			// Spawn actors\\n			this.spawnActors();\\n\\n			// dead\\n			if (this.dino.getHealth() <= 0) {\\n				this.gameOver = true;\\n				this.gameOverTime = this.getSurviveTime();\\n				this.tip = Random.getInt(1, 12);\\n			}\\n		},\\n\\n		drawGameOver: function() {\\n			var ctx = this.canvas.getContext('2d');\\n			ctx.save();\\n			ctx.fillStyle = \\\"#000000\\\";\\n			ctx.fillRect(0, 0, this.width, this.height);\\n			ctx.fillStyle = \\\"#FF0000\\\";\\n			ctx.font = \\\"30px Arial\\\";\\n			ctx.fillText(\\\"You died. Survive time: \\\" + this.gameOverTime + \\\"s\\\", 150, this.height/2);\\n			var pick = this.tip;\\n			ctx.font = \\\"20px Arial\\\";\\n			ctx.fillText(\\\"Random tip:\\\", 150, this.height/2 + 50);\\n			if (pick < 4) {\\n				ctx.fillText(\\\"Try to suck less.\\\", 150, this.height/2 + 100);\\n			}\\n			else if (pick == 5) {\\n				ctx.fillText(\\\"Civilians will flee destroyed buildings.\\\", 150, this.height/2 + 100);\\n			}\\n			else if (pick == 6) {\\n				ctx.fillText(\\\"Moving your dino is tricky but not impossible.\\\", 150, this.height/2 + 100);\\n			}\\n			else if (pick == 7) {\\n				ctx.fillText(\\\"Dino's can only lift one foot at a time.\\\", 150, this.height/2 + 100);\\n			}\\n			else if (pick == 8) {\\n				ctx.fillText(\\\"Move your dino one leg at a time.\\\", 150, this.height/2 + 100);\\n			}\\n			else if (pick == 9) {\\n				ctx.fillText(\\\"Kill choppers with your jaws to take no damage.\\\", 150, this.height/2 + 100);\\n			}\\n			else if (pick == 10) {\\n				ctx.fillText(\\\"Eat civilians by snapping your jaws.\\\", 150, this.height/2 + 100);\\n			}\\n			else if (pick == 11) {\\n				ctx.fillText(\\\"Kill tanks with your jaws to take no damage.\\\", 150, this.height/2 + 100);\\n			}\\n			else if (pick == 12) {\\n				ctx.fillText(\\\"You can headbutt enemies but you will take damage.\\\", 150, this.height/2 + 100);\\n			}\\n			ctx.restore();\\n		},\\n\\n		isKeyDown: function(c) {\\n			return this.keys['key' + c.charCodeAt(0)];\\n		},\\n\\n		update_karel: function() {\\n\\n			// update the different keys\\n			if (this.isKeyDown('E')) this.dino.issueCommand('moveLeg', 0, false);\\n			else if (this.isKeyDown('R')) this.dino.issueCommand('moveLeg', 0, true);\\n			else if (this.isKeyDown('T')) this.dino.issueCommand('moveLeg', 1, false);\\n			else if (this.isKeyDown('Y')) this.dino.issueCommand('moveLeg', 1, true);\\n			else if (this.isKeyDown('D')) this.dino.issueCommand('moveLeg', 3, false);\\n			else if (this.isKeyDown('F')) this.dino.issueCommand('moveLeg', 3, true);\\n			else if (this.isKeyDown('G')) this.dino.issueCommand('moveLeg', 2, false);\\n			else if (this.isKeyDown('H')) this.dino.issueCommand('moveLeg', 2, true);\\n			if (this.keys['key37']) this.dino.issueCommand('moveHead', new Vector2(-1, 0));\\n			if (this.keys['key38']) this.dino.issueCommand('moveHead', new Vector2(0, -1));\\n			if (this.keys['key39']) this.dino.issueCommand('moveHead', new Vector2(1, 0));\\n			if (this.keys['key40']) this.dino.issueCommand('moveHead', new Vector2(0, 1));\\n			if (this.keys['key109']) this.dino.issueCommand('openMouth', true);\\n			else if (this.keys['key107']) this.dino.issueCommand('openMouth', false);\\n\\n			// start\\n			var ctx = this.canvas.getContext('2d');\\n			ctx.save();\\n			ctx.translate(-this.worldPosition, 0);\\n\\n			// draw the dino\\n			this.dino.update();\\n			this.dino.draw(ctx);\\n\\n			// get health\\n			var health = this.dino.getHealth();\\n\\n			// draw civilians\\n			for (var i = 0; i < this.civilians.length; ++i) {\\n				this.civilians[i].update();\\n				this.civilians[i].draw(ctx);\\n			}\\n\\n			// draw the front legs of the dino\\n			this.dino.drawFrontLegs(ctx);\\n\\n			// done\\n			ctx.restore();\\n\\n			// draw a health bar in the right color on top of the screen\\n			ctx.fillStyle = \\\"#000000\\\";\\n			ctx.fillRect(50, 50, this.width-100, 50);\\n			var red = new Color(255, 0, 0);\\n			var green = new Color(0, 255, 0);\\n			var col = new Color();\\n			col.interpolate(red, green, health/100);\\n			ctx.fillStyle = \\\"rgba(\\\" + col.red + \\\",\\\" + col.green + \\\",\\\" + col.blue + \\\",1.0)\\\";\\n			var width = health / 100 * (this.width-108);\\n			ctx.fillRect(54, 54, width, 42);\\n\\n			// draw laser charge\\n			var laser = this.dino.neck.getLaserChargePct();\\n			ctx.fillStyle = \\\"#000000\\\";\\n			ctx.fillRect(50, 100, this.width-100, 12);\\n			ctx.fillStyle = \\\"#FF00FF\\\";\\n			ctx.fillRect(54, 100, (this.width-108) * laser, 8);\\n\\n			// time survived\\n			ctx.fillStyle = \\\"#000000\\\";\\n			var surviveTime = this.getSurviveTime();\\n			ctx.font = \\\"30px Arial\\\";\\n			ctx.fillText(\\\"Time survived: \\\" + surviveTime + \\\"s\\\", 60, 85);\\n\\n		},\\n\\n		getSurviveTime: function() {\\n			return (new Date().getTime() - this.startTime) / 1000;\\n		},\\n\\n        loadImages: function(fileNames) {\\n        	this.images = new Array();\\n        	this.imagesPending = fileNames.length;\\n        	for(var i = 0, length = fileNames.length; fileName = fileNames[i], i < length; i++) {\\n				require([\\\"image!data/\\\" + fileName + '.png'], this.imageLoaded.bind(this, fileName));\\n			}\\n        },\\n\\n		imageLoaded: function(fileName, img) {\\n			this.imagesPending--;\\n			this.images[fileName] = img;\\n			//Logger.log('image loaded: ' + fileName + ' - ' + img);\\n		},\\n\\n		loadJson: function(fileNames) {\\n			this.json = new Array();\\n			this.jsonPending = fileNames.length;\\n			for(var i = 0, length = fileNames.length; fileName = fileNames[i], i < length; i++) {\\n				//Logger.log(fileName);\\n				require([\\\"json!data/\\\" + fileName + '.json'], this.jsonLoaded.bind(this, fileName));\\n			}\\n		},\\n\\n		jsonLoaded: function(fileName, json) {\\n			this.jsonPending--;\\n			this.json[fileName] = json;\\n			//Logger.log('json loaded: ' + fileName + ' - ' + json);\\n		},\\n\\n\\n\\n		update_dave: function() {\\n			var ctx = this.canvas.getContext('2d');\\n			ctx.save();\\n			ctx.translate(-this.worldPosition, 0);\\n\\n			// Draw the background\\n			ctx.drawImage(this.images[\\\"BG2\\\"], this.worldPosition - (Math.floor(this.worldPosition / 3) % this.width), 0);\\n			ctx.drawImage(this.images[\\\"BG2\\\"], this.worldPosition - (Math.floor(this.worldPosition / 3) % this.width) + this.width, 0);\\n\\n			// Draw buildings\\n			for(var i = 0; i < this.buildings.length; i++) {\\n				if (!this.buildings[i].isVisible(this.worldPosition)) {\\n					continue;\\n				}\\n\\n				this.buildings[i].draw(ctx, this.worldPosition);\\n			}	\\n			// Check for collisions with projectiles\\n			for(var i = 0; i < this.buildings.length; i++) {\\n				if (!this.buildings[i].isVisible(this.worldPosition)) {\\n					continue;\\n				}\\n\\n				this.buildings[i].draw(ctx, this.worldPosition);\\n\\n				var collisionShape = this.buildings[i].getCollisionShape();\\n				for(var i2 = 0; i2 < this.projectiles.length; i2++) {\\n					if (this.projectiles[i2].dinoProjectile) {\\n						if (this.projectiles[i2].getCollisionShape().collidesWith(collisionShape)) {\\n							this.buildings[i].handleDamage(this.projectiles[i2].getDamage(), this.projectiles[i2].position);\\n							this.projectiles[i2].handleDamage();\\n						}\\n					}\\n				}\\n			}\\n\\n			// Draw the ground\\n			ctx.drawImage(this.images[\\\"ground\\\"], this.worldPosition - (this.worldPosition % this.width), this.height - 50);\\n			ctx.drawImage(this.images[\\\"ground\\\"], this.worldPosition + this.width - (this.worldPosition % this.width), this.height - 50);\\n			ctx.drawImage(this.images[\\\"ground\\\"], this.worldPosition + (this.width * 2) - (this.worldPosition % this.width), this.height - 50);\\n\\n			// Draw animations\\n			for(var j = 0; j < this.animations.length; j++) {\\n				this.animations[j].draw(ctx);\\n			}\\n\\n			// Draw particles\\n			for(var k = 0; k < this.particles.length; k++) {\\n				this.particles[k].draw(ctx);\\n			}\\n			for(var k = 0; k < this.particles.length; k++) {\\n				this.particles[k].update();\\n			}\\n\\n			// Draw projectiles\\n			for(var l = 0; l < this.projectiles.length; l++) {\\n				this.projectiles[l].draw(ctx);\\n			}\\n			for(var l = 0; l < this.projectiles.length; l++) {\\n				this.projectiles[l].update();\\n			}\\n\\n			// Draw actors\\n			for(var m = 0; m < this.actors.length; m++) {\\n				this.actors[m].draw(ctx);\\n			}\\n			for(var m = 0; m < this.actors.length; m++) {\\n				// Check for collisions with projectiles\\n				var collisionShape = this.actors[m].getCollisionShape();\\n				for(var m2 = 0; m2 < this.projectiles.length; m2++) {\\n					if (this.projectiles[m2].dinoProjectile) {\\n						if (this.projectiles[m2].getCollisionShape().collidesWith(collisionShape)) {\\n							this.actors[m].handleDamage(this.projectiles[m2].getDamage(), this.projectiles[m2].position);\\n							this.projectiles[m2].handleDamage();\\n						}\\n					}\\n				}\\n			}\\n			for(var m = 0; m < this.actors.length; m++) {\\n				this.actors[m].update();					\\n			}\\n\\n			ctx.restore();\\n		},\\n\\n\\n\\n		generateBuildings: function(numBuildings) {\\n			this.buildings = new Array();\\n			var position = 2700;\\n			for(var i = 0; i < numBuildings; i++) {\\n				position += Random.getInt(this.minBuildingSpacing, this.maxBuildingSpacing);\\n				this.buildings[i] = new Building(this, position);\\n			}\\n		},\\n\\n		removeBuilding: function(building) {\\n			var idx = this.buildings.indexOf(building);\\n			if(idx != -1) {\\n				this.buildings.splice(idx, 1);\\n			}\\n		},\\n\\n		handleMouseClick: function() {\\n			if (!this.mousePressed) {\\n				return;\\n			}\\n\\n			this.dino.processClick(this.MousePosition);\\n\\n			this.mousePressed = false;\\n		},\\n\\n\\n		addAnimation: function(animation) {\\n			this.animations[this.animations.length] = animation;\\n		},\\n\\n		stopAnimation: function(animation) {\\n			var idx = this.animations.indexOf(animation);\\n			if(idx != -1) {\\n				this.animations.splice(idx, 1);\\n			}\\n		},\\n\\n		addParticle: function(particle) {\\n			this.particles[this.particles.length] = particle;\\n		},\\n\\n		stopParticle: function(particle) {\\n			var idx = this.particles.indexOf(particle);\\n			if(idx != -1) {\\n				this.particles.splice(idx, 1);\\n			}\\n		},\\n\\n		addProjectile: function(projectile) {\\n			this.projectiles[this.projectiles.length] = projectile;\\n		},\\n\\n		stopProjectile: function(projectile) {\\n			var idx = this.projectiles.indexOf(projectile);\\n			if(idx != -1) {\\n				this.projectiles.splice(idx, 1);\\n			}\\n		},\\n\\n		spawnActors: function() {\\n\\n			// determine the number of max enemies based on the survive time\\n			var maxEnemies = this.minEnemies + (this.maxEnemies - this.minEnemies) * (this.getSurviveTime() / this.maxEnemiesTime);\\n			if (maxEnemies > this.maxEnemies) maxEnemies = this.maxEnemies;\\n\\n			// generate more enemies\\n			var nNew = Math.floor(maxEnemies - this.enemies.length);\\n			if (nNew > 2) nNew = 2;\\n			if (nNew == 0) return;\\n			while (--nNew >= 0) {\\n				var loc = new Vector2(this.worldPosition + this.width + Random.getInt(0, 150), 0);\\n				//Logger.log(loc);\\n				var pick = Random.getDouble();\\n				if (pick <= this.tankChance) {\\n					var tank = new Tank(this, loc);\\n					this.enemies.push(tank);\\n					this.addActor(tank);\\n				}\\n				else {\\n					loc.y = Random.getInt(250, 400);\\n					var chopper = new Chopper(this, loc);\\n					this.enemies.push(chopper);\\n					this.addActor(chopper);\\n				}\\n			}\\n		},\\n\\n		// TODO only add if list not above max size\\n		addActor: function(actor) {\\n			this.actors[this.actors.length] = actor;\\n		},\\n\\n		stopActor: function(actor) {\\n			var idx = this.actors.indexOf(actor);\\n			if(idx != -1) {\\n				this.actors.splice(idx, 1);\\n			}\\n		},\\n		\\n		getCanvas: function() {\\n			return this.canvas;\\n		}\\n	});\\n	\\n	return Game;\\n});\",\n   16  			\"file\": \"StreetDinosaurFreak/Game.js\",\n   17  			\"file_size\": 17426,\n\nC:\\Users\\Dave\\Desktop\\9deaths\\9deaths\\scripts\\BabyRoom.js:\n   49  					this.timer = 0;\n   50  					this.started = true;\n   51: 					Logger.log('RESTART');\n   52  					// spawn shadow monster\n   53  					this.game.getEntity(\"monsterBabyRoom\").death = false;\n   ..\n   57  			// started - update timer\n   58  			else {\n   59: Logger.log(new Date());\n   60  				if (this.game.player.getBaseX() > this.room.getLoc().x && !this.passed) {\n   61  					this.passed = true;\n   ..\n   79  					var maxTime = 4000;\n   80  					var multiplier = Math.max(0.2, Math.min(1, this.screamCounter / maxTime));\n   81: 					Logger.log(multiplier);\n   82  					var nParticles = Math.max(multiplier * 30, 30);\n   83  					for (var i = 0; i < nParticles; ++i) {\n\nC:\\Users\\Dave\\Desktop\\9deaths\\9deaths\\scripts\\Game.js:\n  544  			this.imagesPending--;\n  545  			this.images[fileName] = img;\n  546: 			//Logger.log('image loaded: ' + fileName + ' - ' + img);\n  547  		},\n  548  \n\nC:\\Users\\Dave\\Desktop\\9deaths\\9deaths\\scripts\\GameArea.js:\n   18  					}\n   19  \n   20: 					//Logger.log(a + \" - \" + b + \" - \" + c);\n   21  					// Check whether the pointers are counterclockwise\n   22  					if (((b.x - a.x)*(c.y - a.y) - (b.y - a.y)*(c.x - a.x)) > 0) {\n\nC:\\Users\\Dave\\Desktop\\9deaths\\9deaths\\scripts\\Pit.js:\n   18  \n   19  		activate: function(on) {\n   20: 			Logger.log(\"Pit cannot be activated you idiot!\");\n   21  		},\n   22  \n   ..\n   46  				}\n   47  \n   48: 				//Logger.log(a + \" - \" + b + \" - \" + c);\n   49  				// Check whether the pointers are counterclockwise\n   50  				if (((b.x - a.x)*(c.y - a.y) - (b.y - a.y)*(c.x - a.x)) > 0) {\n\nC:\\Users\\Dave\\Desktop\\9deaths\\9deaths\\scripts\\Trapdoor.js:\n  128  				}\n  129  \n  130: 				//Logger.log(a + \" - \" + b + \" - \" + c);\n  131  				// Check whether the pointers are counterclockwise\n  132  				if (((b.x - a.x)*(c.y - a.y) - (b.y - a.y)*(c.x - a.x)) > 0) {\n\nC:\\Users\\Dave\\Desktop\\9deaths\\scripts\\BabyRoom.js:\n   49  					this.timer = 0;\n   50  					this.started = true;\n   51: 					Logger.log('RESTART'); \n   52  					// spawn shadow monster\n   53  					this.game.getEntity(\"monsterBabyRoom\").death = false;\n   ..\n   57  			// started - update timer\n   58  			else {\n   59: Logger.log(new Date());\n   60  				if (this.game.player.getBaseX() > this.room.getLoc().x && !this.passed) {\n   61  					this.passed = true;\n   ..\n   79  					var maxTime = 4000;\n   80  					var multiplier = Math.max(0.2, Math.min(1, this.screamCounter / maxTime));\n   81: 					Logger.log(multiplier);\n   82  					var nParticles = Math.max(multiplier * 30, 30);\n   83  					for (var i = 0; i < nParticles; ++i) {\n\nC:\\Users\\Dave\\Desktop\\9deaths\\scripts\\Game.js:\n  544  			this.imagesPending--;\n  545  			this.images[fileName] = img;\n  546: 			//Logger.log('image loaded: ' + fileName + ' - ' + img);\n  547  		},\n  548  \n\nC:\\Users\\Dave\\Desktop\\9deaths\\scripts\\GameArea.js:\n   18  					}\n   19  \n   20: 					//Logger.log(a + \" - \" + b + \" - \" + c);\n   21  					// Check whether the pointers are counterclockwise\n   22  					if (((b.x - a.x)*(c.y - a.y) - (b.y - a.y)*(c.x - a.x)) > 0) {\n\nC:\\Users\\Dave\\Desktop\\9deaths\\scripts\\Pit.js:\n   18  \n   19  		activate: function(on) {\n   20: 			Logger.log(\"Pit cannot be activated you idiot!\");\n   21  		},\n   22  \n   ..\n   46  				}\n   47  \n   48: 				//Logger.log(a + \" - \" + b + \" - \" + c);\n   49  				// Check whether the pointers are counterclockwise\n   50  				if (((b.x - a.x)*(c.y - a.y) - (b.y - a.y)*(c.x - a.x)) > 0) {\n\nC:\\Users\\Dave\\Desktop\\9deaths\\scripts\\Trapdoor.js:\n  128  				}\n  129  \n  130: 				//Logger.log(a + \" - \" + b + \" - \" + c);\n  131  				// Check whether the pointers are counterclockwise\n  132  				if (((b.x - a.x)*(c.y - a.y) - (b.y - a.y)*(c.x - a.x)) > 0) {\n\nC:\\Users\\Dave\\Desktop\\9deaths\\StreetDinosaurFreak\\DinoLeg.js:\n   30  \n   31  		//this.initialOffset = this.stepSize / 3 * (initialOffset+2) - this.stepSize/2;\n   32: 		//Logger.log(this.initialOffset);\n   33  		// current offset\n   34  		this.offset = this.initialOffset;\n   ..\n   91  			// when we reach the ending, we are done with this animation\n   92  			if (this.getLegOffset() >= this.stepSize/2) {\n   93: 				//Logger.log('done moving');\n   94  				this.moving = false;\n   95  				if (Math.abs(this.initialOffset - this.offset) > 0.0001) {\n   ..\n  154  			var frame = Math.min(this.json.animations[animation].nFrames-1, Math.floor(t * this.json.animations[animation].nFrames));\n  155  			if (frame < 0) frame = 0;\n  156: 			//Logger.log(\"LEG \" + this.idx + \", offset \" + this.getLegOffset() + \", frame \" + frame + \", moving \" + this.moving);\n  157  			var legHeight = this.idx == 1 || this.idx == 2 ? this.json.height * 1.3 : this.json.height;\n  158  			ctx.drawImage(this.img, frame * this.json.width, animation * this.json.height, this.json.width, this.json.height, rootLoc.x, rootLoc.y - (legHeight - this.json.height), this.json.width, legHeight);\n\nC:\\Users\\Dave\\Desktop\\9deaths\\StreetDinosaurFreak\\DinoNeck.js:\n   81  			// neck length\n   82  			var neckLength = headLoc.subtract(this.attachLoc).length();\n   83: 			//Logger.log('Neck length: ' + neckLength);\n   84  			if (neckLength < MinNeckLength || neckLength > MaxNeckLength) headLoc = originalLoc;\n   85  \n   ..\n  142  \n  143  			var headLoc = this.headLoc;\n  144: 			Logger.log(headLoc);\n  145  			ctx.strokeStyle = \"#00FFFF\";\n  146  			ctx.strokeRect(headLoc.x - this.headOpenImg.width/2, headLoc.y - this.headOpenImg.height/2, this.headOpenImg.width, this.headOpenImg.height);\n  ...\n  211  \n  212  			var bezier = new Bezier(this.attachLoc, this.attachLoc.add(new Vector2(200, -200)), this.headLoc);\n  213: 			//Logger.log(P0);\n  214: 			//Logger.log(P1);\n  215  			// go in a straight line from attachLoc to headLoc in the number of chains\n  216  			\n\nC:\\Users\\Dave\\Desktop\\9deaths\\StreetDinosaurFreak\\Example.js:\n   23  			\n   24  			// Logger is een static helper class van mij om data naar het scherm te printen, handig voor debugging\n   25: 			//Logger.log(this);\n   26  			\n   27  			// console.log logt een object naar de browser console - laat u toe om live te volgen wat er mee gebeurt\n\nC:\\Users\\Dave\\Desktop\\9deaths\\StreetDinosaurFreak\\Game.js:\n  340  			this.imagesPending--;\n  341  			this.images[fileName] = img;\n  342: 			//Logger.log('image loaded: ' + fileName + ' - ' + img);\n  343  		},\n  344  \n  ...\n  347  			this.jsonPending = fileNames.length;\n  348  			for(var i = 0, length = fileNames.length; fileName = fileNames[i], i < length; i++) {\n  349: 				//Logger.log(fileName);\n  350  				require([\"json!data/\" + fileName + '.json'], this.jsonLoaded.bind(this, fileName));\n  351  			}\n  ...\n  355  			this.jsonPending--;\n  356  			this.json[fileName] = json;\n  357: 			//Logger.log('json loaded: ' + fileName + ' - ' + json);\n  358  		},\n  359  \n  ...\n  519  			while (--nNew >= 0) {\n  520  				var loc = new Vector2(this.worldPosition + this.width + Random.getInt(0, 150), 0);\n  521: 				//Logger.log(loc);\n  522  				var pick = Random.getDouble();\n  523  				if (pick <= this.tankChance) {\n\n32 matches across 15 files\n",
+			"settings":
+			{
+				"buffer_size": 24943,
+				"line_ending": "Windows",
+				"name": "Find Results",
+				"scratch": true
+			}
+		},
+		{
+			"file": "scripts/Trigger.js",
+			"settings":
+			{
+				"buffer_size": 3008,
 				"line_ending": "Windows"
 			}
 		}
@@ -79,14 +174,59 @@
 	},
 	"file_history":
 	[
+		"/C/Users/Dave/Desktop/9deaths/scripts/EndRoom.js",
+		"/C/Users/Dave/Desktop/9deaths/scripts/BloodRoom.js",
+		"/C/Users/Dave/Desktop/9deaths/data/Trapdoor.json",
+		"/C/Users/Dave/Desktop/9deaths/scripts/Player.js",
+		"/C/Users/Dave/Desktop/9deaths/scripts/Trapdoor.js",
+		"/C/Users/Dave/Desktop/9deaths/scripts/Pit.js",
+		"/C/Users/Dave/Desktop/9deaths/scripts/Vector2.js",
+		"/C/Users/Dave/Desktop/9deaths/scripts/Game.js",
+		"/C/Users/Dave/Desktop/9deaths/data/game.json",
+		"/C/Users/Dave/Desktop/9deaths/data/Monster.json",
+		"/C/Users/Dave/Desktop/9deaths/scripts/GameArea.js",
+		"/C/Users/Dave/Desktop/9deaths/scripts/Trigger.js",
+		"/C/Users/Dave/Desktop/9deaths/data/Player.json",
+		"/C/Users/Dave/Desktop/9deaths/data/Pit.json",
+		"/C/Users/Dave/Desktop/9deaths/scripts/Renderer.js",
+		"/C/Users/Dave/Desktop/9deaths/data/hatch_h220.png",
+		"/C/Users/Dave/Desktop/9deaths/scripts/TrapdoorRoom.js",
+		"/C/Users/Dave/Desktop/9deaths/data/world.json",
+		"/C/Users/Dave/Desktop/9deaths/data/Names.json",
+		"/C/Users/Dave/Desktop/9deaths/data/names.json",
+		"/C/Users/Dave/Desktop/9deaths/data/MonsterEating.json",
+		"/C/Users/Dave/Desktop/9deaths/scripts/ContainedAnimation.js",
+		"/C/Users/Dave/Desktop/9deaths/scripts/Logger.js",
+		"/C/Users/Dave/Desktop/9deaths/data/triggers.json",
+		"/C/Users/Dave/Desktop/9deaths/scripts/Entity.js",
+		"/C/Users/Dave/Desktop/9deaths/data/TrapdoorRoom.json",
+		"/C/Users/Dave/Desktop/9deaths/data/monster.json",
+		"/C/Users/Dave/Desktop/9deaths/data/Trigger.json",
+		"/C/Users/Dave/Desktop/9deaths/9 deaths.sublime-project",
+		"/C/Users/Dave/Desktop/9deaths/data/entities.json",
+		"/C/Users/Dave/Desktop/9deaths/scripts/Animation.js",
+		"/C/Users/Dave/Desktop/9deaths/data/Pit.js",
+		"/C/Users/Dave/Desktop/9deaths/data/Pit.js.txt",
+		"/C/Users/Dave/Desktop/9deaths/scripts/Entity2.js",
+		"/C/Users/Dave/Desktop/9deaths/data/entity.json",
+		"/C/Users/Dave/Desktop/9deaths/scripts/Monster.js",
+		"/C/Users/Dave/Desktop/9deaths/StreetDinosaurFreak/Chopper.js",
+		"/C/Users/Dave/Desktop/9deaths/scripts/GameObject.js",
+		"/C/Users/Dave/Desktop/9deaths/scripts/Object.js",
+		"/C/Users/Dave/Desktop/9deaths/scripts/Usable.js",
+		"/C/Users/Dave/Desktop/9deaths/StreetDinosaurFreak/Building.js",
+		"/C/Users/Dave/Desktop/9deaths/scripts/Ground.js",
+		"/C/Users/Dave/Desktop/9deaths/StreetDinosaurFreak/Tank.js",
+		"/C/Users/Dave/Desktop/9deaths/scripts/image.js",
+		"/C/Users/Dave/Desktop/9deaths/scripts/Area.js",
+		"/D/bbgchallenge/www/street-dinosaur-freak/index.html",
+		"/C/Users/Dave/Desktop/9deaths/StreetDinosaurFreak/Game.js",
 		"/C/Users/Dave/Desktop/9deaths/index.html",
 		"/C/Users/Dave/Desktop/9deaths/data/game - Copy.json",
 		"/C/Users/Dave/Desktop/9deaths/scripts/area.js",
 		"/C/Users/Dave/Desktop/9deaths/scripts/main.js",
 		"/C/Users/Dave/Desktop/9deaths/StreetDinosaurFreak/Animation.js",
 		"/C/Users/Dave/Desktop/9deaths/StreetDinosaurFreak/Civilian.js",
-		"/C/Users/Dave/Desktop/9deaths/StreetDinosaurFreak/Game.js",
-		"/C/Users/Dave/Desktop/9deaths/StreetDinosaurFreak/Chopper.js",
 		"/C/Users/Dave/Desktop/9deaths/StreetDinosaurFreak/main.js",
 		"/C/Users/Dave/Desktop/9deaths/scripts/compose.js",
 		"/C/Users/kcrombec/AppData/Roaming/Sublime Text 2/Packages/Default/Preferences.sublime-settings",
@@ -100,9 +240,10 @@
 	},
 	"find_in_files":
 	{
-		"height": 0.0,
+		"height": 90.0,
 		"where_history":
 		[
+			""
 		]
 	},
 	"find_state":
@@ -110,6 +251,45 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"Logger.log",
+			"logger.log",
+			".reset",
+			"reset",
+			"name",
+			"Logger.log",
+			"this.offsetSpee",
+			"reset",
+			"offset",
+			"reset",
+			"die",
+			"draw",
+			"checkLef",
+			"stroke",
+			"xlimi",
+			"die",
+			"trapdoors",
+			"flip",
+			"flik",
+			"flikp",
+			"this.location",
+			"isAboveTrap",
+			"Logger.log",
+			"logger",
+			"loc",
+			"Logger",
+			"Entity",
+			"logger",
+			"triggers",
+			"tickdave",
+			"init",
+			"activate",
+			"update",
+			"activate",
+			"debugDraw",
+			"areaData",
+			"isKeyDown",
+			"keyCodes",
+			"Logger",
 			"update",
 			"init",
 			"loadImages",
@@ -119,7 +299,7 @@
 		"highlight": true,
 		"in_selection": false,
 		"preserve_case": false,
-		"regex": false,
+		"regex": true,
 		"replace_history":
 		[
 		],
@@ -132,23 +312,23 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 4,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "StreetDinosaurFreak/Game.js",
+					"file": "scripts/Game.js",
 					"settings":
 					{
-						"buffer_size": 16876,
+						"buffer_size": 17504,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								11271,
-								11271
+								16362,
+								16372
 							]
 						],
 						"settings":
@@ -157,52 +337,52 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 7728.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "/D/bbgchallenge/www/street-dinosaur-freak/index.html",
+					"file": "scripts/BabyRoom.js",
 					"settings":
 					{
-						"buffer_size": 974,
+						"buffer_size": 3752,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								842,
-								842
+								2215,
+								2225
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 731.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 2,
-					"file": "scripts/Game.js",
+					"file": "scripts/Monster.js",
 					"settings":
 					{
-						"buffer_size": 3469,
+						"buffer_size": 4860,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1450,
-								1450
+								659,
+								659
 							]
 						],
 						"settings":
@@ -218,18 +398,18 @@
 				},
 				{
 					"buffer": 3,
-					"file": "scripts/Area.js",
+					"file": "scripts/Trapdoor.js",
 					"settings":
 					{
-						"buffer_size": 1052,
+						"buffer_size": 4409,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								656,
-								656
+								1791,
+								1791
 							]
 						],
 						"settings":
@@ -245,18 +425,18 @@
 				},
 				{
 					"buffer": 4,
-					"file": "data/game.json",
+					"file": "data/Player.json",
 					"settings":
 					{
-						"buffer_size": 200,
+						"buffer_size": 366,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								116,
-								116
+								26,
+								26
 							]
 						],
 						"settings":
@@ -266,6 +446,389 @@
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "data/world.json",
+					"settings":
+					{
+						"buffer_size": 8706,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2676,
+								2676
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 225.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "data/Monster.json",
+					"settings":
+					{
+						"buffer_size": 298,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								298,
+								298
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "data/Monster2.json",
+					"settings":
+					{
+						"buffer_size": 296,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								144,
+								144
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "data/MonsterEating.json",
+					"settings":
+					{
+						"buffer_size": 202,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								202,
+								202
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "data/MonsterEating2.json",
+					"settings":
+					{
+						"buffer_size": 185,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								70,
+								70
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "scripts/ContainedAnimation.js",
+					"settings":
+					{
+						"buffer_size": 923,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								311,
+								311
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "scripts/EndRoom.js",
+					"settings":
+					{
+						"buffer_size": 2766,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								786,
+								786
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 45.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"settings":
+					{
+						"buffer_size": 24943,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										11510,
+										11520
+									],
+									[
+										11775,
+										11785
+									],
+									[
+										12006,
+										12016
+									],
+									[
+										17088,
+										17098
+									],
+									[
+										18033,
+										18043
+									],
+									[
+										18224,
+										18234
+									],
+									[
+										18502,
+										18512
+									],
+									[
+										18776,
+										18786
+									],
+									[
+										18947,
+										18957
+									],
+									[
+										19231,
+										19241
+									],
+									[
+										19341,
+										19351
+									],
+									[
+										19610,
+										19620
+									],
+									[
+										19910,
+										19920
+									],
+									[
+										20102,
+										20112
+									],
+									[
+										20380,
+										20390
+									],
+									[
+										20646,
+										20656
+									],
+									[
+										20809,
+										20819
+									],
+									[
+										21085,
+										21095
+									],
+									[
+										21195,
+										21205
+									],
+									[
+										21456,
+										21466
+									],
+									[
+										21802,
+										21812
+									],
+									[
+										22050,
+										22060
+									],
+									[
+										22365,
+										22375
+									],
+									[
+										22962,
+										22972
+									],
+									[
+										23169,
+										23179
+									],
+									[
+										23516,
+										23526
+									],
+									[
+										23544,
+										23554
+									],
+									[
+										23855,
+										23865
+									],
+									[
+										24142,
+										24152
+									],
+									[
+										24379,
+										24389
+									],
+									[
+										24594,
+										24604
+									],
+									[
+										24814,
+										24824
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								18216,
+								18216
+							]
+						],
+						"settings":
+						{
+							"detect_indentation": false,
+							"output_tag": 1,
+							"result_base_dir": "",
+							"result_file_regex": "^([A-Za-z\\\\/<].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 1620.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "scripts/Trigger.js",
+					"settings":
+					{
+						"buffer_size": 3008,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1478,
+								1478
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 315.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -329,6 +892,6 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 150.0,
+	"side_bar_width": 238.0,
 	"status_bar_visible": true
 }

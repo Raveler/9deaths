@@ -16,7 +16,7 @@ define(["Compose", "Logger", "Vector2", "Animation", "Particle", "Random"], func
 	},
 	{
 		getId: function() {
-			return "";
+			return "babyRoom";
 		},
 
 		init: function() {
@@ -48,7 +48,6 @@ define(["Compose", "Logger", "Vector2", "Animation", "Particle", "Random"], func
 					this.game.audio.Ambientcreep.play();
 					this.timer = 0;
 					this.started = true;
-
 					// spawn shadow monster
 					this.game.getEntity("monsterBabyRoom").death = false;
 				}
@@ -56,7 +55,6 @@ define(["Compose", "Logger", "Vector2", "Animation", "Particle", "Random"], func
 
 			// started - update timer
 			else {
-
 				if (this.game.player.getBaseX() > this.room.getLoc().x && !this.passed) {
 					this.passed = true;
 					this.game.player.speed = 5;
