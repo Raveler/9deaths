@@ -1,4 +1,10 @@
 
+eating dog
+fix dog -> niet blokeren als room van lokatie veranderd
+Muziek
+Extra levels
+random notes
+
 
 Elliot:
 Muren randen geven

@@ -34,6 +34,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		imagesFileNames.push("SpikeDeath.png");
 		imagesFileNames.push("monsta3_Spritesheet15x1.png");
 		imagesFileNames.push("LongBloodPool.jpg");
+		imagesFileNames.push("Monsta2_eat_Spritesheet80x1.png");
 		imagesFileNames.push("Characters/character1.png");
 		this.loadImages(imagesFileNames);
 
@@ -48,6 +49,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		jsonFileNames.push("Pit");
 		jsonFileNames.push("BloodRoom");
 		jsonFileNames.push("Monster");
+		jsonFileNames.push("MonsterEating");
 		this.loadJson(jsonFileNames);
 
 		// audio files

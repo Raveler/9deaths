@@ -5,6 +5,7 @@ define(["Compose", "Logger", "Vector2", "Animation"], function(Compose, Logger, 
 		this.animation = new Animation(game, json);
 		this.skipMe = true;
 		this.loc = loc;
+		this.dead = false;
 	},
 	{
 		getId: function() {
@@ -17,7 +18,11 @@ define(["Compose", "Logger", "Vector2", "Animation"], function(Compose, Logger, 
 		},
 
 		isDead: function() {
-			return false;
+			return this.dead;
+		},
+
+		die: function() {
+			this.dead = true;
 		},
 
 		update: function(dt) {
@@ -33,6 +38,9 @@ define(["Compose", "Logger", "Vector2", "Animation"], function(Compose, Logger, 
 		},
 
 		draw: function(ctx, z) {
+			if (this.isDead()) {
+				return;
+			}
 			ctx.save();
 			ctx.translate(this.loc.x, this.loc.y);
 			this.animation.draw(ctx);

@@ -4,21 +4,6 @@
 	"rooms": [
 		{
 			"doorY": 114,
-			"fileName": "LongBloodPool.jpg",
-
-			"entities": [
-				{
-					"id": "bloodRoom1",
-					"className": "BloodRoom",
-					"json": "BloodRoom",
-					"loc": [0, 0],
-					"hotSpots": [[900, 114], [1400, 0], [1400, 300], [1900, 114], [2400, 0], [2400, 60]],
-					"width": 3000
-				}
-			]
-		},
-		{
-			"doorY": 114,
 			"fileName": "room 01.jpg",
 
 			"entities": [
@@ -26,6 +11,54 @@
 					"id": "player",
 					"className": "Player",
 					"json": "Player"
+				}
+			]
+		},
+		{
+			"doorY": 114,
+			"fileName": "room 01.jpg",
+			"entities": [
+				{
+					"id": "trigger1",
+					"className": "Trigger",
+					"json": "Trigger",
+					"active": false,
+					"activated": true,
+					"activateRange": 10000,
+					"loc": [575, 50],
+					"toggled": true
+				},
+				{
+					"id": "trigger2",
+					"className": "Trigger",
+					"json": "Trigger",
+					"active": false,
+					"activated": true,
+					"activateRange": 10000,
+					"loc": [1120, 50],
+					"toggled": true
+				},
+				{
+					"id": "trapdoor1",
+					"className": "Trapdoor",
+					"json": "Trapdoor",
+					"loc": [937, 75],
+					"triggerId": ["trigger1", "trigger2"]
+				},
+				{
+					"id": "trapdoor2",
+					"className": "Trapdoor",
+					"json": "Trapdoor",
+					"loc": [572, 75],
+					"triggerId": ["trigger1", "trigger2"]
+				},
+				{
+					"id": "monster1",
+					"className": "Monster",
+					"json": "Monster",
+					"loc": [1250, 150],
+					"activeRange": 1000,
+					"xlimit": [1400, 2450]
 				}
 			]
 		},
@@ -95,69 +128,6 @@
 		},
 		{
 			"doorY": 114,
-			"fileName": "BloodPool.jpg",
-
-			"entities": [
-				{
-					"id": "bloodRoom1",
-					"className": "BloodRoom",
-					"json": "BloodRoom",
-					"loc": [0, 0],
-					"hotSpots": [[1000, 114]],
-					"width": 1200
-				}
-			]
-		},
-		{
-			"doorY": 114,
-			"fileName": "room 01.jpg",
-			"entities": [
-				{
-					"id": "trigger1",
-					"className": "Trigger",
-					"json": "Trigger",
-					"active": false,
-					"activated": true,
-					"activateRange": 10000,
-					"loc": [575, 50],
-					"toggled": true
-				},
-				{
-					"id": "trigger2",
-					"className": "Trigger",
-					"json": "Trigger",
-					"active": false,
-					"activated": true,
-					"activateRange": 10000,
-					"loc": [1120, 50],
-					"toggled": true
-				},
-				{
-					"id": "trapdoor1",
-					"className": "Trapdoor",
-					"json": "Trapdoor",
-					"loc": [937, 75],
-					"triggerId": ["trigger1", "trigger2"]
-				},
-				{
-					"id": "trapdoor2",
-					"className": "Trapdoor",
-					"json": "Trapdoor",
-					"loc": [572, 75],
-					"triggerId": ["trigger1", "trigger2"]
-				},
-				{
-					"id": "monster1",
-					"className": "Monster",
-					"json": "Monster",
-					"loc": [1250, 150],
-					"activeRange": 1000,
-					"xlimit": [1400, 2450]
-				}
-			]
-		},
-		{
-			"doorY": 114,
 			"fileName": "room 01.jpg",
 
 			"entities": [
@@ -221,6 +191,21 @@
 						[0, 1], [1, 1], [2, 1], [3, 1], [4, 1]
 
 					]
+				}
+			]
+		},
+		{
+			"doorY": 114,
+			"fileName": "BloodPool.jpg",
+
+			"entities": [
+				{
+					"id": "bloodRoom1",
+					"className": "BloodRoom",
+					"json": "BloodRoom",
+					"loc": [0, 0],
+					"hotSpots": [[1000, 114]],
+					"width": 1200
 				}
 			]
 		},
