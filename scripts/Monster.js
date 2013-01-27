@@ -31,7 +31,6 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 				return;
 			} 
 			
-			Logger.log(Math.abs(moveVector.x));
 			if ((Math.abs(moveVector.x) < 110) && (Math.abs(moveVector.y) < 15)) {
 				this.game.player.die();
 			}

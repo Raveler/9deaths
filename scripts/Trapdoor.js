@@ -28,12 +28,20 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 			}
 		},
 
-		activate: function(on) {
+		activate: function(on, sound) {
+			if (typeof sound == "undefined") sound = true;
 			if (this.flip) {
 				this.opened = !this.opened;
+				if (sound) this.game.audio.VeelluikenFIN.play();
 			}
-			else if (on) this.opened = true;
-			else this.opened = false;
+			else if (on && !this.opened) {
+				this.opened = true;
+				if (sound) this.game.audio.VeelluikenFIN.play();
+			}
+			else if (!on && this.opened) {
+				this.opened = false;
+				if (sound) this.game.audio.VeelluikenFIN.play();
+			}
 			if (this.opened) {
 				this.animation.setAnimation("open");
 			}

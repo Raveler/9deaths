@@ -1,0 +1,4 @@
+- film grain
+- een overlay met donkere corners
+- teller op het einde
+- diary notes

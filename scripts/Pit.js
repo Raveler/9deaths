@@ -45,9 +45,13 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 			if (inside) {
 				// Check whether player is standing on a body
 				if (!this.bodyInPit) {
+					this.game.audio.StabbingSpikesFIN.play();
 					this.bodyInPit = true;
 					this.animation.setAnimation("pit2");
 					this.game.player.fall();
+				}
+				else {
+					this.game.audio.MeatFIN.play();
 				}
 			}
 		},

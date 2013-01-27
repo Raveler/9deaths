@@ -49,7 +49,7 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 			for (var i = 0; i < this.open.length; ++i) {
 				var trapdoorArray = this.open[i];
 				var trapdoor = this.game.getEntity(this.getId() + "-trapdoor-" + trapdoorArray[0] + trapdoorArray[1]);
-				trapdoor.activate(true);
+				trapdoor.activate(true, false);
 			}
 
 		},

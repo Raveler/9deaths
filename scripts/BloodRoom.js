@@ -24,6 +24,11 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random", "Partic
 				this.bodies[i].update(dt);
 			}
 
+			// player within reach for the first time and there is a body - draw it
+			if (this.loc.x <= this.game.player.getBaseX() && this.game.player.getBaseX() <= this.loc.x + this.width && this.bodies.length > 0) {
+				if (this.game.audio.Drowning.paused) this.game.audio.Drowning.play();
+			}
+
 			// compute the closeness to the hotspo
 			var minDistance = 500000;
 			for (var i = 0; i < this.hotSpots.length; ++i) {
@@ -36,9 +41,10 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random", "Partic
 			// too close - die!
 			if (minDistance < 60) {
 				this.game.player.die();
-				var animation = new ContainedAnimation(this.game, this.bodyAnimation, playerLoc.copy());
+				var animation = new ContainedAnimation(this.game, this.bodyAnimation, new Vector2(playerLoc.x, Math.max(40, playerLoc.y)));
 				animation.animation.setAnimation("floating");
 				animation.init();
+				this.bodies.push(animation);
 
 				return;
 			}
