@@ -10,7 +10,6 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "ContainedAnimati
 		this.animation = new Animation(game, json);
 		this.game.monsters.push(this);
 		this.skipMe = true;
-
 	},
 	{
 		init: function() {
@@ -19,12 +18,8 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "ContainedAnimati
 
 		update: function(dt) {
 			this.animation.update(dt);
-			// eating
-			/*if (this.audio.paused && !this.death) {
-				this.audio.play();
-			}*/
 
-
+			// Play eating sound
 			var moveVector = this.game.player.loc.subtract(this.getLoc());
 			if (moveVector.length() < this.activeRange && this.eating && !this.death) {
 				this.game.audio.Monstereating.play();
@@ -35,6 +30,7 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "ContainedAnimati
 				return;
 			}
 
+			// Check if monster is in active range
 			var moveVector = this.game.player.loc.subtract(this.getLoc());
 			if (moveVector.length() > this.activeRange) {
 				this.animation.setAnimation("idle");
@@ -42,9 +38,10 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "ContainedAnimati
 				return;
 			}
 
+			// Monster is chasing player, play growling sound
 			this.game.audio.Monstergrowl.play();
 
-			
+			// Check whether monster is on the player
 			if ((Math.abs(moveVector.x) < 110) && (Math.abs(moveVector.y) < 15)) {
 				this.game.player.die();
 				this.eating = true;
@@ -68,23 +65,40 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "ContainedAnimati
 			// Scale monster speed
 			moveVector = moveVector.multiply(2.7);
 
+			var roomPos = this.room.getLoc();
+			var roomWidth = this.room.getWidth();
 			var newLocation = this.getLoc().add(moveVector);
-			if (this.game.isValidAndSafePosition(newLocation) && (newLocation.x > this.xlimit[0]) && (newLocation.x < this.xlimit[1])) {
-				this.setLoc(newLocation);
+
+			if (this.game.isValidAndSafePosition(newLocation)) {
+				if ((newLocation.x > (roomPos.x - roomWidth + 410)) && (newLocation.x < (roomPos.x - 50))) {		
+					this.setLoc(newLocation);
+				} else {
+					this.animation.setAnimation("idle");
+				}
 				return;
 			}
 
 			newLocation = new Vector2(this.getLoc().x + (moveVector.x / Math.abs(moveVector.x)), this.getLoc().y);
-			if (this.game.isValidAndSafePosition(newLocation) && (newLocation.x > this.xlimit[0]) && (newLocation.x < this.xlimit[1])) {
-				this.setLoc(newLocation);
+			if (this.game.isValidAndSafePosition(newLocation)) {
+				if ((newLocation.x > (roomPos.x - roomWidth + 410)) && (newLocation.x < (roomPos.x - 50))) {		
+					this.setLoc(newLocation);
+				} else {
+					this.animation.setAnimation("idle");
+				}
 				return;
 			}
 
 			newLocation = new Vector2(this.getLoc().x, this.getLoc().y + (moveVector.y / Math.abs(moveVector.y)));
-			if (this.game.isValidAndSafePosition(newLocation) && (newLocation.x > this.xlimit[0]) && (newLocation.x < this.xlimit[1])) {
-				this.setLoc(newLocation);
+			if (this.game.isValidAndSafePosition(newLocation)) {
+				if ((newLocation.x > (roomPos.x - roomWidth + 410)) && (newLocation.x < (roomPos.x - 50))) {		
+					this.setLoc(newLocation);
+				} else {
+					this.animation.setAnimation("idle");
+				}
 				return;
 			}
+
+			this.animation.setAnimation("idle");
 		},
 
 		init: function() {
@@ -112,7 +126,7 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "ContainedAnimati
 			ctx.restore();
 
 			//ctx.fillStyle = "#00FFF0";
-			//ctx.fillRect(this.getLoc().x - 20, this.getLoc().y - 20, 40, 40);
+			//ctx.fillRect(this.room.getLoc().x - 20, this.room.getLoc().y - 20, 40, 40);
 		}
 	});
 

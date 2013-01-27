@@ -51,6 +51,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		jsonFileNames.push("BloodRoom");
 		jsonFileNames.push("Monster");
 		jsonFileNames.push("MonsterEating");
+		jsonFileNames.push("Names");
 		this.loadJson(jsonFileNames);
 
 		// audio files
@@ -239,6 +240,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			this.firstTime = false;
 			this.monsters = new Array();
 			this.trapdoors = new Array();
+			this.pits = new Array();
 			this.movables = [];
 
 			// go over all entities, and load those into the game
@@ -408,6 +410,11 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			}
 			for(var i = 0; i < this.trapdoors.length; i++) {
 				if (this.trapdoors[i].isAboveTrap(loc) && this.trapdoors[i].opened) {
+					return false;
+				}
+			}
+			for(var i = 0; i < this.pits.length; i++) {
+				if (this.pits[i].isAboveTrap(loc) && !this.pits[i].bodyInPit) {
 					return false;
 				}
 			}

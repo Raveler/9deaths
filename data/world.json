@@ -56,7 +56,7 @@
 					"id": "monster1",
 					"className": "Monster",
 					"json": "Monster",
-					"loc": [1250, 150],
+					"loc": [1150, 150],
 					"activeRange": 1000,
 					"xlimit": [1400, 2450]
 				}
@@ -98,31 +98,95 @@
 					"loc": [751, 252]
 				},
 
-
 				{
-					"id": "pitOfdoom1",
+					"id": "pitOfdoom6",
 					"className": "Pit",
 					"json": "Pit",
 					"loc": [645, 0]
 				},
 				{
-					"id": "pitOfdoom2",
+					"id": "pitOfdoom7",
 					"className": "Pit",
 					"json": "Pit",
 					"loc": [770, 126]
 				},
 
 				{
-					"id": "pitOfdoom4",
+					"id": "pitOfdoom8",
 					"className": "Pit",
 					"json": "Pit",
 					"loc": [834, 189]
 				},
 				{
-					"id": "pitOfdoom5",
+					"id": "pitOfdoom9",
 					"className": "Pit",
 					"json": "Pit",
 					"loc": [896, 252]
+				}
+			]
+		},
+		{
+			"doorY": 114,
+			"fileName": "room 01.jpg",
+			"entities": [
+				{
+					"id": "trigger1",
+					"className": "Trigger",
+					"json": "Trigger",
+					"active": false,
+					"activated": true,
+					"activateRange": 10000,
+					"loc": [375, 50],
+					"toggled": true
+				},
+				{
+					"id": "trigger2",
+					"className": "Trigger",
+					"json": "Trigger",
+					"active": false,
+					"activated": true,
+					"activateRange": 10000,
+					"loc": [1120, 50],
+					"toggled": true
+				},
+				{
+					"id": "trapdoor1",
+					"className": "Trapdoor",
+					"json": "Trapdoor",
+					"loc": [564, 60],
+					"triggerId": ["trigger1", "trigger2"]
+				},
+				{
+					"id": "monster1",
+					"className": "Monster",
+					"json": "Monster",
+					"loc": [1150, 150],
+					"activeRange": 1000,
+					"xlimit": [1400, 2450]
+				},
+				{
+					"id": "pitOfdoom1",
+					"className": "Pit",
+					"json": "Pit",
+					"loc": [500, 0]
+				},
+				{
+					"id": "pitOfdoom3",
+					"className": "Pit",
+					"json": "Pit",
+					"loc": [626, 126]
+				},
+				{
+					"id": "pitOfdoom4",
+					"className": "Pit",
+					"json": "Pit",
+					"loc": [689, 189]
+				},
+				{
+					"id": "pitOfdoom5",
+					"className": "Pit",
+					"json": "Pit",
+					"loc": [751, 252]
 				}
 			]
 		},
