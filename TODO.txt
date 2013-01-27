@@ -1,16 +1,11 @@
 
-mechanics: bebloede luiken, luiken die vanzelf open gaan
-
+mechanics: bebloede luiken, luiken die vanzelf open gaan, Kamer met luiken die vanzelf open gaan: bebloede luiken zijn veilig
 
 Veel nieuwe characters maken
-Monster grown op sterf
-Extra levels
-random notes
-Gedrag monsters verbeteren
-Kamer met luiken die vanzelf open gaan: bebloede luiken zijn veilig
-
-
-Elliot:
-Startroom fixen
+Monster growl op sterf
 Ventjes in verschillende kleuren
-Endroom fixen?
+
+namen op graven, endGame
+
+
+564
