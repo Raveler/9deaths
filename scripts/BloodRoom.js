@@ -1,4 +1,4 @@
-define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random", "Particle"], function(Compose, Vector2, Logger, Entity, Animation, Random, Particle) {
+define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random", "Particle", "ContainedAnimation"], function(Compose, Vector2, Logger, Entity, Animation, Random, Particle, ContainedAnimation) {
 
 	var BloodRoom = Compose(Entity, function(game, json) {
 		this.game = game;
@@ -8,6 +8,8 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random", "Partic
 			this.hotSpots.push(new Vector2(json.hotSpots[i]));
 		}
 		this.particlePending = 0;
+		this.bodies = [];
+		this.bodyAnimation = this.game.json["Player"];
 	},
 	{
 		init: function() {
@@ -17,6 +19,10 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random", "Partic
 		update: function(dt) {
 			var playerLoc = this.game.player.getLoc();
 			var loc = this.getLoc();
+
+			for (var i = 0; i < this.bodies.length; ++i) {
+				this.bodies[i].update(dt);
+			}
 
 			// compute the closeness to the hotspo
 			var minDistance = 500000;
@@ -30,6 +36,10 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random", "Partic
 			// too close - die!
 			if (minDistance < 60) {
 				this.game.player.die();
+				var animation = new ContainedAnimation(this.game, this.bodyAnimation, playerLoc.copy());
+				animation.animation.setAnimation("floating");
+				animation.init();
+
 				return;
 			}
 			if (loc.x < playerLoc.x && playerLoc.x < loc.x + this.width && this.game.player.isMoving()) {
@@ -50,6 +60,12 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random", "Partic
 		},
 
 		draw: function(ctx) {
+			for (var i = 0; i < this.bodies.length; ++i) {
+				ctx.save();
+				ctx.translate(this.bodies[i].loc.x, this.bodies[i].loc.y);
+				this.bodies[i].draw(ctx);
+				ctx.restore();
+			}
 			/*ctx.save();
 			ctx.strokeStyle = "#FFFF00";
 			ctx.strokeRect(this.loc.x, this.loc.y, this.width, 400);
