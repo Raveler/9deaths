@@ -47,6 +47,12 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		imagesFileNames.push("Characters/character1.png");
 		imagesFileNames.push("Characters/character2.png");
 		imagesFileNames.push("Characters/character3.png");
+		imagesFileNames.push("Characters/character4.png");
+		imagesFileNames.push("Characters/character5.png");
+		imagesFileNames.push("Characters/character6.png");
+		imagesFileNames.push("Characters/character7.png");
+		imagesFileNames.push("Characters/character8.png");
+		imagesFileNames.push("Characters/character9.png");
 		imagesFileNames.push("AmbientDarkness.png");
 		imagesFileNames.push("door.png");
 		imagesFileNames.push("ControlScreen.jpg");
