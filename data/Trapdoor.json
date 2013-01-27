@@ -13,6 +13,14 @@
 		{
 			"name": "open",
 			"length": 1
+		},
+				{
+			"name": "closed_bloody",
+			"length": 1
+		},
+		{
+			"name": "open_bloody",
+			"length": 1
 		}
 	],
 	"path":
