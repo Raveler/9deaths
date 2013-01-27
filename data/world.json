@@ -57,8 +57,7 @@
 					"className": "Monster",
 					"json": "Monster",
 					"loc": [1150, 150],
-					"activeRange": 1000,
-					"xlimit": [1400, 2450]
+					"activeRange": 1000
 				}
 			]
 		},
@@ -140,16 +139,6 @@
 					"toggled": true
 				},
 				{
-					"id": "trigger2",
-					"className": "Trigger",
-					"json": "Trigger",
-					"active": false,
-					"activated": true,
-					"activateRange": 10000,
-					"loc": [1120, 50],
-					"toggled": true
-				},
-				{
 					"id": "trapdoor1",
 					"className": "Trapdoor",
 					"json": "Trapdoor",
@@ -160,9 +149,8 @@
 					"id": "monster1",
 					"className": "Monster",
 					"json": "Monster",
-					"loc": [1150, 150],
-					"activeRange": 1000,
-					"xlimit": [1400, 2450]
+					"loc": [1100, 60],
+					"activeRange": 1000
 				},
 				{
 					"id": "pitOfdoom1",
@@ -171,19 +159,19 @@
 					"loc": [500, 0]
 				},
 				{
-					"id": "pitOfdoom3",
+					"id": "pitOfdoom2",
 					"className": "Pit",
 					"json": "Pit",
 					"loc": [626, 126]
 				},
 				{
-					"id": "pitOfdoom4",
+					"id": "pitOfdoom3",
 					"className": "Pit",
 					"json": "Pit",
 					"loc": [689, 189]
 				},
 				{
-					"id": "pitOfdoom5",
+					"id": "pitOfdoom4",
 					"className": "Pit",
 					"json": "Pit",
 					"loc": [751, 252]

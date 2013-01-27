@@ -19,6 +19,16 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random"], functi
 	    	this.path[i][0] = json.path[i][0] + this.loc.x;
 	    	this.path[i][1] = json.path[i][1] + this.loc.y;
 		}
+		if (typeof json.blooded != "undefined") {
+			this.blooded = json.blooded;
+		} else {
+			this.blooded = false;
+		}
+		if (this.blooded) {
+			this.animation.setAnimation("closed_bloody");
+		} else {
+			this.animation.setAnimation("closed");
+		}
 		this.game.trapdoors.push(this);
 	},
 	{
@@ -43,10 +53,18 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random"], functi
 				if (sound) this.game.audio.VeelluikenFIN.play();
 			}
 			if (this.opened) {
-				this.animation.setAnimation("open");
+				if (this.blooded) {
+					this.animation.setAnimation("open_bloody");
+				} else {
+					this.animation.setAnimation("open");
+				}
 			}
 			else {
-				this.animation.setAnimation("closed");
+				if (this.blooded) {
+					this.animation.setAnimation("closed_bloody");
+				} else {
+					this.animation.setAnimation("closed");
+				}
 			}
 		},
 
@@ -58,7 +76,11 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random"], functi
 					if (this.opened) {
 						this.game.monsters[i].die();
 					} else if (this.autoOpen) {
-						this.animation.setAnimation("open");
+						if (this.blooded) {
+							this.animation.setAnimation("open_bloody");
+						} else {
+							this.animation.setAnimation("open");
+						}
 						this.game.monsters[i].die();
 					}
 				}
@@ -66,12 +88,27 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random"], functi
 
 			if (this.isAboveTrap(this.game.player.loc)) {
 				if (this.opened) {
-					if (Random.getInt(0, 1) == 0) this.game.audio.manscream1.play();
-					else this.game.audio.manscream2.play();
+					if (Random.getInt(0, 1) == 0) {
+						this.game.audio.manscream1.play();
+					} else {
+						this.game.audio.manscream2.play();
+					}
 					this.game.player.die();
+					this.blooded = true;
+					this.animation.setAnimation("open_bloody");
 				} else if (this.autoOpen) {
-					this.animation.setAnimation("open");
+					if (Random.getInt(0, 1) == 0) {
+						this.game.audio.manscream1.play();
+					} else {
+						this.game.audio.manscream2.play();
+					}
+					if (this.blooded) {
+						this.animation.setAnimation("open_bloody");
+					} else {
+						this.animation.setAnimation("open");
+					}
 					this.game.player.die();
+					this.blooded = true;
 				}
 			}
 		},
