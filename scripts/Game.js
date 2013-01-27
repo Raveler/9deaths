@@ -33,7 +33,9 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		imagesFileNames.push("blood.png");
 		imagesFileNames.push("SpikeDeath.png");
 		imagesFileNames.push("monsta3_Spritesheet15x1.png");
+		imagesFileNames.push("LongBloodPool.jpg");
 		imagesFileNames.push("Monsta2_eat_Spritesheet80x1.png");
+		imagesFileNames.push("Characters/character1.png");
 		this.loadImages(imagesFileNames);
 
 		// Load json data
@@ -50,6 +52,35 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		jsonFileNames.push("MonsterEating");
 		jsonFileNames.push("Names");
 		this.loadJson(jsonFileNames);
+
+		// audio files
+		var audioFileNames = [];
+		//audioFileNames.push("heartbeat.mp3");
+		//audioFileNames.push("CaveDripping.mp3");
+		audioFileNames.push("StabbingSpikesFIN");
+		audioFileNames.push("VeelluikenFIN");
+		audioFileNames.push("MeatFIN");
+		audioFileNames.push("MansionFIN");
+		audioFileNames.push("Drowning");
+		audioFileNames.push("Monstereating");
+		audioFileNames.push("Monstergrowl");
+		audioFileNames.push("HBfast2");
+		this.nAudioPending = audioFileNames.length;
+		this.audio = {};
+		for (var i = 0; i < audioFileNames.length; ++i) {
+			var name = audioFileNames[i];
+			var fileName = audioFileNames[i];
+			var audio = new Audio();
+			if (audio.canPlayType('audio/ogg')) fileName += ".ogg";
+			else fileName += ".mp3";
+			fileName = "data/sounds/" + fileName;
+			Logger.log(fileName);
+			audio.src = fileName;
+			audio.addEventListener("canplay", function(name, audio) {
+				--this.nAudioPending;
+				this.audio[name] = audio;
+			}.bind(this, name, audio));
+		}
 
 		// load entitity classes
 		var entityClasses = {};
@@ -129,7 +160,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 
 		update: function(dt) {
 
-			if (!(this.imagesPending == 0) || !(this.jsonPending == 0)) {
+			if (!(this.imagesPending == 0) || !(this.jsonPending == 0) || this.nAudioPending > 0) {
 				return;
 			}
 			else if (this.firstTime) {
@@ -139,7 +170,8 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 
 			// player dead
 				if (this.player.isDead() && this.resetTimer == 0) {
-					this.resetTimer = 2000;
+					this.audio.HBfast2.play();
+					this.resetTimer = 5500;
 				}
 
 				// fade to black
@@ -160,6 +192,8 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		},
 
 		reset: function() {
+			this.audio.MansionFIN.currentTime = 0;
+			this.audio.MansionFIN.play();
 			this.resetTimer = 0;
 			this.player.dead = false;
 			this.player.setLoc(this.player.startingLocation);
@@ -247,6 +281,10 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		},
 
 		startGame: function() {
+			this.audio.MansionFIN.play();
+			this.audio.MansionFIN.addEventListener("ended", function() {
+				
+			}.bind(this));
 			this.entitiesLoaded = true;
 		},
 
