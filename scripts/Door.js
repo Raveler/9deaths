@@ -12,10 +12,9 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random"], functi
 		update: function(dt) {
 			
 			// compute x distance from door
-			var dx = this.game.player.getLoc().subtract(this.getLoc()).length();
-			//var dx = Math.abs(this.game.player.getLoc().x - this.getLoc().x - this.animation.img.width/2);
-
-			if (dx < 50) {
+			var dx = Math.abs(this.game.player.getBaseX() - this.getLoc().x);
+			var dy = this.getLoc().y - this.game.player.getLoc().y;
+			if (dx < 150 && dy > 0) {
 				this.game.audio.Door.play();
 				this.animation.setAnimation("open");
 			}
