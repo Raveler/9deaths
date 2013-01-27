@@ -62,6 +62,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		imagesFileNames.push("endCredit.jpg");
 		imagesFileNames.push("ScreamDeath.png");
 		imagesFileNames.push("BeEn4A_Spritesheet40x1.png");
+		imagesFileNames.push("hangman.png");
 		this.loadImages(imagesFileNames);
 
 		// Load json data
@@ -83,6 +84,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		jsonFileNames.push("BabyRoom");
 		jsonFileNames.push("StartingRoom");
 		jsonFileNames.push("EndRoom");
+		jsonFileNames.push("Hangman");
 		this.loadJson(jsonFileNames);
 
 		// audio files

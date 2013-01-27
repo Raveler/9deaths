@@ -11,6 +11,8 @@ define(["Compose", "Logger", "Vector2", "Animation", "Particle", "Random"], func
 		this.appearing = false;
 		this.form = document.getElementById("dialog");
 		this.done = false;
+		this.body = new Animation(this.game, this.game.json["Hangman"]);
+		this.hasBody = false;
 	},
 	{
 		getId: function() {
@@ -31,6 +33,7 @@ define(["Compose", "Logger", "Vector2", "Animation", "Particle", "Random"], func
 		},
 
 		update: function(dt) {
+			this.body.update(dt);
 			if (!this.done && !this.dialog && this.game.player.getBaseX() > this.room.getLoc().x - this.room.getWidth() + 400) {
 				document.getElementById("dialog-text").value = "";
 				this.dialog = true;
@@ -49,6 +52,7 @@ define(["Compose", "Logger", "Vector2", "Animation", "Particle", "Random"], func
 			this.dialog = false;
 			this.form.style.display = "none";
 			if (this.game.player.name.toLowerCase() != document.getElementById("dialog-text").value.toLowerCase()) {
+				this.hasBody = true;
 				this.game.player.scream();
 				this.game.player.die();
 			}
@@ -84,6 +88,14 @@ define(["Compose", "Logger", "Vector2", "Animation", "Particle", "Random"], func
 			ctx.rotate(0.6);
 			ctx.fillText(this.game.treeName, 0, 0);
 			ctx.restore();
+
+			// body!
+			if (this.hasBody) {
+				ctx.save();
+				ctx.translate(this.room.getLoc().x - this.room.getWidth() + 500, -300);
+				this.body.draw(ctx);
+				ctx.restore();
+			}
 
 			/*if (this.isDead()) {
 				return;
