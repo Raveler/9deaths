@@ -48,6 +48,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		jsonFileNames.push("BloodRoom");
 		jsonFileNames.push("Monster");
 		jsonFileNames.push("MonsterEating");
+		jsonFileNames.push("Names");
 		this.loadJson(jsonFileNames);
 
 		// load entitity classes
