@@ -288,14 +288,26 @@
 					"json": "TrapdoorRoom",
 					"loc": [300, 0],
 					"triggers": [
-						[],
-						[],
-						[[0, 4], [1, 4], [2, 4], [3, 4], [4, 4], [1, 2], [0, 1], [0, 3]],
-						[]
+						[[0, 4], [1, 4], [2, 4], [3, 4], [4, 4], [1, 2], [0, 1], [0, 3]]
 					],
 					"open": [
 						[0, 4], [1, 4], [2, 4], [3, 4], [4, 4]
 					]
+				}
+			]
+		},
+		{
+			"doorY": 114,
+			"fileName": "BloodPool.jpg",
+
+			"entities": [
+				{
+					"id": "bloodRoom1",
+					"className": "BloodRoom",
+					"json": "BloodRoom",
+					"loc": [0, 0],
+					"hotSpots": [[1000, 114]],
+					"width": 1200
 				}
 			]
 		},
@@ -347,7 +359,7 @@
 		},
 		{
 			"doorY": 114,
-			"fileName": "BloodPool.jpg",
+			"fileName": "LongBloodPool.jpg",
 
 			"entities": [
 				{
@@ -355,8 +367,8 @@
 					"className": "BloodRoom",
 					"json": "BloodRoom",
 					"loc": [0, 0],
-					"hotSpots": [[1000, 114]],
-					"width": 1200
+					"hotSpots": [[800, 114], [1300, 0], [1300, 250], [1800, 114], [1800, 250], [2300, 114]],
+					"width": 3000
 				}
 			]
 		},

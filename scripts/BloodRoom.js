@@ -42,7 +42,7 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random", "Partic
 			}
 
 			// too close - die!
-			if (minDistance < 60) {
+			if (minDistance < 30) {
 				this.game.player.die();
 				this.game.player.scream();
 				var animation = new ContainedAnimation(this.game, this.bodyAnimation, new Vector2(playerLoc.x, Math.max(40, playerLoc.y)));
@@ -52,17 +52,14 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random", "Partic
 				return;
 			}
 			if (loc.x < playerLoc.x && playerLoc.x < loc.x + this.width && this.game.player.isMoving()) {
-				var ratio = 350.0 - (minDistance - 60);
-				if (ratio < 0) ratio = 0;
-				ratio *= 0.001;
-				if (ratio > 0.25) ratio *= 3;
-				ratio *= 10;
+				var ratio = 2.0;
+				if (minDistance < 100) ratio = 10.0;
 				this.particlePending += ratio;
 
 				// generate particles
 				while (this.particlePending > 0) {
 					--this.particlePending;
-					var particle = new Particle(this.game, "blood.png", this.game.player.getLoc().copy().add(new Vector2(Random.getDouble(-15, 15)), 15), Random.getDouble(0, 2 * Math.PI), Random.getDouble(0.7, 1.5), Random.getDouble(6.5 * ratio * 0.05, 15.5 * ratio * 0.05), -Math.PI/2, (Random.getInt(0,1) == 0 ? -1.0 : 1.0) * Random.getDouble(0.0, 0.1), 0.2);
+					var particle = new Particle(this.game, "blood.png", this.game.player.getLoc().copy().add(new Vector2(Random.getDouble(-15, 15)), 15), Random.getDouble(0, 2 * Math.PI), Random.getDouble(0.7, 1.5), ratio < 2 ? Random.getDouble(6.5 * ratio * 3 * 0.05, 15.5 * 3 * ratio * 0.05) : Random.getDouble(6.5 * ratio * 0.05, 15.5 * ratio * 0.05), -Math.PI/2, (Random.getInt(0,1) == 0 ? -1.0 : 1.0) * Random.getDouble(0.0, 0.1), 0.2);
 					this.game.movables.push(particle);
 					this.game.entities.push(particle);
 				}
@@ -70,18 +67,18 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random", "Partic
 		},
 
 		draw: function(ctx) {
-			for (var i = 0; i < this.bodies.length; ++i) {
+			/*for (var i = 0; i < this.bodies.length; ++i) {
 				ctx.save();
 				ctx.translate(this.bodies[i].loc.x, this.bodies[i].loc.y);
 				this.bodies[i].draw(ctx);
 				ctx.restore();
 			}
-			/*ctx.save();
+			ctx.save();
 			ctx.strokeStyle = "#FFFF00";
 			ctx.strokeRect(this.loc.x, this.loc.y, this.width, 400);
 			for (var i = 0; i < this.hotSpots.length; ++i) {
 				ctx.fillStyle = "#00FFFF";
-				ctx.fillRect(this.hotSpots[i].x, this.hotSpots[i].y, 20, 20)
+				ctx.fillRect(this.hotSpots[i].x + this.getLoc().x, this.hotSpots[i].y + this.getLoc().y, 20, 20)
 			}
 			ctx.restore();*/
 		}
