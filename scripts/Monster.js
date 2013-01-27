@@ -10,6 +10,8 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "ContainedAnimati
 		this.animation = new Animation(game, json);
 		this.game.monsters.push(this);
 		this.skipMe = true;
+
+		Logger.log(this.room);
 	},
 	{
 		init: function() {
