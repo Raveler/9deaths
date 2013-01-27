@@ -8,6 +8,8 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 		this.moving = false;
 		this.falling = false;
 		this.animation = new Animation(game, json);
+		this.onBlood = false;
+		this.bloodWalking = false;
 	},
 	{
 		init: function() {
@@ -20,6 +22,7 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 		},
 
 		update: function(dt) { // TODO use dt!
+
 			this.animation.update(dt);
 			var loc = this.getLoc();
 			var dx = 0, dy = 0;
@@ -66,6 +69,27 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 				this.moving = false;
 				this.animation.setAnimation("idle");
 			}
+
+			if (!this.moving) {
+				this.game.audio.Bloodfootsteps.pause();
+				this.game.audio.Footsteps.pause();
+			}
+
+			if (this.moving) {
+				if (this.bloodWalking) {
+					this.game.audio.Footsteps.pause();
+					this.game.audio.Bloodfootsteps.play();
+				}
+				else {
+					this.game.audio.Bloodfootsteps.pause();
+					this.game.audio.Footsteps.play();
+				}
+			}
+			else {
+				this.game.audio.Bloodfootsteps.pause();
+				this.game.audio.Footsteps.pause();
+			}
+			this.bloodWalking = false;
 
 			// Check whether the new position is valid before updating
 			var valid = this.game.isValidPosition(new Vector2(loc.x+dx, loc.y+dy));

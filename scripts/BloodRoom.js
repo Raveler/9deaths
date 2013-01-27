@@ -25,8 +25,11 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random", "Partic
 			}
 
 			// player within reach for the first time and there is a body - draw it
-			if (this.loc.x <= this.game.player.getBaseX() && this.game.player.getBaseX() <= this.loc.x + this.width && this.bodies.length > 0) {
-				if (this.game.audio.Drowning.paused) this.game.audio.Drowning.play();
+			if (this.loc.x <= this.game.player.getBaseX() && this.game.player.getBaseX() <= this.loc.x + this.width) {
+				if (this.bodies.length > 0) {
+					if (this.game.audio.Drowning.paused) this.game.audio.Drowning.play();
+				}
+				if (this.game.player.isMoving()) this.game.player.bloodWalking = true;
 			}
 
 			// compute the closeness to the hotspo

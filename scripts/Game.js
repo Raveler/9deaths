@@ -36,6 +36,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		imagesFileNames.push("LongBloodPool.jpg");
 		imagesFileNames.push("Monsta2_eat_Spritesheet80x1.png");
 		imagesFileNames.push("Characters/character1.png");
+		imagesFileNames.push("AmbientDarkness.png");
 		this.loadImages(imagesFileNames);
 
 		// Load json data
@@ -64,6 +65,10 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		audioFileNames.push("Monstereating");
 		audioFileNames.push("Monstergrowl");
 		audioFileNames.push("HBfast2");
+		audioFileNames.push("manscream1");
+		audioFileNames.push("manscream2");
+		audioFileNames.push("Bloodfootsteps");
+		audioFileNames.push("Footsteps");
 		this.nAudioPending = audioFileNames.length;
 		this.audio = {};
 		for (var i = 0; i < audioFileNames.length; ++i) {
@@ -351,6 +356,8 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			this.tickDave(ctx);
 
 			ctx.restore();
+
+			ctx.drawImage(this.images["AmbientDarkness.png"], 0, 0);
 		},
 
 		tickDave: function(ctx) {

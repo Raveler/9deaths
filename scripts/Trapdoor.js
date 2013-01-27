@@ -1,4 +1,4 @@
-define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose, Vector2, Logger, Entity, Animation) {
+define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random"], function(Compose, Vector2, Logger, Entity, Animation, Random) {
 
 	var Trapdoor = Compose(Entity, function(game, json) {
 		this.game = game;
@@ -66,6 +66,8 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation"], function(Compose
 
 			if (this.isAboveTrap(this.game.player.loc)) {
 				if (this.opened) {
+					if (Random.getInt(0, 1) == 0) this.game.audio.manscream1.play();
+					else this.game.audio.manscream2.play();
 					this.game.player.die();
 				} else if (this.autoOpen) {
 					this.animation.setAnimation("open");
