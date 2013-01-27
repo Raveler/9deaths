@@ -136,7 +136,7 @@
 			"fileName": "room 01.jpg",
 			"entities": [
 				{
-					"id": "trigger1",
+					"id": "trigger3",
 					"className": "Trigger",
 					"json": "Trigger",
 					"active": false,
@@ -150,7 +150,7 @@
 					"className": "Trapdoor",
 					"json": "Trapdoor",
 					"loc": [732, 63],
-					"triggerId": ["trigger1", "trigger2"]
+					"triggerId": ["trigger3"]
 				},
 				{
 					"id": "monster1",
