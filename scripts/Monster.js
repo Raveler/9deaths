@@ -10,6 +10,7 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "ContainedAnimati
 		this.animation = new Animation(game, json);
 		this.game.monsters.push(this);
 		this.skipMe = true;
+
 	},
 	{
 		init: function() {
@@ -18,6 +19,16 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "ContainedAnimati
 
 		update: function(dt) {
 			this.animation.update(dt);
+			// eating
+			/*if (this.audio.paused && !this.death) {
+				this.audio.play();
+			}*/
+
+
+			var moveVector = this.game.player.loc.subtract(this.getLoc());
+			if (moveVector.length() < this.activeRange && this.eating && !this.death) {
+				this.game.audio.Monstereating.play();
+			}
 
 			// Ignore if death
 			if (this.death || this.eating) {
@@ -29,7 +40,10 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "ContainedAnimati
 				this.animation.setAnimation("idle");
 				this.animation.setFlip(true);
 				return;
-			} 
+			}
+
+			this.game.audio.Monstergrowl.play();
+
 			
 			if ((Math.abs(moveVector.x) < 110) && (Math.abs(moveVector.y) < 15)) {
 				this.game.player.die();
