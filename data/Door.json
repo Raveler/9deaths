@@ -1,0 +1,26 @@
+{
+	"z": -1,
+	"width": 130,
+	"height": 160,
+	"frameRate": 40,
+	"focusPoint": [0, 0],
+	"scale": 1.0,
+	"animations": [
+		{
+			"name": "closed",
+			"length": 1
+		},
+		{
+			"name": "open",
+			"length": 1
+		}
+	],
+	"path":
+		[
+			[0, 0],
+			[59, 67],
+			[203, 67],
+			[146, 0]
+		],
+	"fileName": "door.png"
+}

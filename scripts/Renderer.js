@@ -1,4 +1,4 @@
-define(["Compose", "Vector2", "Layer", "Room", "Player", "Loader", "Logger"], function(Compose, Vector2, Layer, Room, Player, Loader, Logger) {
+define(["Compose", "Vector2", "Layer", "Room", "Player", "Loader", "Logger", "Door"], function(Compose, Vector2, Layer, Room, Player, Loader, Logger, Door) {
 	
 	var Renderer = Compose(function(game, json) {
 
