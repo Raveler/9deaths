@@ -7,7 +7,11 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random"], functi
 		this.animation = new Animation(game, json);
 		this.flip = json.flip;
 		if (typeof this.flip == "undefined") this.flip = false;
-		this.opened = false;
+		if (typeof json.opened == "undefined") {
+			this.opened = false;
+		} else {
+			this.opened = json.opened;
+		}
 		if (typeof json.openAuto == "undefined") {
 			this.autoOpen = false;
 		} else {
@@ -24,10 +28,18 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random"], functi
 		} else {
 			this.blooded = false;
 		}
-		if (this.blooded) {
-			this.animation.setAnimation("closed_bloody");
+		if (!this.opened) {
+			if (this.blooded) {
+				this.animation.setAnimation("closed_bloody");
+			} else {
+				this.animation.setAnimation("closed");
+			}
 		} else {
-			this.animation.setAnimation("closed");
+			if (this.blooded) {
+				this.animation.setAnimation("open_bloody");
+			} else {
+				this.animation.setAnimation("open");
+			}
 		}
 		this.game.trapdoors.push(this);
 	},
@@ -44,11 +56,11 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random"], functi
 				this.opened = !this.opened;
 				if (sound) this.game.audio.VeelluikenFIN.play();
 			}
-			else if (on && !this.opened) {
+			else if (!this.opened) {
 				this.opened = true;
 				if (sound) this.game.audio.VeelluikenFIN.play();
 			}
-			else if (!on && this.opened) {
+			else if (this.opened) {
 				this.opened = false;
 				if (sound) this.game.audio.VeelluikenFIN.play();
 			}

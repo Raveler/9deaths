@@ -185,6 +185,59 @@
 				}
 			]
 		},
+
+
+		{
+			"doorY": 114,
+			"fileName": "room 01.jpg",
+			"entities": [
+				{
+					"id": "trigger1",
+					"className": "Trigger",
+					"json": "Trigger",
+					"active": false,
+					"activated": true,
+					"activateRange": 10000,
+					"loc": [570, 50],
+					"toggled": true
+				},
+				{
+					"id": "trigger2",
+					"className": "Trigger",
+					"json": "Trigger",
+					"active": false,
+					"activated": true,
+					"activateRange": 10000,
+					"loc": [746, 50],
+					"toggled": true
+				},
+				{
+					"id": "trapdoor1",
+					"className": "Trapdoor",
+					"json": "Trapdoor",
+					"loc": [490, 0],
+					"triggerId": ["trigger1"]
+				},
+				{
+					"id": "trapdoor2",
+					"className": "Trapdoor",
+					"json": "Trapdoor",
+					"loc": [674, 0],
+					"triggerId": []
+				},
+				{
+					"id": "trapdoor3",
+					"className": "Trapdoor",
+					"json": "Trapdoor",
+					"loc": [1097, 78],
+					"triggerId": ["trigger2"],
+					"opened": true
+				}
+			]
+		},
+
+
+
 		{
 			"doorY": 114,
 			"fileName": "room 01.jpg",
