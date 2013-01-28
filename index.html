@@ -1,6 +1,10 @@
+<!DOCTYPE html>
+
 <html>
 
 <head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
 	<title>9 Deaths</title>
 
 	<link rel="stylesheet" type="text/css" href="style.css">
@@ -16,7 +20,8 @@
 			paths: {
 			"data": "../data"
 			},
-			urlArgs: 'bust=' + (new Date()).getTime()
+			urlArgs: 'bust=' + (new Date()).getTime(),
+			waitSeconds: 0
 		});
 	</script>
 
@@ -38,6 +43,8 @@
 	</div>
 
 	<div id="fps"></div>
+
+	<div id="hidden"></div>
 
 </body>
 

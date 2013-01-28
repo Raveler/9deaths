@@ -59,3 +59,7 @@ body {
 	border: 1px solid #ea0000;
 	background-color: #6b0000;
 }
+
+#hidden {
+	display: none;
+}

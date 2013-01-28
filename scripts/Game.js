@@ -32,7 +32,6 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		var imagesFileNames=[];
 		//imagesFileNames.push("xx");
 		imagesFileNames.push("character.png");
-		imagesFileNames.push("placeHolder_BG.JPG");
 		imagesFileNames.push("lever.png");
 		imagesFileNames.push("hatch_h220.png");
 		imagesFileNames.push("scaryLevel.jpg");
@@ -121,12 +120,23 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			var audio = new Audio();
 			if (audio.canPlayType('audio/ogg')) fileName += ".ogg";
 			else fileName += ".mp3";
-			fileName = "data/sounds/" + fileName;
+			fileName = "data/sounds/" + fileName + "?bust=" + new Date().getTime();
 			audio.src = fileName;
 			audio.addEventListener("canplay", function(name, audio) {
+				if (typeof this.audio[name] != "undefined") {
+					return;
+				}
 				--this.nAudioPending;
 				this.audio[name] = audio;
+				audio.pause();
+				audio.currentTime = 0;
+				audio.volume = 1;
 			}.bind(this, name, audio));
+			audio.load();
+			audio.volume = 0;
+			audio.play();
+			audio.preload = "auto";
+			document.getElementById("hidden").appendChild(audio);
 		}
 
 		// load entitity classes
@@ -217,6 +227,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		},
 
 		update: function(dt) {
+			//Logger.log("Pending: " + this.imagesPending + ", " + this.jsonPending + ", " + this.nAudioPending);
 			if (!(this.imagesPending == 0) || !(this.jsonPending == 0) || this.nAudioPending > 0) {
 				return;
 			}
@@ -517,7 +528,7 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 			ctx.fillText("Programmer: Karel Crombecq", 30, 0);
 			ctx.fillText("Programmer: David Staessens", 30, 20);
 			ctx.fillText("Lead artist: Elliot Bockxtaele", 30, 40);
-			ctx.fillText("Artist: Thibaut Van Houtte", 30, 60);
+			ctx.fillText("Artist: Thibaut van Houtte", 30, 60);
 			ctx.fillText("Design & sound: Lena Leel-Össy", 30, 80);
 			ctx.fillText("Writing & sound: Zindzi Owusu", 30, 100);
 			ctx.fillText("Writing: Laurens Adeaga", 30, 120);
@@ -535,8 +546,15 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
         loadImages: function(fileNames) {
         	this.images = new Array();
         	this.imagesPending = fileNames.length;
-        	for(var i = 0, length = fileNames.length; fileName = fileNames[i], i < length; i++) {
-				require(["image!data/" + fileName + '?bust=' + (new Date().getTime())], this.imageLoaded.bind(this, fileName));
+        	var length = fileNames.length;
+        	for(var i = 0; i < length; ++i) {
+        		var fileName = fileNames[i];
+				//require(["image!data/" + fileName + '?bust=' + (new Date().getTime())], this.imageLoaded.bind(this, fileName));
+				var img = new Image();
+				img.onload = function(fileName, img, evt) {
+					this.imageLoaded(fileName, img);
+				}.bind(this, fileName, img);
+				img.src = "data/" + fileName + '?bust=' + (new Date().getTime());
 			}
         },
 
@@ -549,7 +567,9 @@ define(["Compose", "Logger", "GameArea", "Vector2", "Player", "Renderer", "Trigg
 		loadJson: function(fileNames) {
 			this.json = new Array();
 			this.jsonPending = fileNames.length;
-			for(var i = 0, length = fileNames.length; fileName = fileNames[i], i < length; i++) {
+			var length = fileNames.length;
+			for(var i = 0; i < length; ++i) {
+				var fileName = fileNames[i];
 				require(["json!data/" + fileName + '.json?bust=' + (new Date().getTime())], this.jsonLoaded.bind(this, fileName));
 			}
 		},

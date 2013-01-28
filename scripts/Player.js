@@ -50,6 +50,8 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random"], functi
 			var pick = Random.getInt(0, nNames-1);
 			this.name = this.names[type][pick];
 			this.names[type].splice(pick, 1);
+
+			this.z = 0;
 		},
 
 		fade: function() {

@@ -34,15 +34,24 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random", "Partic
 
 			// compute the closeness to the hotspo
 			var minDistance = 500000;
+			var bestHotSpot = -1;
 			for (var i = 0; i < this.hotSpots.length; ++i) {
 				var d = playerLoc.subtract(this.hotSpots[i].add(loc)).length();
 				if (d < minDistance) {;
 					minDistance = d;
+					bestHotSpot = i;
 				}
+			}
+
+			// too close - sink!
+			if (minDistance < 300) {
+				var ratio = minDistance / 300.0;
+				this.game.player.z = -(1.0 - ratio) * 150;
 			}
 
 			// too close - die!
 			if (minDistance < 30) {
+				this.hotSpots.splice(bestHotSpot, 1);
 				this.game.player.die();
 				this.game.player.scream();
 				var animation = new ContainedAnimation(this.game, this.bodyAnimation, new Vector2(playerLoc.x, Math.max(40, playerLoc.y)));
@@ -59,7 +68,10 @@ define(["Compose", "Vector2", "Logger", "Entity", "Animation", "Random", "Partic
 				// generate particles
 				while (this.particlePending > 0) {
 					--this.particlePending;
-					var particle = new Particle(this.game, "blood.png", this.game.player.getLoc().copy().add(new Vector2(Random.getDouble(-15, 15)), 15), Random.getDouble(0, 2 * Math.PI), Random.getDouble(0.7, 1.5), ratio < 2 ? Random.getDouble(6.5 * ratio * 3 * 0.05, 15.5 * 3 * ratio * 0.05) : Random.getDouble(6.5 * ratio * 0.05, 15.5 * ratio * 0.05), -Math.PI/2, (Random.getInt(0,1) == 0 ? -1.0 : 1.0) * Random.getDouble(0.0, 0.1), 0.2);
+					var yOffset = 0;
+					if (this.game.player.z < 0) yOffset = Math.abs(Math.max(-20, this.game.player.z));
+					var particleLoc = this.game.player.getLoc().copy().add(new Vector2(Random.getDouble(-25, 25), yOffset));
+					var particle = new Particle(this.game, "blood.png", particleLoc, Random.getDouble(0, 2 * Math.PI), Random.getDouble(0.7, 1.5), ratio < 2 ? Random.getDouble(6.5 * ratio * 3 * 0.05, 15.5 * 3 * ratio * 0.05) : Random.getDouble(6.5 * ratio * 0.05, 15.5 * ratio * 0.05), -Math.PI/2, (Random.getInt(0,1) == 0 ? -1.0 : 1.0) * Random.getDouble(0.0, 0.1), 0.2);
 					this.game.movables.push(particle);
 					this.game.entities.push(particle);
 				}
